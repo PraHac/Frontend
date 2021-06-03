@@ -1,0 +1,79 @@
+
+#trigger {
+  font-size: 18px;
+  line-height:20px;
+  cursor: pointer;
+  transition: color 0.3s;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  color:#FFF;
+
+}
+#trigger:hover {
+  background: #fecb32;
+  border-radius: 50%;
+  opacity: 0.5;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  transition: 0.3s;
+}
+
+.logo1 {
+  height: 32px;
+  margin: 16px;
+  z-index: 1;
+}
+.logo2 {
+  height: 32px;
+  margin: 16px;
+  z-index: 1;
+  margin-left:25px;
+}
+.link{
+  color: #FFF;
+}
+.link:hover{
+  color: #00F;
+}
+/* .site-layout .site-layout-background {
+  background: #fff;
+} */
+a.link:hover {
+  /*Any style you want to have link on mouse over*/
+  /* background-color:#22b1ed; */
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:#22b1ed ;
+  background-size: 200% 100%;
+  background-position: 100%;
+}
+
+.Admin{
+  color:#5a5c69;
+  font-weight:400;
+  line-height:1.2;
+  font-size: 31px;
+}
+
+.site-layout-background{
+  background:#22b1ed;
+  z-index:2;
+}
+.avatar{
+  position:absolute;
+  left:96%;
+  
+}
+.button{
+  margin: 5px;
+  background:#22b1ed;
+}
+
+.attendancetable{
+  margin-top: 20%;
+  margin-left: 15%;
+}
+
+
