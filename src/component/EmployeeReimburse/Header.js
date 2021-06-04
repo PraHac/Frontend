@@ -61,7 +61,8 @@ export default class Header extends Component {
 
   logout = (e) => {
     e.preventDefault();
-    axios
+    if (localStorage.getItem("location") == "office") {
+      axios
       .put(
         "http://localhost:8081/r1/LogoutEmployee/" +
           "/" +
@@ -70,8 +71,9 @@ export default class Header extends Component {
       .then((res) => {
         console.log(res);
       })
-
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err)); 
+    }
+    
     localStorage.removeItem("employeeId");
     window.location.replace("/");
   };
@@ -238,10 +240,46 @@ export default class Header extends Component {
     }
   };
   timesheetHandeler = (event) => {
+   
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
+    // validation();
+    // var format = /[0-9]{1}/;
+    var email_name = document.getElementById("logHours");
+    var logHour_value = document.getElementById("logHours").value;
+    // var logHour_length = logHour_value.length;
+    if(this.state.logHours < 0 )
+    {
+    document.getElementById('err').innerHTML = 'Invalid format(digit between 0-9)';
+    email_name.focus();
+    document.getElementById('err').style.color = "red";
+    }
+    else
+    {
+    document.getElementById('err').innerHTML = 'Valid format';
+    document.getElementById('err').style.color = "#00AF33";
+    }
+    
   };
+
+  // validation ()  {
+    // var format = /[0-9]{1}/;
+    // var email_name = document.getElementById("logHours");
+    // var logHour_value = document.getElementById("logHours").value;
+    // var logHour_length = logHour_value.length;
+    // if(!logHour_value.match(format) || logHour_length === 0)
+    // {
+    // document.getElementById('err').innerHTML = 'Invalid format(digit between 0-9)';
+    // email_name.focus();
+    // document.getElementById('err').style.color = "red";
+    // }
+    // else
+    // {
+    // document.getElementById('err').innerHTML = 'Valid format';
+    // document.getElementById('err').style.color = "#00AF33";
+    // }
+  // }
 
   savetimeSheet(event) {
     event.preventDefault();
@@ -279,7 +317,6 @@ export default class Header extends Component {
     console.log(d);
     this.state.timesheetDetail.push(d);  
     }
-     
   }
 
   render() {
@@ -359,31 +396,31 @@ export default class Header extends Component {
                         <ul className="nav nav-treeview">
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="fas fa-calculator"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.addReimburs}>Add Reimbursement</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="fas fa-binoculars"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.viewReimburs}>View Reimbursement</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="fas fa-clock"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet}>Add TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="fas fa-check"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet1}>Approved TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="fas fa-times"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet2}>Disapproved TimeSheet</p>
                           </a>
                         </li>
@@ -398,7 +435,7 @@ export default class Header extends Component {
 
         {/* *************************Add timesheet */}
 
-        <div id="timesheet" style={{ display: "none"}}>
+        <div id="timesheet" style={{ display: "none", marginTop:"6%"}}>
             <RubberBand>
             <div style={{display:"flex",justifyContent:"space-evenly", padding: "1%", marginLeft: "10%"  }} >
                 <h6 style={{color:"gray"}}>SUBMIT WEEKLY TIME-SHEET</h6> 
@@ -413,7 +450,8 @@ export default class Header extends Component {
                       placeholder="Supervisor Id"
                       type="text"
                       name="supervisor_id"
-                      onChange={this.timesheetHandeler}
+                onChange={this.timesheetHandeler}
+                required
                 />
               </div>
               <div style={{  marginLeft: "20%" }}>
@@ -423,61 +461,63 @@ export default class Header extends Component {
               <div class="card mb-4">
                 <div class="table-responsive p-3">
                 <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
-                {this.state.rowNo.map((i) => (
+                
+              {this.state.rowNo.map((i) => (
                 <>
                  <tr>
-                 <td>
-                 <h6 className="mt-2">{i}</h6>
-                 </td>
                   <td>
-                 <input
-                     style={inputStyle}
-                     placeholder="Enter the Log Hours"
-                     type="text"
-                     name="logHours"
-                        onChange={this.timesheetHandeler}
-                        onClick={(e, i) => this.tsChange(e, i)}
-                   />
+                     <h6 className="mt-2">{i}</h6>
+                  </td>
+                  <td >
+                    <input
+                      // key={i}    
+                      style={inputStyle}
+                      placeholder="Enter the Log Hours"
+                      type="number"
+                      name="logHours"
+                      id="logHours"
+                      onChange={this.timesheetHandeler}
+                      onClick={(e, i) => this.tsChange(e, i)}
+                      required  
+                  /><br />
+                  <span id="err"></span>      
                  </td>
                  <td>
-                 <input
-                   style={inputStyle}
-                     placeholder="Enter the Project Name"
-                     type="text"
-                     name="projectName"
-                     onChange={this.timesheetHandeler}
-                   />
+                    <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({projectName: e.target.value})}>
+                      <option selected>Select Project</option>
+                      <option value="RC Builder">RC Builder</option>
+                      <option value="RC 360">RC 360</option>
+                      <option value="Reimbursement">Reimbursement</option>
+                      <option value="Video Conferencing">Video Conferencing</option>    
+                    </select>       
                  </td>
                  <td>
-                 <input
-                   style={inputStyle}
-                     placeholder="Enter Task"
-                     type="text"
-                     name="task"
-                     onChange={this.timesheetHandeler}
-                   />
+                    <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ task: e.target.value })}>
+                      <option selected>Select Task</option>
+                      <option value="Coding">Coding</option>
+                      <option value="Requirment gathering">Requirment gathering</option>
+                      <option value="R & D">R & D</option>
+                    </select>
                  </td>
                  <td>
                  <input
                    style={inputStyle}
                      placeholder="Enter Date(YYYY-MM-DD)"
-                      type="text"
-                      // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                     type="date"
                      name="date"
                      onChange={this.timesheetHandeler}
+                     required
                    />
                   </td>
-                  {/* <td><button style={{display:"block"}} id={i} className="btn btn-sm btn-primary" onClick={(e, i) => this.tsChange(e, i)}>Add</button></td>   */}
                 </tr>
                 </>
                ))} 
                 </table>
+                <input style={{margin:"auto"}} placeholder="Action" class="btn btn-sm btn-info" type="submit" value="Submit" onClick={this.savetimeSheet} />
                 </div>
-              </div>
+                </div>
             </div>
           </div>
-      
-              <input style={{marginLeft:"78%"}} placeholder="Action" class="btn btn-info" type="submit" value="Submit" onClick={this.savetimeSheet} />
           </div>  
           </RubberBand>
         </div>

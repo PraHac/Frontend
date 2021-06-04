@@ -5,6 +5,8 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
+import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
+// import $ from 'jquery'
 
 function Login() {
 
@@ -14,14 +16,17 @@ function Login() {
   const [adminPassword, setAdminPassword] = useState("");
   const [employeeEmail, setEmployeeEmail] = useState("");
   const [employeePassword, setEmployeePassword] = useState("");
+  const [employee1Email, setEmployee1Email] = useState("");
+  const [employee1Password, setEmployee1Password] = useState("");
   const [role, setRole] = useState("v");
+  const [location, setLocation] = useState("");
   const [detail, setDetail] = useState({});
 
   const data = () => {
     const d = {
       det: detail
     }
-  } 
+  }
 
   const email_validation = () => {
     'use strict';
@@ -29,16 +34,14 @@ function Login() {
     var email_name = document.getElementById("email");
     var email_value = document.getElementById("email").value;
     var email_length = email_value.length;
-    if(!email_value.match(mailformat) || email_length === 0)
-    {
-    document.getElementById('email_err').innerHTML = 'This is not a valid email format.';
-    email_name.focus();
-    document.getElementById('email_err').style.color = "grey";
+    if (!email_value.match(mailformat) || email_length === 0) {
+      document.getElementById('email_err').innerHTML = 'This is not a valid email format.';
+      email_name.focus();
+      document.getElementById('email_err').style.color = "grey";
     }
-    else
-    {
-    document.getElementById('email_err').innerHTML = 'Valid email format';
-    document.getElementById('email_err').style.color = "#00AF33";
+    else {
+      document.getElementById('email_err').innerHTML = 'Valid email format';
+      document.getElementById('email_err').style.color = "#00AF33";
     }
   }
   const email_validation1 = () => {
@@ -47,28 +50,39 @@ function Login() {
     var email_name = document.getElementById("email");
     var email_value = document.getElementById("email").value;
     var email_length = email_value.length;
-    if(!email_value.match(mailformat) || email_length === 0)
-    {
-    document.getElementById('email_err1').innerHTML = 'This is not a valid email format.';
-    email_name.focus();
-    document.getElementById('email_err1').style.color = "grey";
+    if (!email_value.match(mailformat) || email_length === 0) {
+      document.getElementById('email_err1').innerHTML = 'This is not a valid email format.';
+      email_name.focus();
+      document.getElementById('email_err1').style.color = "grey";
     }
-    else
-    {
-    document.getElementById('email_err1').innerHTML = 'Valid email format';
-    document.getElementById('email_err1').style.color = "red";
+    else {
+      document.getElementById('email_err1').innerHTML = 'Valid email format';
+      document.getElementById('email_err1').style.color = "red";
     }
-    }
+  }
   
   const MouseHover = () => {
     document.getElementById("adminform").style.display = "block";
+    document.getElementById("adminform1").style.display = "none";
     document.getElementById("adminform").style.transition = "all 2s ease";
     document.getElementById("userform").style.display = "none";
     document.getElementById("user").style.display = "block";
+    document.getElementById("user1").style.display = "none";
     document.getElementById("admin").style.display = "none";
   }
   const MouseHover1 = () => {
     document.getElementById("adminform").style.display = "none";
+    document.getElementById("adminform1").style.display = "block";
+    document.getElementById("user1").style.display = "block";
+    document.getElementById("userform").style.transition = "all 1s ease";
+    document.getElementById("userform").style.display = "none";
+    document.getElementById("user").style.display = "none";
+    document.getElementById("admin").style.display = "none";
+  }
+  const MouseHover2 = () => {
+    document.getElementById("adminform").style.display = "none";
+    document.getElementById("adminform1").style.display = "none";
+    document.getElementById("user1").style.display = "none";
     document.getElementById("userform").style.transition = "all 1s ease";
     document.getElementById("userform").style.display = "block";
     document.getElementById("user").style.display = "none";
@@ -85,7 +99,7 @@ function Login() {
       .then(res => {
         // alert("Admin logedIn")
         localStorage.setItem("adminId", res.data.adminId);
-        M.toast({ html: "admin logedIn"})
+        M.toast({ html: "admin logedIn" })
         history.push("/adminDashboard");
       })
       .catch(err => alert(err));
@@ -93,17 +107,14 @@ function Login() {
 
   const employeeHandle = (e) => {
     e.preventDefault();
-
     const loginDetail = {
       email: employeeEmail,
       password: employeePassword
     }
-
     if (role == "accountant") {
 
       LoginService.loginAccountant(loginDetail)
       .then(res => {
-        // alert("Accountant logedIn")
         localStorage.setItem("accountantId", res.data.accountantId);
         M.toast({ html: "accountant logedIn"})
         history.push("/accountantDash");
@@ -114,29 +125,47 @@ function Login() {
 
       LoginService.loginSupervisor(loginDetail)
       .then(res => {
-        // alert("Supervisor logedIn")
         localStorage.setItem("supervisorId", res.data.supervisorId);
         M.toast({ html: "supervisor logedIn"})
         history.push("/supervisorDash");
       })
       .catch(err => alert(err));
 
-    } else {
+    }
+  }
 
-      LoginService.loginEmployee(loginDetail)
-        .then(res => {
-          localStorage.setItem("employeeId", res.data.employeeId);
-          localStorage.setItem("employeeName", res.data.name);
-          M.toast({ html: "Employee logedIn"})
+  const ab = (e) => {
+    e.preventDefault();
+    const loginDetail1 = {
+      email: employee1Email,
+      password: employee1Password,
+      location: location
+    }
+    LoginService.loginEmployee(loginDetail1)
+      .then(res => {
+        localStorage.setItem("employeeId", res.data.employeeId);
+        localStorage.setItem("location", "office");
+        localStorage.setItem("employeeName", res.data.name);
+        M.toast({ html: "Employee logedIn" })
         console.log("Employee logedIn", res);
         setDetail(res);
         console.log(detail);
         history.push("/employeeReimburse");
       })
       .catch(err => alert(err));
-
-    }
   }
+
+  // const employeeL = () => {
+  //   console.log("yes");
+  //   console.log(openOption);
+  //   setOpenOption(!openOption);
+  // }
+
+  // $('#sel').change(function() {
+  //   if ($(this).val() == "new") {
+      
+  //   }
+  // })
 
   return (
     <>
@@ -178,14 +207,13 @@ function Login() {
 {/* *************************user form************************  */}
           <div id="user" onMouseOver={MouseHover1} style={{ display: "none" }}>
             <p>Are you an</p>
-            <h3 >Admin?</h3>  
+            <h3 >Employee?</h3>  
           </div> 
           <form className="form" id="adminform" style={{ backgroundColor: "black", display: "none" }}>
-              <select className="form-control mb-4 mt-2" onChange={(e) => setRole(e.target.value)}>
+              <select id="sel" className="form-control mb-4 mt-2" onChange={(e) => setRole(e.target.value)}>
 							  <option selected>Choose Role</option>
 							  <option value="accountant">Accountant</option>
 							  <option value="supervisor">Supervisor</option>
-							  <option value="employee">Employee</option>
               </select>
             <div className="formcontrol">
               <input
@@ -193,7 +221,6 @@ function Login() {
                 placeholder="Enter your Email"
                 id="email"
                 name="employeeEmail"
-                // onChange={email_validation1}
                 onChange={(e) => setEmployeeEmail(e.target.value)}
                 value={employeeEmail}
               />
@@ -212,6 +239,46 @@ function Login() {
             </div>
             <button onClick={employeeHandle} type="submit" value="login" className="btn btn-outline-light ml-5" id="userlogin" >LOGIN</button>
           </form>
+
+{/* *************************user form 2 ************************  */}
+
+          
+          <form className="form" id="adminform1" style={{ backgroundColor: "black", display: "none" }}>
+              <select className="form-control mb-4 mt-2" onChange={(e) => setLocation(e.target.value)} required="true">
+							  <option selected>Choose Working Location :</option>
+							  <option value="office">office</option>
+							  <option value="home">home</option>
+              </select>
+            <div className="formcontrol">
+              <input
+                type="email"
+                placeholder="Enter your Email"
+                id="email"
+                name="employee1Email"
+                onChange={(e) => setEmployee1Email(e.target.value)}
+                value={employee1Email}
+                required="true"
+              />
+              <span id="email_err1"></span>
+              <i className="fas fa-check-circle"></i>
+            </div>
+            <div className="formcontrol">
+              <input
+                type="password"
+                id="password"
+                name="employee1Password"
+                placeholder="Enter your Password"
+                onChange={(e) => setEmployee1Password(e.target.value)}
+                value={employee1Password}
+                required="true"
+              />
+            </div>
+            <button onClick={ab} type="submit" value="login" className="btn btn-outline-light ml-5" >LOGIN</button>
+          </form>
+          <div id="user1" onMouseOver={MouseHover2} style={{ display: "none" }}>
+            <p>Are you an</p>
+            <h3 >Admin?</h3>  
+          </div> 
         </div>
       </div>
     </>
