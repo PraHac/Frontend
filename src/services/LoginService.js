@@ -7,7 +7,7 @@ const loginAccountantURL = "http://localhost:8081/r1/loginAccountant"
 
 const loginSupervisorURL = "http://localhost:8081/r1/supervisorLogin"
 
-const loginEmployeeURL = "http://localhost:8081/employeeLogin"
+const loginEmployeeURL = "http://localhost:8081/r1/employeeLogin"
 
 class LoginService {
    

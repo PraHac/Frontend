@@ -107,6 +107,12 @@ body{
   cursor: pointer;
   transition: all 1s ease;
 }
+#user1{
+  padding: 13px;
+  margin: 95px 0px;
+  cursor: pointer;
+  transition: all 1s ease;
+}
 p{
   margin: 0 !important;
 }
