@@ -38,14 +38,14 @@ class PaySalarySidebarContent extends React.Component{
       
       componentDidMount() {
         if (localStorage.getItem("adminId") == null) {
-          // window.location.replace("/")
+          window.location.replace("/")
         }
       }
     
       logout = (e) => {
         e.preventDefault();
         localStorage.removeItem("adminId");
-        // window.location.replace("/");
+        window.location.replace("/");
       }
     
     // componentDidMount(){

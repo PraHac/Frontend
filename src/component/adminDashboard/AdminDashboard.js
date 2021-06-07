@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-// import './adminDashboard.css'
 import view from './view.png'
 import attendance from './attendance.jpg'
 import department from './department.png'
@@ -13,14 +12,14 @@ function AdminDashboard() {
    
     useEffect(() => {
         if (localStorage.getItem("adminId") == null) {
-            // window.location.replace("/") 
+            window.location.replace("/") 
           }
     }, [])
     
       const logout = (e) => {
         e.preventDefault();
         localStorage.removeItem("adminId");
-        // window.location.replace("/");
+        window.location.replace("/");
       }
 
     return (

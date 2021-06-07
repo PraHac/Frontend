@@ -245,8 +245,7 @@ disApprove = (e,r) =>{
            <div style={{display:"flex", marginTop:"6%", marginLeft:"19%"}}> 
                   <div
                       style={{
-                        boxShadow: "4px 5px 8px 9px grey",
-                        backgroundColor: "black",
+                        boxShadow: "10px 10px 30px",
                         width: "280px",
                         margin: "34px",
     
@@ -255,31 +254,29 @@ disApprove = (e,r) =>{
                     >
                       <p style={{ fontWeight: "600", backgroundColor: "white", fontSize: "30px" , padding: "9px", color:"grey" }}>Reimbursement</p>
                       <p style={{ fontWeight: "800", backgroundColor: "white", padding: "9px" }}>Approved by You</p>
-                      <div onClick={(e) => this.superApproved(e)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "black", border: "none", color: "white" }}>view</div>
+                      <div onClick={(e) => this.superApproved(e)} id="Rbutton" className="btn btn-secondary w-100" style={{ padding: "9px"  }}>view</div>
                   </div>
                   <div
                       style={{
-                        boxShadow: "0px 0px 10px 10px gray",
-                        backgroundColor: "black",
+                        boxShadow: "10px 10px 30px",
                         width: "280px",
                         margin: "34px",
                       }}
                     >
                       <p style={{ fontWeight: "600", backgroundColor: "white", fontSize: "30px" , padding: "9px", color:"grey" }}>Reimbursement</p>
                       <p style={{ fontWeight: "800", backgroundColor: "white", padding: "9px" }}>Disapproved by You</p>
-                      <div onClick={(e) => this.superDisapproved(e)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "black", border: "none", color: "white" }}>view</div>
+                      <div onClick={(e) => this.superDisapproved(e)} id="Rbutton" className="btn btn-secondary w-100" style={{ padding: "9px"  }}>view</div>
                   </div>
                   <div
                       style={{
-                        boxShadow: "0px 0px 10px 10px gray",
-                        backgroundColor: "black",
+                        boxShadow: "10px 10px 30px",
                         width: "280px",
                         margin: "34px",
                       }}
                     >
                       <p style={{ fontWeight: "600", backgroundColor: "white", fontSize: "30px" , padding: "9px", color:"grey" }}>Reimbursement</p>
                       <p style={{ fontWeight: "800", backgroundColor: "white", padding: "9px" }}>Action required</p>
-                      <div onClick={(e) => this.actionRequired(e)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "black", border: "none", color: "white" }}>view</div>
+                      <div onClick={(e) => this.actionRequired(e)} id="Rbutton" className="btn btn-secondary w-100" style={{ padding: "9px"  }}>view</div>
                   </div>
           </div>
           

@@ -8,14 +8,14 @@ function DptManage() {
 
 	useEffect(() => {
         if (localStorage.getItem("adminId") == null) {
-            // window.location.replace("/") change
+            window.location.replace("/") 
           }
     }, [])
     
       const logout = (e) => {
         e.preventDefault();
         localStorage.removeItem("adminId");
-        // window.location.replace("/"); change
+        window.location.replace("/"); 
       }
 // 	const [dptName, setDptName] = useState("");
 // 	const [departments, setDepartments] = useState([]);
