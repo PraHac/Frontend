@@ -5,8 +5,6 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
-import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
-// import $ from 'jquery'
 
 function Login() {
 
@@ -136,14 +134,19 @@ function Login() {
 
   const ab = (e) => {
     e.preventDefault();
+    var option = prompt("Do you want to mark you attendence? write yes or no");
+    option = option.toLowerCase();
+    console.log(option);
     const loginDetail1 = {
       email: employee1Email,
       password: employee1Password,
-      location: location
-    }
+      location: location,
+      attendOption: option,
+    }    
     LoginService.loginEmployee(loginDetail1)
       .then(res => {
         localStorage.setItem("employeeId", res.data.employeeId);
+        localStorage.setItem("supervisorId", res.data.supervisorId);
         localStorage.setItem("location", "office");
         localStorage.setItem("employeeName", res.data.name);
         M.toast({ html: "Employee logedIn" })
@@ -152,20 +155,8 @@ function Login() {
         console.log(detail);
         history.push("/employeeReimburse");
       })
-      .catch(err => alert(err));
+      .catch(err => alert("Enter Correct Input"));
   }
-
-  // const employeeL = () => {
-  //   console.log("yes");
-  //   console.log(openOption);
-  //   setOpenOption(!openOption);
-  // }
-
-  // $('#sel').change(function() {
-  //   if ($(this).val() == "new") {
-      
-  //   }
-  // })
 
   return (
     <>

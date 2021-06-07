@@ -30,7 +30,6 @@ const { Header, Sider, Content,Footer } = Layout;
 
 const logout = (e) => {
   e.preventDefault();
-  console.log("This is working")
   localStorage.removeItem("adminId");
   window.location.replace("/");
 }

@@ -12,7 +12,7 @@ function EmpDisplay() {
 
 	useEffect(() => {
         if (localStorage.getItem("adminId") == null) {
-            // window.location.replace("/") change here
+            window.location.replace("/")
           }
     }, [])
 return(
