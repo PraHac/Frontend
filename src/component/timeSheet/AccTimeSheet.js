@@ -19,6 +19,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 
+
 export default class AccTimeSheet extends Component {
   constructor(props) {
     super(props);
@@ -135,6 +136,7 @@ export default class AccTimeSheet extends Component {
 
   displayAllTimeSheet() {
     document.getElementById("ts").style.display = "block";
+    document.getElementById("ets").style.display = "none";  
     document.getElementById("apprts").style.display = "none";
     document.getElementById("disapprts").style.display = "none";
     document.getElementById("opt").style.display = "block";
@@ -176,9 +178,7 @@ export default class AccTimeSheet extends Component {
   seeByDate(e) {
     e.preventDefault();
     document.getElementById("ts").style.display = "block";
-
-    // document.getElementById("empWeek").style.display = "block";
-    // document.getElementById("noneempWeek").style.display = "none";
+    document.getElementById("ets").style.display = "none";  
     axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.endD)
     .then((response) => {
       console.log(response);
@@ -197,7 +197,7 @@ export default class AccTimeSheet extends Component {
     });
   }
 
-  //******************************* */ Approved supervisor status to employee TS
+  //*********** */ Approved supervisor status to employee TS
 
   supervisorStatusForTS1(e) {
     e.preventDefault();
@@ -224,7 +224,7 @@ export default class AccTimeSheet extends Component {
     })
   }
 
-  //******************************* */ Disapproved supervisor status to employee TS
+  //*********** */ Disapproved supervisor status to employee TS
   supervisorStatusForTS2(e) {
     const detail = [];
     e.preventDefault();
@@ -321,7 +321,7 @@ export default class AccTimeSheet extends Component {
 
     return (
       <div style={{ width: "1362px", height: "100%" }}>
-        {/* *************************Navbar */}
+        {/* *********Navbar */}
 
         <nav
           className="main-header navbar navbar-expand navbar-dark w-100"
@@ -341,50 +341,6 @@ export default class AccTimeSheet extends Component {
                 <i className="fas fa-bars" style={{color:"white", fontSize:"20px"}} />
               </a>
             </li>
-            {/* <li className="nav-item d-none d-sm-inline-block ml-3">
-              <Menu mode="inline" style={{ width: 165, margin: "4px" }}>
-                <SubMenu key="sub1" icon={<AppstoreOutlined />} title="Update">
-                  <Menu.Item key="1" onClick={this.updateTimeSheetPage}>
-                    UpdateTimeSheetPage{" "}
-                  </Menu.Item>
-                  <Menu.Item key="3" onClick={this.updateSupervisorStatus}>
-                    updateSuperVisorStatus
-                  </Menu.Item>
-                </SubMenu>
-              </Menu>
-            </li>
-            <li className="nav-item d-none d-sm-inline-block">
-              <Menu mode="inline" style={{ width: 165, margin: "4px" }}>
-                <SubMenu key="sub1" icon={<AppstoreOutlined />} title="Display">
-                  <Menu.Item key="1" onClick={this.displayEmployeeTimeSheet}>
-                    Employee Time Sheet{" "}
-                  </Menu.Item>
-                  <Menu.Item key="2" onClick={this.displayParticularTimeSheet}>
-                    Particular Time Sheet
-                  </Menu.Item>
-                </SubMenu>
-              </Menu>
-            </li>
-            <li className="nav-item d-none d-sm-inline-block">
-              <Menu mode="inline" style={{ width: 165, margin: "4px" }}>
-                <SubMenu
-                  key="sub1"
-                  icon={<AppstoreOutlined />}
-                  title="Super Visor"
-                >
-                  <Menu.Item key="1" onClick={this.superIdApproved}>
-                    Approved Time Sheet{" "}
-                  </Menu.Item>
-                  <Menu.Item key="2" onClick={this.superIdDispproved}>
-                    Dispproved Time Sheet
-                  </Menu.Item>
-                  <Menu.Item key="3" onClick={this.superidWaiting}>
-                    Waiting Time Sheet
-                  </Menu.Item>
-                </SubMenu>
-              </Menu>
-            </li> */}
-
             <li>
               <Link to="/accountantDash">
                 <button type="button" style={but} class="btn btn-danger">
@@ -395,7 +351,7 @@ export default class AccTimeSheet extends Component {
           </ul>
         </nav>
 
-        {/* *************************SideBar */}
+        {/* *********SideBar */}
 
         <div>
           <aside className="main-sidebar sidebar-dark-primary elevation-4" style={{backgroundColor:"black"}}>
@@ -451,7 +407,7 @@ export default class AccTimeSheet extends Component {
                </div>
               </aside>
         </div>
-    {/* *************************SideBar */}
+    {/* *********SideBar */}
 
         <div style={{
           display: "flex",
@@ -464,7 +420,7 @@ export default class AccTimeSheet extends Component {
           padding: "12px",
         }}>
           
-        {/* ***********option to choose timesheet*******   */}
+        {/* ****option to choose timesheet**   */}
           <div id="opt"> 
             <FormControl style={formControl}>
               <InputLabel id="demo-simple-select-label">Customize timesheet</InputLabel>
@@ -484,22 +440,22 @@ export default class AccTimeSheet extends Component {
               <div id="noneempWeek" style={{ marginLeft:"12%", display:"none" }}>
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 5px 5px gray"}}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize week</h5>
-                 <input style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
+                 <input style={inputStyle} type="date" name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
+                 <input style={inputStyle} type="date" name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <button className="btn btn-info" onClick={this.seeByDate}>go</button>  
               </div>
               </div>  
               <div id="empWeek" style={{display:"none",marginLeft:"3%",marginRight:"15%"}}>
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
-                 <input style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
+                 <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
+                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
                  <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
               </div>
               </div>  
           </div>
-        {/* *********** /option to choose timesheet*******   */}
+        {/* **** /option to choose timesheet**   */}
         </div>
 
         <div
@@ -514,19 +470,19 @@ export default class AccTimeSheet extends Component {
         >
           <RubberBand>
             <div id="ts">
-      {/* weeekly timesheet*************************** */}
+      {/* weeekly timesheet*********** */}
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                         <th>Accountant Status</th>
                         <th>Supervisor Status</th>
-                        <th>Employee Id</th>
+                        
                         <th>Employee Name</th>
-                        <th>TimeSheet Id</th>
+                        
                         <th>Date</th>
                         <th>Day</th>
                         <th>Task</th>
@@ -541,11 +497,11 @@ export default class AccTimeSheet extends Component {
                     <tr>
                         <td>{t.accountantApproved}</td>
                         <td>{t.supervisorApproved}</td>
-                        <td>{t.employeeId}</td>
+                       
                         <td>{t.employeeName}</td>
-                        <td>{t.timeSheetId}</td>
-                        <td>
-                          <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                        
+                        <td style={{width:"15%"}}>
+                          <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                         </td>
                         <td>{t.day}</td>
                         <td>{t.task}</td>
@@ -568,23 +524,23 @@ export default class AccTimeSheet extends Component {
               </div>
             </div>
           </div>
-          {/* /weeekly timesheet******************* */}
+          {/* /weeekly timesheet******* */}
             </div>
           
           <div id="ets" style={{ display: "none" }}>
-          {/* employee weeekly timesheet*************************** */}
+          {/* employee weeekly timesheet*********** */}
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      <th>Employee Id</th>
+                      
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                      
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -601,11 +557,11 @@ export default class AccTimeSheet extends Component {
                           <tr>
                       <td>{t.accountantApproved}</td>
                       <td>{t.supervisorApproved}</td>
-                      <td>{t.employeeId}</td>
+                     
                       <td>{t.employeeName}</td>
-                      <td>{t.timeSheetId}</td>
-                      <td>
-                        <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                      
+                      <td style={{width:"15%"}}>
+                        <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                       </td>
                       <td>{t.day}</td>
                       <td>{t.task}</td>
@@ -630,7 +586,7 @@ export default class AccTimeSheet extends Component {
               </div>
             </div>
           </div>
-          {/* /employee weeekly timesheet******************* */}
+          {/* /employee weeekly timesheet******* */}
                 <button id="approved" value="Approved" className="btn btn-info" onClick={this.supervisorStatusForTS1} >Approve</button>
                 <button id="disapproved" value="DisApproved" className="btn btn-info ml-3" onClick={this.supervisorStatusForTS2} >DisApprove</button>
             </div>  
@@ -639,19 +595,19 @@ export default class AccTimeSheet extends Component {
       <RubberBand>
         <div id="apprts" style={{ display: "none" }}>
             <h5 style={{ color:"grey", padding: "5px", marginLeft:"2%" }} >APPROVED TIME-SHEET</h5>
-      {/* approved timesheet*************************** */}
+      {/* approved timesheet*********** */}
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      <th>Employee Id</th>
+                      
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                      
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -665,11 +621,11 @@ export default class AccTimeSheet extends Component {
                         <tr>
                           <td>{t.accountantApproved}</td>
                           <td>{t.supervisorApproved}</td>
-                          <td>{t.employeeId}</td>
+                         
                           <td>{t.employeeName}</td>
-                          <td>{t.timeSheetId}</td>
-                          <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                          
+                          <td style={{width:"15%"}}>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>
@@ -691,24 +647,24 @@ export default class AccTimeSheet extends Component {
               </div>
             </div>
           </div>
-          {/* /approved timesheet******************* */}
+          {/* /approved timesheet******* */}
         </div>
           
         <div id="disapprts" style={{ display: "none" }}>
             <h5 style={{color:"grey", padding: "5px", marginLeft:"2%" }}>DISAPPROVED TIME-SHEET</h5>
-         {/* disapproved timesheet*************************** */}
+         {/* disapproved timesheet*********** */}
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      <th>Employee Id</th>
+                      
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                      
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -723,11 +679,11 @@ export default class AccTimeSheet extends Component {
                         <tr>
                           <td>{t.accountantApproved}</td>
                           <td>{t.supervisorApproved}</td>
-                          <td>{t.employeeId}</td>
+                         
                           <td>{t.employeeName}</td>
-                          <td>{t.timeSheetId}</td>
-                          <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                          
+                          <td style={{width:"15%"}}>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>
@@ -749,7 +705,7 @@ export default class AccTimeSheet extends Component {
               </div>
             </div>
           </div>
-          {/* /disapproved timesheet******************* */}
+          {/* /disapproved timesheet******* */}
             </div>  
       </RubberBand>
     </div>

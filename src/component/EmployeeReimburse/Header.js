@@ -274,7 +274,7 @@ export default class Header extends Component {
         employeeId: localStorage.getItem("employeeId"),
         logHours: this.state.logHours,
         task: this.state.task,
-        supervisor_id: 2,
+        supervisor_id: localStorage.getItem("supervisorId"),
         projectName: this.state.projectName,
         date: this.state.week[this.state.count]
       }
@@ -312,7 +312,7 @@ export default class Header extends Component {
         employeeId: localStorage.getItem("employeeId"),
         logHours: this.state.logHours,
         task: this.state.task,
-        supervisor_id: 2,
+        supervisor_id: localStorage.getItem("supervisorId"),
         projectName: this.state.projectName,
         date: this.state.week[this.state.count]
       }
@@ -558,7 +558,7 @@ export default class Header extends Component {
                       <th>Supervisor Status</th>
                       
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                    
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -574,9 +574,9 @@ export default class Header extends Component {
                           <td>{t.supervisorApproved}</td>
                           
                           <td>{t.employeeName}</td>
-                          <td>{t.timeSheetId}</td>
+                         
                           <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>
@@ -634,7 +634,7 @@ export default class Header extends Component {
                           <td>{t.employeeName}</td>
                           <td>{t.timeSheetId}</td>
                           <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>
@@ -687,7 +687,7 @@ export default class Header extends Component {
             <br />
 
             <input
-              type="text"
+              type="number"
               name="foodexpense"
               className="form-control"
               placeholder="Food Expense"
@@ -973,13 +973,13 @@ export default class Header extends Component {
                     <p style={{ fontWeight: "800" }} scope="col">
                       Created Date{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.createdDate}</p>
+                    <p><Moment format="YYYY-MMM-DD HH:mm:ss ">{this.state.viewDetailReim.createdDate}</Moment></p>
                   </div>
                   <div style={{ marginLeft: "95px" }}>
                     <p style={{ fontWeight: "800" }} scope="col">
                       Date of Reimburse{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.dateOfReimburse}</p>
+                    <p><Moment format="YYYY-MMM-DD ">{this.state.viewDetailReim.dateOfReimburse}</Moment></p>
                   </div>
                 </div>
               </div>

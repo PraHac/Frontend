@@ -19,6 +19,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 
+
 export default class AccTimeSheet extends Component {
   constructor(props) {
     super(props);
@@ -394,7 +395,7 @@ export default class AccTimeSheet extends Component {
                         <td>{t.employeeName}</td>
                         
                         <td>
-                          <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                          <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                         </td>
                         <td>{t.day}</td>
                         <td>{t.task}</td>
@@ -454,7 +455,7 @@ export default class AccTimeSheet extends Component {
                       <td>{t.employeeName}</td>
                       
                       <td>
-                        <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                        <Moment format="YYYY/MMM/DD">{t.date}</Moment>
                       </td>
                       <td>{t.day}</td>
                       <td>{t.task}</td>

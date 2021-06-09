@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 import { Button, Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import logo from '../logo1.png'
+import Moment from 'react-moment'
 
 export default class SupervisorDashboard extends Component {
   constructor(props) {
@@ -526,13 +527,13 @@ disApprove = (e,r) =>{
                           <p style={{ fontWeight: "800" }} scope="col">
                             Created Date{" "}
                           </p>
-                          <p>{this.state.supervisorSingleAppR.createdDate}</p>
+                          <p><Moment format="YYYY-MMM-DD HH:mm:ss">{this.state.supervisorSingleAppR.createdDate}</Moment></p>
                         </div>
                         <div style={{ marginLeft: "95px" }}>
                           <p style={{ fontWeight: "800" }} scope="col">
                             Date of Reimburse{" "}
                           </p>
-                          <p>{this.state.supervisorSingleAppR.dateOfReimburse}</p>
+                          <p><Moment format="YYYY-MMM-DD">{this.state.supervisorSingleAppR.dateOfReimburse}</Moment></p>
                         </div>
                       </div>
                     </div>
@@ -691,13 +692,13 @@ disApprove = (e,r) =>{
                           <p style={{ fontWeight: "800" }} scope="col">
                             Created Date{" "}
                           </p>
-                          <p>{this.state.supervisorSingleDisR.createdDate}</p>
+                          <p><Moment format="YYYY-MMM-DD HH:mm:ss">{this.state.supervisorSingleDisR.createdDate}</Moment></p>
                         </div>
                         <div style={{ marginLeft: "95px" }}>
                           <p style={{ fontWeight: "800" }} scope="col">
                             Date of Reimburse{" "}
                           </p>
-                          <p>{this.state.supervisorSingleDisR.dateOfReimburse}</p>
+                          <p><Moment format="YYYY-MMM-DD">{this.state.supervisorSingleAppR.dateOfReimburse}</Moment></p>
                         </div>
                       </div>
                     </div>
@@ -751,8 +752,8 @@ disApprove = (e,r) =>{
                     <div style={{ marginLeft:"80px" }}><p style={{fontWeight:"800"}} scope="col">Accountant status  </p><p>{this.state.actionRequiredSingle.accontantStatus}</p></div></div>
                     
 
-                    <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Created Date </p><p>{this.state.actionRequiredSingle.createdDate}</p></div>
-                    <div style={{ marginLeft:"95px" }}><p style={{fontWeight:"800"}} scope="col">Date of Reimburse  </p><p>{this.state.actionRequiredSingle.dateOfReimburse}</p></div></div>
+                    <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Created Date </p><Moment format="YYYY-MMM-DD HH:mm:ss">{this.state.actionRequiredSingle.createdDate}</Moment></div>
+                    <div style={{ marginLeft:"95px" }}><p style={{fontWeight:"800"}} scope="col">Date of Reimburse  </p><p>{<Moment format="YYYY-MMM-DD">{this.state.actionRequiredSingle.dateOfReimburse}</Moment>}</p></div></div>
                 </div>   
               </div> 
               </DialogContent>
