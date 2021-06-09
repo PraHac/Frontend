@@ -532,8 +532,8 @@ export default class SuperTimeSheet extends Component {
                         <th>Supervisor Status</th>
                         <th>Employee Id</th>
                         <th>Employee Name</th>
-                        <th>TimeSheet Id</th>
-                        <th>Date</th>
+                       
+                        <th width="150">Date</th>
                         <th>Day</th>
                         <th>Task</th>
                         <th>Project Name</th>
@@ -549,9 +549,9 @@ export default class SuperTimeSheet extends Component {
                         <td>{t.supervisorApproved}</td>
                         <td>{t.employeeId}</td>
                         <td>{t.employeeName}</td>
-                        <td>{t.timeSheetId}</td>
+                       
                         <td>
-                          <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                          <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                         </td>
                         <td>{t.day}</td>
                         <td>{t.task}</td>
@@ -590,7 +590,7 @@ export default class SuperTimeSheet extends Component {
                       <th>Supervisor Status</th>
                       <th>Employee Id</th>
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                     
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -609,9 +609,9 @@ export default class SuperTimeSheet extends Component {
                       <td>{t.supervisorApproved}</td>
                       <td>{t.employeeId}</td>
                       <td>{t.employeeName}</td>
-                      <td>{t.timeSheetId}</td>
+                     
                       <td>
-                        <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                        <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                       </td>
                       <td>{t.day}</td>
                       <td>{t.task}</td>
@@ -657,7 +657,7 @@ export default class SuperTimeSheet extends Component {
                       <th>Supervisor Status</th>
                       <th>Employee Id</th>
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+                
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -673,9 +673,9 @@ export default class SuperTimeSheet extends Component {
                           <td>{t.supervisorApproved}</td>
                           <td>{t.employeeId}</td>
                           <td>{t.employeeName}</td>
-                          <td>{t.timeSheetId}</td>
+                         
                           <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>
@@ -714,7 +714,7 @@ export default class SuperTimeSheet extends Component {
                       <th>Supervisor Status</th>
                       <th>Employee Id</th>
                       <th>Employee Name</th>
-                      <th>TimeSheet Id</th>
+
                       <th>Date</th>
                       <th>Day</th>
                       <th>Task</th>
@@ -731,9 +731,9 @@ export default class SuperTimeSheet extends Component {
                           <td>{t.supervisorApproved}</td>
                           <td>{t.employeeId}</td>
                           <td>{t.employeeName}</td>
-                          <td>{t.timeSheetId}</td>
+                         
                           <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
                           </td>
                           <td>{t.day}</td>
                           <td>{t.task}</td>

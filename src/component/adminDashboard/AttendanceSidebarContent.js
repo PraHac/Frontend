@@ -5,9 +5,11 @@ import './admindashByAdy.css'
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery'
+import Moment from 'react-moment'
 
 export default function AttendanceSidebarContent() {
    
+	
 	useEffect(() => {
         if (localStorage.getItem("adminId") == null) {
             window.location.replace("/") 
@@ -24,6 +26,9 @@ export default function AttendanceSidebarContent() {
 	const [attendenceId,setAttendenceId]=useState(0);
 	const myObject=({});
 
+	//const timestamp =viewAttend.map(atteandance=>atteandance.loginTime);
+	
+
 	// const [state, setstate] = useState({});
 
 	useEffect(() => {
@@ -39,18 +44,21 @@ export default function AttendanceSidebarContent() {
 			.catch(err => console.log(err))
 	}, [])
 
-	useEffect(() => {
-console.log(Test);
-		setTimeout(function () {
+	
+	
+
+// 	useEffect(() => {
+// console.log(Test);
+// 		setTimeout(function () {
 			
-			$('#example').dataTable({
+// 			$('#example').dataTable({
 				
 	
-			});
+// 			});
 
 
-		}, 1000);
-	}, [])
+// 		}, 1000);
+// 	}, [])
 
 	
 	
@@ -90,7 +98,6 @@ console.log(Test);
 <table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}>
 <thead>
 					<tr>
-					<th scope="col">Attendence Id</th>
 					<th scope="col">Employee Id</th>
 					<th scope="col">Name</th>
 					<th scope="col">Status</th>
@@ -102,13 +109,15 @@ console.log(Test);
 		{viewAttend.map(attend => (
 							<tbody>
 								<tr>
-								<td>{attend.attendenceId}</td>
 								<td>{attend.employeeId}</td>
 								<td>{attend.employeeName}</td>
 								<td>{attend.status}</td>
 								<td>{attend.logHours}</td>
-								<td>{attend.loginTime}</td>
-								<td>{attend.logoutTime}</td>
+								<Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.loginTime}</Moment>
+								{/* <td>{new Date(attend.loginTime).toLocaleString('en-US', { hour12: false })}</td> */}
+								 <td><Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.logoutTime}</Moment></td> 
+								
+                        
 								</tr>
 							</tbody>
 							))
