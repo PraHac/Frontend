@@ -771,8 +771,7 @@ export default class Header extends Component {
                 <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
                   <thead>
                       <tr>
-                        <th>Reimbursement ID</th>
-                        <th>Employee ID</th>
+                        <th>Employee Name</th>
                         <th>Supervisor Status</th>
                         <th>Action</th>
                       </tr>
@@ -782,8 +781,7 @@ export default class Header extends Component {
                       return (
                         <>
                         <tr>  
-                          <td>{r.reimburceId}</td>
-                          <td>{r.employeeId}</td>
+                         <td>{r.employeeName}</td>
                           <td>{r.supervisorStatus}</td>
                           <td>
                             <div
@@ -854,22 +852,22 @@ export default class Header extends Component {
                   }}
                 >
                   <div>
-                    <p style={{ fontWeight: "800" }} scope="col">
-                      Reimburse_Id{" "}
+                  <p style={{ fontWeight: "800" }} scope="col">
+                      Employee Email{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.reimburceId}</p>
+                    <p>{this.state.viewDetailReim.empEmail}</p>
                   </div>
                   <div>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Employee Id{" "}
+                      Supervisor Name{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.employeeId}</p>
+                    <p>{this.state.viewDetailReim.supName}</p>
                   </div>
                   <div>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Supervisor Id{" "}
+                      Supervisor Email{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.supervisorId}</p>
+                    <p>{this.state.viewDetailReim.supEmail}</p>
                   </div>
                 </div>
                 <div

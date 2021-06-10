@@ -35,19 +35,6 @@ const logout = (e) => {
 
 const menu = (
   <Menu>
-    <Menu.Item key="1">
-      <a><Link  style={{textDecoration:'none',color:'black'}} to="/empDisplay">Manage Employee</Link></a>
-    </Menu.Item>
-    <Menu.Item key="2">
-      <a><Link style={{textDecoration:'none',color:'black'}} to="/attendance">Manage Attendance</Link></a>
-    </Menu.Item>
-    <Menu.Item key="3">
-      <a><Link  style={{textDecoration:'none',color:'black'}} to="/dptManage">Manage Department</Link></a>
-    </Menu.Item>
-    <Menu.Item key="4">
-      <a><Link style={{textDecoration:'none',color:'black'}}  to="/viewRe">View Reimursement</Link></a>
-    </Menu.Item>
-    <Menu.Divider />
     <Menu.Item key="5">
       <a><Link style={{textDecoration:'none',color:'black'}} to="/adminDashboard">Dashboard</Link></a>
     </Menu.Item>

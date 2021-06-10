@@ -98,8 +98,8 @@ export default function AttendanceSidebarContent() {
 <table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}>
 <thead>
 					<tr>
-					<th scope="col">Employee Id</th>
-					<th scope="col">Name</th>
+					<th scope="col">Employee Name</th>
+					<th scope="col">Employee Email</th>
 					<th scope="col">Status</th>
 					<th scope="col">LogHours</th>
 					<th scope="col">Login Time</th>
@@ -109,8 +109,8 @@ export default function AttendanceSidebarContent() {
 		{viewAttend.map(attend => (
 							<tbody>
 								<tr>
-								<td>{attend.employeeId}</td>
 								<td>{attend.employeeName}</td>
+								<td>{attend.email}</td>
 								<td>{attend.status}</td>
 								<td>{attend.logHours}</td>
 								<Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.loginTime}</Moment>

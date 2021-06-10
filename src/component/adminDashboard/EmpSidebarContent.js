@@ -56,11 +56,13 @@ export default function EmpSidebarContent() {
       })
       .then((res) => {
         console.log(res);
-        notification.open({
-          message: "supervisor Added ",
+        notification['success']({
+          description: "supervisor Added ",
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => { notification['error']({
+        description: "Supervisor Not Added ",
+      })})
   };
 
   const createEmployee = (e) => {
@@ -80,12 +82,11 @@ export default function EmpSidebarContent() {
         ],
       })
       .then((res) => {
-        notification.open({
-          message: "Employee Added ",
-        });
+       
         console.log(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>  { console.log(err)}
+      )
   };
 
   const createAccountant = (e) => {
@@ -98,13 +99,15 @@ export default function EmpSidebarContent() {
         mobile: accountantContact,
       })
       .then((res) => {
-        notification.open({
-          message: "Accountant Added",
+        notification['success']({
+          description: "Accountant Added ",
         });
 
         console.log(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>{ notification['success']({
+        description: "Accountant Not Added ",
+      })});
   };
 
   const addAccountant = (e) => {
