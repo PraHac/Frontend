@@ -43,7 +43,10 @@ export default class Header extends Component {
       date: "",
       rowNo: ["Monday", "Tuesday", "Wednesday", "Thrusday", "Friday"],
       timesheetDetail: [],
+      testing: [{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" }],
+      timesheetDetails: { logHours:0, task:"" },
       task: "",
+      holiday:"no",
       projectName: "",
       logHours: 0,
       apprTimeSheet: [],
@@ -268,18 +271,31 @@ export default class Header extends Component {
 
   savetimeSheet(event) {
     event.preventDefault();
-    // console.log(this.state.timesheetDetail);
-    var d = 
-      {
-        employeeId: localStorage.getItem("employeeId"),
-        logHours: this.state.logHours,
-        task: this.state.task,
-        supervisor_id: 2,
-        projectName: this.state.projectName,
-        date: this.state.week[this.state.count]
+    var d;
+    if (this.state.task != "") {
+      if (this.state.holiday == "no") {
+        d = {
+          employeeId: localStorage.getItem("employeeId"),
+          logHours: this.state.logHours,
+          task: this.state.task,
+          supervisor_id: localStorage.getItem("supervisorId"),
+          projectName: this.state.projectName,
+          date: this.state.week[this.state.count],
+          holiday: this.state.holiday
+        }
+      } else {
+        d = {
+          employeeId: localStorage.getItem("employeeId"),
+          logHours: 0,
+          task: "Holiday",
+          supervisor_id: localStorage.getItem("supervisorId"),
+          projectName: "Holiday",
+          date: this.state.week[this.state.count],
+          holiday: this.state.holiday
+        }
       }
-    console.log(d);  
-    // console.log(this.state.week + " ");
+      console.log(d);
+    }
     this.state.timesheetDetail.push(d);  
     TimeSheetService.saveTimeSheet(this.state.timesheetDetail).then((response) => {
       console.log(response);
@@ -296,29 +312,49 @@ export default class Header extends Component {
       this.state.week.push(day);
     }
     document.getElementById("dateTaker").innerHTML = this.state.week[0]
+    
+    // var t = 7;
+    // for (let i = 1; i <= 5; i++){
+    //   if (t == 7) {
+    //     let first = curr.getDate() - curr.getDay() + t;
+    //   }
+    //   let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
+    //   console.log(day);
+    //   t++;
+    // }
+    
   }
 
   tsChange(e, i) {
     e.preventDefault();
-    // if (this.state.count == 0) {
-    //   var t = 0;
-    // } else {
-    //   var t = 1;
-    // }
-    
-    // this.setState({count: this.state.count + t})
     if (this.state.task != "") {
-      const d = {
-        employeeId: localStorage.getItem("employeeId"),
-        logHours: this.state.logHours,
-        task: this.state.task,
-        supervisor_id: 2,
-        projectName: this.state.projectName,
-        date: this.state.week[this.state.count]
+      var d;
+      if (this.state.holiday == "no") {
+        d = {
+          employeeId: localStorage.getItem("employeeId"),
+          logHours: this.state.logHours,
+          task: this.state.task,
+          supervisor_id: localStorage.getItem("supervisorId"),
+          projectName: this.state.projectName,
+          date: this.state.week[this.state.count],
+          holiday: this.state.holiday
+        }
+      } else {
+         d = {
+          employeeId: localStorage.getItem("employeeId"),
+          logHours: 0,
+          task: "Holiday",
+          supervisor_id: localStorage.getItem("supervisorId"),
+          projectName: "Holiday",
+          date: this.state.week[this.state.count],
+          holiday: this.state.holiday
+        }
       }
-    console.log(d);
+      
+      console.log(d);
       this.state.timesheetDetail.push(d);
-       this.setState({count: this.state.count + 1}) 
+      this.setState({ count: this.state.count + 1 })
+      
     }
   }
 
@@ -399,31 +435,31 @@ export default class Header extends Component {
                         <ul className="nav nav-treeview">
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="fas fa-calculator nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.addReimburs}>Add Reimbursement</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="fas fa-calculator nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.viewReimburs}>View Reimbursement</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet}>Add TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet1}>Approved TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
-                            <i className="far fa-circle nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
+                            <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet2}>Disapproved TimeSheet</p>
                           </a>
                         </li>
@@ -441,11 +477,10 @@ export default class Header extends Component {
         <div id="timesheet" style={{ display: "none", marginTop:"6%"}}>
             <RubberBand>
             <div style={{display:"flex",justifyContent:"space-evenly", padding: "1%", marginLeft: "10%"  }} >
-                {/* <h6 style={{color:"gray"}}>SUBMIT WEEKLY TIME-SHEET</h6>  */}
               {/* <div>   */}
               <input
                   style={{
-                    border: "none",
+                        border: "none",
                         outline: "none",
                         borderBottom: "1px solid lightslategrey",
                         background: "none",
@@ -477,7 +512,6 @@ export default class Header extends Component {
                 
               {this.state.rowNo.map((i) => (
                 <>
-                 
                  <tr>
                   <td>
                      <h6 className="mt-2">{i}</h6>
@@ -495,22 +529,6 @@ export default class Header extends Component {
                   /><br />
                   <span id="err"></span>      
                  </td>
-                 {/* {
-                    i == "Monday" ?
-                    <td>
-                    <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({projectName: e.target.value})}>
-                      <option selected>Select Project</option>
-                      <option value="RC Builder">RC Builder</option>
-                      <option value="RC 360">RC 360</option>
-                      <option value="Reimbursement">Reimbursement</option>
-                      <option value="Video Conferencing">Video Conferencing</option>    
-                    </select>       
-                  </td>
-                      :
-                  <td>
-                          <input style={inputStyle} placeholder="project name" value={this.state.projectName} />
-                  </td>
-                  } */}
                  <td>
                     <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ task: e.target.value })}>
                       <option selected>Select Task</option>
@@ -518,18 +536,14 @@ export default class Header extends Component {
                       <option value="Requirment gathering">Requirment gathering</option>
                       <option value="R & D">R & D</option>
                     </select>
-                 </td>
-                 {/* <td>
-                 <input
-                   style={inputStyle}
-                     placeholder="Enter Date(YYYY-MM-DD)"
-                     type="date"
-                     name="date"
-                     onChange={this.timesheetHandeler}
-                    value={this.state.week[0]}    
-                     required
-                   />
-                  </td> */}
+                  </td>
+                  <td>
+                    <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ holiday: e.target.value })}>
+                      <option selected>Holiday</option>
+                      <option value="no">no</option>
+                      <option value="yes">yes</option>
+                    </select> 
+                  </td>
                 </tr>
                 </>
                ))} 
@@ -556,7 +570,6 @@ export default class Header extends Component {
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      
                       <th>Employee Name</th>
                       <th>TimeSheet Id</th>
                       <th>Date</th>
@@ -997,7 +1010,7 @@ export default class Header extends Component {
             marginLeft:"23%",
           }}
         >
-           {/* disapproved timesheet*************************** */}
+           
            <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
@@ -1028,7 +1041,7 @@ export default class Header extends Component {
               </div>
             </div>
           </div>
-          {/* /disapproved timesheet******************* */}
+          
         </div>
       </div>
     );
