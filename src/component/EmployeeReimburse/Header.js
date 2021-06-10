@@ -743,11 +743,11 @@ export default class Header extends Component {
 
             <div className="form-group">
               <label for="id">
-                Enter your Date Of Reimburse:(Format YYYY-MM-DD)
+                Enter Date Of Reimburse
               </label>
               <input
                 placeholder="Date of Reimbursement"
-                type="text"
+                type="date"
                 name="dateOfReimburse"
                 className="form-control"
                 onChange={this.myChangeHandler}
