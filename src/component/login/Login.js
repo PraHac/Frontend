@@ -201,7 +201,7 @@ function Login() {
             <button onClick={adminHandle} type="submit" value="login" className="btn btn-outline-dark ml-5" id="adminlogin" >LOGIN</button>
               </form>
             
-          <div id="admin" onMouseOver={MouseHover} >
+          <div id="admin" onClick={MouseHover} >
             <p>Are you an</p>
             <h3 >Employee?</h3>  
           </div>
