@@ -354,7 +354,7 @@ class PaySalarySidebarContent extends React.Component{
           </div> */}
   
   
-<div class="col-lg-12" style={{marginTop:'5%',marginBottom:'15%',marginLeft:'5%',width:'80vw'}}>
+<div class="col-lg-12" style={{marginTop:'5%',marginBottom:'15%',marginLeft:'1.5%',width:'80vw'}}>
       <div class="card mb-4">
       <div class="table-responsive p-3">
   <table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}>
@@ -471,9 +471,8 @@ class PaySalarySidebarContent extends React.Component{
             <table class="table table-striped table-bordered" style={{marginBottom:"20px"}}> 
                           <thead>
                           <tr>
-                            <th>Reimbursement Id:</th>
-                            <th>Employee Id: </th>
-                            <th>Supervisor status</th>
+                              <th>Employee Name </th>
+                              <th>Supervisor Status</th>
                             <th></th>
                            </tr>
                           </thead>
@@ -485,9 +484,8 @@ class PaySalarySidebarContent extends React.Component{
                    
                           <tbody>
                           <tr>
-                            <td>{r.reimburceId}</td>
-                            <td>{r.employeeId}</td>
-                            <td>{r.supervisorStatus}</td>
+                             <td>{r.employeeName}</td>
+                              <td>{r.supervisorStatus}</td>
                             <td><div onClick={(e) => this.approvedBySup(e,r)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
                           </tr>
                           </tbody>
@@ -512,9 +510,8 @@ class PaySalarySidebarContent extends React.Component{
             <table class="table table-striped table-bordered" style={{marginBottom:"20px"}}> 
                           <thead>
                           <tr>
-                            <th>Reimbursement Id:</th>
-                            <th>Employee Id: </th>
-                            <th>Supervisor status</th>
+                              <th>Employee Name</th>
+                              <th>Supervisor Status</th>
                             <th></th>
                            </tr>
                           </thead>
@@ -524,9 +521,8 @@ class PaySalarySidebarContent extends React.Component{
                     <>
                       <tbody>
                           <tr>
-                            <td>{r.reimburceId}</td>
-                            <td>{r.employeeId}</td>
-                            <td>{r.supervisorStatus}</td>
+                              <td>{r.employeeName}</td>
+                              <td>{r.supervisorStatus}</td>
                             <td><div onClick={(e) => this.approvedBySup(e,r)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
                           </tr>
                           </tbody>
@@ -552,9 +548,8 @@ class PaySalarySidebarContent extends React.Component{
             <table class="table table-striped table-bordered" style={{marginBottom:"20px"}}> 
                           <thead>
                           <tr>
-                            <th>Reimbursement Id:</th>
-                            <th>Employee Id: </th>
-                            <th>Supervisor status</th>
+                             <th>Employee Name </th>
+                              <th>Accountant Status</th>
                             <th></th>
                            </tr>
                           </thead>
@@ -576,9 +571,8 @@ class PaySalarySidebarContent extends React.Component{
                           <tbody>
                       
                           <tr>
-                            <td>{r.reimburceId}</td>
-                            <td>{r.employeeId}</td>
-                            <td>{r.supervisorStatus}</td>
+                              <td>{r.employeeName}</td>
+                               <td>{r.accontantStatus}</td>
                             <td><div onClick={(e) => this.approvedByAcc(e,r)}id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
                           </tr>
                           </tbody>
@@ -605,9 +599,8 @@ class PaySalarySidebarContent extends React.Component{
             <table class="table table-striped table-bordered" style={{marginBottom:"20px"}}> 
                           <thead>
                           <tr>
-                            <th>Reimbursement Id:</th>
-                            <th>Employee Id: </th>
-                            <th>Supervisor status</th>
+                              <th>Employee Name</th>
+                              <th>Accountant Status</th>
                             <th></th>
                            </tr>
                           </thead>
@@ -617,9 +610,8 @@ class PaySalarySidebarContent extends React.Component{
                     <>
                       <tbody> 
                       <tr>
-                        <td>{r.reimburceId}</td>
-                        <td>{r.employeeId}</td>
-                        <td>{r.supervisorStatus}</td>
+                          <td>{r.employeeName}</td>
+                          <td>{r.accontantStatus}</td>
                         <td><div onClick={(e) => this.approvedByAcc(e,r)}id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
                       </tr>
                       </tbody>
@@ -645,9 +637,9 @@ class PaySalarySidebarContent extends React.Component{
             <table class="table table-striped table-bordered" style={{marginBottom:"20px"}}> 
                           <thead>
                           <tr>
-                            <th>Reimbursement Id:</th>
-                            <th>Employee Id: </th>
-                            <th>Supervisor status</th>
+                              <th>Employee Name </th>
+                              <th>Supervisor Status</th>
+                              <th>Accountant Status</th>
                             <th></th>
                            </tr>
                           </thead>
@@ -658,9 +650,9 @@ class PaySalarySidebarContent extends React.Component{
                       ? (<>
                           <tbody> 
                       <tr>
-                        <td>{r.reimburceId}</td>
-                        <td>{r.employeeId}</td>
-                        <td>{r.supervisorStatus}</td>
+                          <td>{r.employeeName}</td>
+                          <td>{r.supervisorStatus}</td>
+                          <td>{r.accontantStatus}</td>
                         <td><div onClick={(e) => this.approvedByAcc(e,r)}id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
                       </tr>
                       </tbody>
@@ -679,14 +671,16 @@ class PaySalarySidebarContent extends React.Component{
                       //     margin: "34px"
                       //   }}
                       // >
+                      <>
+                      <h4 style={{color:'grey',fontWeight:'600',margin:'10px'}}>Months Reimbursement Report</h4>
                       <tbody> 
                       <tr>
-                        <td>{r.reimburceId}</td>
-                        <td>{r.employeeId}</td>
-                        <td>{r.supervisorStatus}</td>
-                        <td><div onClick={(e) => this.approvedByAcc(e,r)}id="Rbutton" style={{ cursor: "pointer", textAlign: "center", padding: "9px", backgroundColor: "#22b1ed", border: "none", color: "white"}}>view details</div></td>
+                           <td>{r.totalFoodExpenses}</td>
+                          <td>{r.totalTravelExpenses}</td>
+                          <td>{r.totalOtherExpenses}</td>
                       </tr>
                       </tbody>
+                      </>
                       //   <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "tomato",color:"white", padding: "9px" }}><p style={{ fontWeight: "800" }}>Total expenses--</p></div>
                       //   <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", padding: "9px" }}><p style={{ fontWeight: "800" }}>Total food expenses:   </p><p>{r.totalFoodExpenses}</p></div>
                       //   <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Total travel expenses:   </p><p>{r.totalTravelExpenses}</p></div>
@@ -736,22 +730,22 @@ class PaySalarySidebarContent extends React.Component{
                           }}
                         >
                           <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Reimburse_Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleAppR.reimburceId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Employee Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleAppR.employeeId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Supervisor Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleAppR.supervisorId}</p>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                                Employee Email{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleAppR.empEmail}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Name{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleAppR.supName}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Email{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleAppR.supEmail}</p>
                           </div>
                         </div>
                         <div
@@ -904,22 +898,22 @@ class PaySalarySidebarContent extends React.Component{
                           }}
                         >
                           <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Reimburse_Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleDisR.reimburceId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Employee Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleDisR.employeeId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Supervisor Id{" "}
-                            </p>
-                            <p>{this.state.supervisorSingleDisR.supervisorId}</p>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                                Employee Email{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleDisR.empEmail}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Name{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleDisR.supName}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Email{" "}
+                              </p>
+                              <p>{this.state.supervisorSingleDisR.supEmail}</p>
                           </div>
                         </div>
                         <div
@@ -1072,22 +1066,22 @@ class PaySalarySidebarContent extends React.Component{
                           }}
                         >
                           <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Reimburse_Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleAppR.reimburceId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Employee Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleAppR.employeeId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Supervisor Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleAppR.supervisorId}</p>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                                Employee Email{" "}
+                              </p>
+                              <p>{this.state.accountantSingleAppR.empEmail}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Name{" "}
+                              </p>
+                              <p>{this.state.accountantSingleAppR.supName}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Email{" "}
+                              </p>
+                              <p>{this.state.accountantSingleAppR.supEmail}</p>
                           </div>
                         </div>
                         <div
@@ -1240,22 +1234,22 @@ class PaySalarySidebarContent extends React.Component{
                           }}
                         >
                           <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Reimburse_Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleDisR.reimburceId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Employee Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleDisR.employeeId}</p>
-                          </div>
-                          <div>
-                            <p style={{ fontWeight: "800" }} scope="col">
-                              Supervisor Id{" "}
-                            </p>
-                            <p>{this.state.accountantSingleDisR.supervisorId}</p>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                                Employee Email{" "}
+                              </p>
+                              <p>{this.state.accountantSingleDisR.empEmail}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Name{" "}
+                              </p>
+                              <p>{this.state.accountantSingleDisR.supName}</p>
+                            </div>
+                            <div>
+                              <p style={{ fontWeight: "800" }} scope="col">
+                                Supervisor Email{" "}
+                              </p>
+                              <p>{this.state.accountantSingleDisR.supEmail}</p>
                           </div>
                         </div>
                         <div
@@ -1409,21 +1403,21 @@ class PaySalarySidebarContent extends React.Component{
                         >
                           <div>
                             <p style={{ fontWeight: "800" }} scope="col">
-                              Reimburse_Id{" "}
+                              Employee Email{" "}
                             </p>
-                            <p>{this.state.singleMonthReim.reimburceId}</p>
+                            <p>{this.state.singleMonthReim.empEmail}</p>
                           </div>
                           <div>
                             <p style={{ fontWeight: "800" }} scope="col">
-                              Employee Id{" "}
+                             Supervisor Name{" "}
                             </p>
-                            <p>{this.state.singleMonthReim.employeeId}</p>
+                            <p>{this.state.singleMonthReim.supName}</p>
                           </div>
                           <div>
                             <p style={{ fontWeight: "800" }} scope="col">
-                              Supervisor Id{" "}
+                              Supervisor Email{" "}
                             </p>
-                            <p>{this.state.singleMonthReim.supervisorId}</p>
+                            <p>{this.state.singleMonthReim.supEmail}</p>
                           </div>
                         </div>
                         <div

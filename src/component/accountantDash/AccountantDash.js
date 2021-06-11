@@ -336,8 +336,8 @@ class AccountantDash extends React.Component {
                     <thead>
                       <tr>
                        
-                        <th>Employee Id</th>
-                        <th>Name</th>
+                       <th>Employee Name</th>
+                        <th>Employee Email</th>
                         <th>Status</th>
                         <th>LogHours</th>
                         <th>Login Time</th>
@@ -348,8 +348,8 @@ class AccountantDash extends React.Component {
                       <tbody>
                         <tr>
                          
-                          <td>{a.employeeId}</td>
                           <td>{a.employeeName}</td>
+                          <td>{a.email}</td>
                           <td>{a.status}</td>
                           <td>{a.logHours}</td>
                           <td> <Moment format="YYYY-MMM-DD HH:mm:ss">{a.loginTime}</Moment></td>
@@ -518,7 +518,7 @@ class AccountantDash extends React.Component {
                         borderRadius: "50%",
                       }}
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -529,7 +529,7 @@ class AccountantDash extends React.Component {
                       >
                         <p style={{ fontWeight: "800" }}>Reimbursement Id: </p>
                         <p>{r.reimburceId}</p>
-                      </div>
+                      </div> */}
                       <div
                         style={{
                           display: "flex",
@@ -540,8 +540,8 @@ class AccountantDash extends React.Component {
                           marginTop: "4px",
                         }}
                       >
-                        <p style={{ fontWeight: "800" }}>Employee Id: </p>
-                        <p>{r.employeeId}</p>
+                        <p style={{ fontWeight: "800" }}>Employee Name </p>
+                        <p>{r.employeeName}</p>
                       </div>
                       <div
                         style={{
@@ -627,7 +627,7 @@ class AccountantDash extends React.Component {
                         borderRadius: "50%",
                       }}
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -638,7 +638,7 @@ class AccountantDash extends React.Component {
                       >
                         <p style={{ fontWeight: "800" }}>Reimbursement Id: </p>
                         <p>{r.reimburceId}</p>
-                      </div>
+                      </div> */}
                       <div
                         style={{
                           display: "flex",
@@ -649,8 +649,8 @@ class AccountantDash extends React.Component {
                           marginTop: "4px",
                         }}
                       >
-                        <p style={{ fontWeight: "800" }}>Employee Id: </p>
-                        <p>{r.employeeId}</p>
+                        <p style={{ fontWeight: "800" }}>Employee Name </p>
+                        <p>{r.employeeName}</p>
                       </div>
                       <div
                         style={{
@@ -734,7 +734,7 @@ class AccountantDash extends React.Component {
                         borderRadius: "50%",
                       }}
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -745,7 +745,7 @@ class AccountantDash extends React.Component {
                       >
                         <p style={{ fontWeight: "800" }}>Reimbursement Id: </p>
                         <p>{r.reimburceId}</p>
-                      </div>
+                      </div> */}
                       <div
                         style={{
                           display: "flex",
@@ -756,8 +756,8 @@ class AccountantDash extends React.Component {
                           marginTop: "4px",
                         }}
                       >
-                        <p style={{ fontWeight: "800" }}>Employee Id: </p>
-                        <p>{r.employeeId}</p>
+                        <p style={{ fontWeight: "800" }}>Employee Name </p>
+                        <p>{r.employeeName}</p>
                       </div>
                       <div
                         style={{
@@ -846,16 +846,22 @@ class AccountantDash extends React.Component {
                 >
                  
                   <div>
-                    <p style={{ fontWeight: "800" }} scope="col">
-                      Employee Id{" "}
-                    </p>
-                    <p>{this.state.accountantSingleAppR.employeeId}</p>
-                  </div>
-                  <div>
-                    <p style={{ fontWeight: "800" }} scope="col">
-                      Supervisor Id{" "}
-                    </p>
-                    <p>{this.state.accountantSingleAppR.supervisorId}</p>
+                  <p style={{ fontWeight: "800" }} scope="col">
+                            Employee Email{" "}
+                          </p>
+                          <p>{this.state.accountantSingleAppR.empEmail}</p>
+                        </div>
+                        <div>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                            Supervisor Name{" "}
+                          </p>
+                          <p>{this.state.accountantSingleAppR.supName}</p>
+                        </div>
+                        <div>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                            Supervisor Email{" "}
+                          </p>
+                          <p>{this.state.accountantSingleAppR.supEmail}</p>
                   </div>
                 </div>
                 <div
@@ -1015,16 +1021,22 @@ class AccountantDash extends React.Component {
                 >
                  
                   <div>
-                    <p style={{ fontWeight: "800" }} scope="col">
-                      Employee Id{" "}
-                    </p>
-                    <p>{this.state.accountantSingleDisR.employeeId}</p>
-                  </div>
-                  <div>
-                    <p style={{ fontWeight: "800" }} scope="col">
-                      Supervisor Id{" "}
-                    </p>
-                    <p>{this.state.accountantSingleDisR.supervisorId}</p>
+                  <p style={{ fontWeight: "800" }} scope="col">
+                            Employee Email{" "}
+                          </p>
+                          <p>{this.state.accountantSingleDisR.empEmail}</p>
+                        </div>
+                        <div>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                            Supervisor Name{" "}
+                          </p>
+                          <p>{this.state.accountantSingleDisR.supName}</p>
+                        </div>
+                        <div>
+                          <p style={{ fontWeight: "800" }} scope="col">
+                            Supervisor Email{" "}
+                          </p>
+                          <p>{this.state.accountantSingleDisR.supEmail}</p>
                   </div>
                 </div>
                 <div
@@ -1181,9 +1193,15 @@ class AccountantDash extends React.Component {
                   
                   <div style={{ marginLeft: "13px" }}>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Employee Id{" "}
+                    Employee Email{" "}
                     </p>
-                    <p>{this.state.actionRequiredSingle.employeeId}</p>
+                    <p>{this.state.actionRequiredSingle.empEmail}</p>
+                  </div>
+                  <div style={{ marginLeft: "93px" }}>
+                    <p style={{ fontWeight: "800" }} scope="col">
+                    Supervisor Email{" "}
+                    </p>
+                    <p>{this.state.actionRequiredSingle.supEmail}</p>
                   </div>
                 </div>
                 <div
@@ -1281,9 +1299,9 @@ class AccountantDash extends React.Component {
                   </div>
                   <div style={{ marginLeft: "64px" }}>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Supervisor Id{" "}
+                      Supervisor Name{" "}
                     </p>
-                    <p>{this.state.actionRequiredSingle.supervisorId}</p>
+                    <p>{this.state.actionRequiredSingle.supName}</p>
                   </div>
                 </div>
                 <div

@@ -300,9 +300,8 @@ disApprove = (e,r) =>{
                         borderRadius:"50%"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Reimbursement Id:   </p><p>{r.reimburceId}</p></div>
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Employee Id:   </p><p>{r.employeeId}</p></div>
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Supervisor status:   </p><p>{r.supervisorStatus}</p></div>
+                       <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Employee Name   </p><p>{r.employeeName}</p></div>
+                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Supervisor Status</p><p>{r.supervisorStatus}</p></div>
                       <div onClick={(e) => this.approvedBySup(e, r)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", borderRadius: "11%", padding: "9px", backgroundColor: "#ffbe2b", marginTop: "4px", border: "none", color: "black" }}>view details</div>
                     </div>
                   </>
@@ -331,9 +330,8 @@ disApprove = (e,r) =>{
                         borderRadius:"50%"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Reimbursement Id:   </p><p>{r.reimburceId}</p></div>
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Employee Id:   </p><p>{r.employeeId}</p></div>
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Supervisor status:   </p><p>{r.supervisorStatus}</p></div>
+                       <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Employee Name   </p><p>{r.employeeName}</p></div>
+                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Supervisor Status</p><p>{r.supervisorStatus}</p></div>
                       <div onClick={(e) => this.disapprovedBySup(e, r)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", borderRadius: "11%", padding: "9px", backgroundColor: "#ffbe2b", marginTop: "4px", border: "none", color: "black" }}>view details</div>
                     </div>
                   </>
@@ -362,8 +360,7 @@ disApprove = (e,r) =>{
                         borderRadius:"50%"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Reimbursement Id:   </p><p>{r.reimburceId}</p></div>
-                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Employee Id:   </p><p>{r.employeeId}</p></div>
+                      <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px" }}><p style={{ fontWeight: "800" }}>Employee Name   </p><p>{r.employeeName}</p></div>
                       <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: "white", borderRadius: "11%", padding: "9px", marginTop: "4px" }}><p style={{ fontWeight: "800" }}>Supervisor status:   </p><p>{r.supervisorStatus}</p></div>
                       <div onClick={(e) => this.actionRequiredforR(e, r)} id="Rbutton" style={{ cursor: "pointer", textAlign: "center", borderRadius: "11%", padding: "9px", backgroundColor: "#ffbe2b", marginTop: "4px", border: "none", color: "black" }}>view details</div>
                     </div>
@@ -408,22 +405,22 @@ disApprove = (e,r) =>{
                         }}
                       >
                         <div>
-                          <p style={{ fontWeight: "800" }} scope="col">
-                            Reimburse_Id{" "}
+                        <p style={{ fontWeight: "800" }} scope="col">
+                            Employee Email{" "}
                           </p>
-                          <p>{this.state.supervisorSingleAppR.reimburceId}</p>
+                          <p>{this.state.supervisorSingleAppR.empEmail}</p>
                         </div>
                         <div>
                           <p style={{ fontWeight: "800" }} scope="col">
-                            Employee Id{" "}
+                            Supervisor Name{" "}
                           </p>
-                          <p>{this.state.supervisorSingleAppR.employeeId}</p>
+                          <p>{this.state.supervisorSingleAppR.supName}</p>
                         </div>
                         <div>
                           <p style={{ fontWeight: "800" }} scope="col">
-                            Supervisor Id{" "}
+                            Supervisor Email{" "}
                           </p>
-                          <p>{this.state.supervisorSingleAppR.supervisorId}</p>
+                          <p>{this.state.supervisorSingleAppR.supEmail}</p>
                         </div>
                       </div>
                       <div
@@ -573,22 +570,22 @@ disApprove = (e,r) =>{
                         }}
                       >
                         <div>
-                          <p style={{ fontWeight: "800" }} scope="col">
-                            Reimburse_Id{" "}
+                        <p style={{ fontWeight: "800" }} scope="col">
+                            Employee Email{" "}
                           </p>
-                          <p>{this.state.supervisorSingleDisR.reimburceId}</p>
+                          <p>{this.state.supervisorSingleDisR.empEmail}</p>
                         </div>
                         <div>
                           <p style={{ fontWeight: "800" }} scope="col">
-                            Employee Id{" "}
+                            Supervisor Name{" "}
                           </p>
-                          <p>{this.state.supervisorSingleDisR.employeeId}</p>
+                          <p>{this.state.supervisorSingleDisR.supName}</p>
                         </div>
                         <div>
                           <p style={{ fontWeight: "800" }} scope="col">
-                            Supervisor Id{" "}
+                            Supervisor Email{" "}
                           </p>
-                          <p>{this.state.supervisorSingleDisR.supervisorId}</p>
+                          <p>{this.state.supervisorSingleDisR.supEmail}</p>
                         </div>
                       </div>
                       <div
@@ -723,9 +720,9 @@ disApprove = (e,r) =>{
                       backgroundColor: "white",
                       width: "550px",
                     }}>           
-                <div className="card-body" style={{borderBottom:"9px solid gray"}}>
-                    <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Reimbursement Id  </p><p>{this.state.actionRequiredSingle.reimburceId}</p></div>
-                    <div style={{ marginLeft:"76px" }}><p style={{fontWeight:"800"}} scope="col">Employee Id  </p><p>{this.state.actionRequiredSingle.employeeId}</p></div></div>
+                    <div className="card-body" style={{borderBottom:"9px solid gray"}}>
+                    <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Employee Email </p><p>{this.state.actionRequiredSingle.empEmail}</p></div>
+                    <div style={{ marginLeft:"76px" }}><p style={{fontWeight:"800"}} scope="col">Supervisor Name </p><p>{this.state.actionRequiredSingle.supName}</p></div></div>
                     <div style={{display:"flex", justifyContent:"space-between",padding:"6px", border:"1px solid lightgrey"}}><div> <p style={{fontWeight:"800"}} scope="col">Food Expense  </p><p>{this.state.actionRequiredSingle.foodExpense}</p></div>
                     <div><p style={{fontWeight:"800"}} scope="col">Food Bill  </p><img
                         width="150"
@@ -750,8 +747,6 @@ disApprove = (e,r) =>{
                     <div style={{display:"flex", justifyContent:"space-between",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Supervisor status </p><p>{this.state.actionRequiredSingle.supervisorStatus}</p></div><button value="approved" id="approve" onClick={() => this.approve(this.state.actionRequiredSingle)} type="button" class="btn btn-sm btn-dark">Approved</button>{<button type="button" value="disApproved" id="disapprove" onClick={() => this.disApprove(this.state.actionRequiredSingle)} class="btn btn-sm btn-dark">Disapproved</button>}</div>
                     <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Total Expense:  </p><p>{this.state.actionRequiredSingle.totalExpense}</p></div>
                     <div style={{ marginLeft:"80px" }}><p style={{fontWeight:"800"}} scope="col">Accountant status  </p><p>{this.state.actionRequiredSingle.accontantStatus}</p></div></div>
-                    
-
                     <div style={{display:"flex",padding:"6px", border:"1px solid lightgrey"}}><div><p style={{fontWeight:"800"}} scope="col">Created Date </p><Moment format="YYYY-MMM-DD HH:mm:ss">{this.state.actionRequiredSingle.createdDate}</Moment></div>
                     <div style={{ marginLeft:"95px" }}><p style={{fontWeight:"800"}} scope="col">Date of Reimburse  </p><p>{<Moment format="YYYY-MMM-DD">{this.state.actionRequiredSingle.dateOfReimburse}</Moment>}</p></div></div>
                 </div>   
