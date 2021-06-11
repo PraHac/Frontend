@@ -24,12 +24,14 @@ export default function DptManageSideBarContent() {
 		DptManageService.addDepartment(department)
 			.then(res => {
 				console.log(res);
-				notification.open({
+				notification['success']({
 					message: 'Department Added',
 				})		  
 			})
-			.catch(err => {
-				console.log(err);
+			.catch(err => {				
+				notification['error']({
+				message: 'Department Not Added',
+			})		  
 		})
 		console.log(dptName);
 	}
@@ -56,12 +58,15 @@ export default function DptManageSideBarContent() {
 		setDptName("");
 		DptManageService.updateDepartment(dept).then(res => {
 			console.log("success")
-			notification.open({
+			notification['success']({
 				message: 'Department Updated',
-			})
+			})		  
 		}
 		)
-			.catch(err => console.log(err));
+			.catch(err => 	
+				notification['error']({
+				message: 'Department Not Updated',
+			}));
 	}
 
 //**************************** */ get all department
@@ -71,10 +76,13 @@ export default function DptManageSideBarContent() {
 		DptManageService.deleteDepartment(dptIdToDlt)
 		.then(res =>{ 
 			console.log("success")
-			notification.open({
-				message: 'Department Deleted',
-			})
-		}).catch(err=>console.log(err))
+			notification['success']({
+				message: 'Department Deleted Successfully',
+			})		  
+		}).catch(err=>{console.log(err)
+		notification['error']({
+			message: 'Department Not Deleted Successfully',
+		})})
 	}
 	
     return (

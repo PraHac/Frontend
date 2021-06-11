@@ -5,6 +5,7 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
+import {  notification} from 'antd';
 
 function Login() {
 
@@ -99,8 +100,17 @@ function Login() {
         localStorage.setItem("adminId", res.data.adminId);
         M.toast({ html: "admin logedIn" })
         history.push("/adminDashboard");
+        notification['success']({
+          description:
+            'Admin LogedIn'
+        })
       })
-      .catch(err => alert(err));
+      .catch(err =>{
+        notification['error']({
+          description:
+            'Enter Correct Input'
+        })
+      });
   }
 
   const employeeHandle = (e) => {
