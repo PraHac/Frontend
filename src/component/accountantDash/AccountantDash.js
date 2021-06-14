@@ -9,7 +9,7 @@ import logo from '../logo1.png'
 import Moment from 'react-moment'
 import { Dropdown } from 'antd';
 import { Avatar } from 'antd';
-import profile from './undraw_profile.svg'
+import profile from '../undraw_profile.svg'
 import { DownOutlined } from '@ant-design/icons';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { Menu } from 'antd';
