@@ -10,7 +10,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import logo from '../logo1.png'
 import Moment from 'react-moment'
 import { Avatar } from 'antd';
-import profile from './undraw_profile.svg'
+import profile from '../undraw_profile.svg'
 
 
 const logout = (e) => {

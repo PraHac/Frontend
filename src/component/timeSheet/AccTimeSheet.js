@@ -19,7 +19,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 import { Avatar } from 'antd';
-import profile from './undraw_profile.svg'
+import profile from '../undraw_profile.svg'
 
 const logout = (e) => {
   e.preventDefault();
