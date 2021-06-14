@@ -294,9 +294,9 @@ export default class Header extends Component {
           holiday: this.state.holiday
         }
       }
-      console.log(d);
     }
-    this.state.timesheetDetail.push(d);  
+    this.state.timesheetDetail.push(d);
+  
     TimeSheetService.saveTimeSheet(this.state.timesheetDetail).then((response) => {
       console.log(response);
       this.setState({ timeSheet: response.data });
@@ -350,7 +350,7 @@ export default class Header extends Component {
           holiday: this.state.holiday
         }
       }
-      
+      this.setState({holiday: "no"})
       console.log(d);
       this.state.timesheetDetail.push(d);
       this.setState({ count: this.state.count + 1 })
