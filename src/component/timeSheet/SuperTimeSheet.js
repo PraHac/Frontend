@@ -18,7 +18,15 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
+import { Avatar } from 'antd';
+import profile from './undraw_profile.svg'
 
+
+const logout = (e) => {
+  e.preventDefault();
+  localStorage.removeItem("supervisorId");
+  window.location.replace("/");
+}
 export default class SuperTimeSheet extends Component {
   constructor(props) {
     super(props);
@@ -154,11 +162,11 @@ export default class SuperTimeSheet extends Component {
     });
   }
 
-  logout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("supervisorId");
-    window.location.replace("/");
-  };
+  // logout = (e) => {
+  //   e.preventDefault();
+  //   localStorage.removeItem("supervisorId");
+  //   window.location.replace("/");
+  // };
 
   componentDidMount() {
     this.displayAllTimeSheet();
@@ -390,14 +398,21 @@ export default class SuperTimeSheet extends Component {
                 </SubMenu>
               </Menu>
             </li> */}
-
+{/* 
             <li>
               <Link to="/supervisorDash">
                 <button type="button" style={but} class="btn btn-danger">
                   Dashboard
                 </button>
               </Link>
-            </li>
+            </li> */}
+            <div class="dropdown" style={{left:'85%',position:'fixed',top:'21px'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/supervisorDash">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+          </div>
           </ul>
         </nav>
 

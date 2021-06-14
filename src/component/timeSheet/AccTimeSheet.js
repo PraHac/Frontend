@@ -18,7 +18,14 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
+import { Avatar } from 'antd';
+import profile from './undraw_profile.svg'
 
+const logout = (e) => {
+  e.preventDefault();
+  localStorage.removeItem("accountantId");
+  window.location.replace("/");
+};
 
 export default class AccTimeSheet extends Component {
   constructor(props) {
@@ -342,11 +349,18 @@ export default class AccTimeSheet extends Component {
               </a>
             </li>
             <li>
-              <Link to="/accountantDash">
+              {/* <Link to="/accountantDash">
                 <button type="button" style={but} class="btn btn-danger">
                   Dashboard
                 </button>
-              </Link>
+              </Link> */}
+              <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/accountantDash">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+          </div>
             </li>
           </ul>
         </nav>

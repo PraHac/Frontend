@@ -22,9 +22,11 @@ export default function AttendanceSidebarContent() {
       }
 	const [viewAttend, setViewAttend] = useState([]);
 	const [Test, SetTest] = useState({});
+	const [sNo, SetNo] = useState(0);
 	const data=useState([])
 	const [attendenceId,setAttendenceId]=useState(0);
 	const myObject=({});
+	var i=1;
 
 	//const timestamp =viewAttend.map(atteandance=>atteandance.loginTime);
 	
@@ -38,12 +40,11 @@ export default function AttendanceSidebarContent() {
 				  setViewAttend(res.data)
 				  SetTest(res.JSON)
 				  console.log(res.data);
-
-				
 			  })
 			.catch(err => console.log(err))
 	}, [])
-
+	// attend.forEach((attend, index) => { attend.serial = index + 1 })
+	
 	
 	
 
@@ -61,7 +62,7 @@ export default function AttendanceSidebarContent() {
 // 	}, [])
 
 	
-	
+
     return (
 		<div  style={{ height: "100vh"}}>
 		{/* <Table className="attendancetable" striped size="sm" style={{fontFamily: 'Nunito',fontSize:'15px',textAlign:'center'}}>
@@ -98,6 +99,7 @@ export default function AttendanceSidebarContent() {
 <table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}>
 <thead>
 					<tr>
+					<th scope="col">SNO</th>
 					<th scope="col">Employee Name</th>
 					<th scope="col">Employee Email</th>
 					<th scope="col">Status</th>
@@ -106,18 +108,17 @@ export default function AttendanceSidebarContent() {
 					<th scope="col">Logout Time</th>
 					</tr>
 				</thead>
-		{viewAttend.map(attend => (
+		{ viewAttend.map(attend => (
 							<tbody>
 								<tr>
+								<td>{i++}</td>
 								<td>{attend.employeeName}</td>
 								<td>{attend.email}</td>
 								<td>{attend.status}</td>
 								<td>{attend.logHours}</td>
 								<Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.loginTime}</Moment>
 								{/* <td>{new Date(attend.loginTime).toLocaleString('en-US', { hour12: false })}</td> */}
-								 <td><Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.logoutTime}</Moment></td> 
-								
-                        
+								<td><Moment format="YYYY-MMM-DD HH:mm:ss ">{attend.logoutTime}</Moment></td> 
 								</tr>
 							</tbody>
 							))
