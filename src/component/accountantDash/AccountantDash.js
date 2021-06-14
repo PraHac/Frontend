@@ -7,8 +7,26 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import { Link } from 'react-router-dom'
 import logo from '../logo1.png'
 import Moment from 'react-moment'
+import { Dropdown } from 'antd';
+import { Avatar } from 'antd';
+import profile from './undraw_profile.svg'
+import { DownOutlined } from '@ant-design/icons';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import { Menu } from 'antd';
 
+const { SubMenu } = Menu;
+
+const logout = (e) => {
+  e.preventDefault();
+  localStorage.removeItem("accountantId");
+  window.location.replace("/");
+};
+
+
+
+var i=1;
 class AccountantDash extends React.Component {
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -32,11 +50,7 @@ class AccountantDash extends React.Component {
     }
   }
 
-  logout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("accountantId");
-    window.location.replace("/");
-  };
+
 
   componentDidMount() {
     Reimservice.getReimburse().then((response) => {
@@ -202,16 +216,14 @@ class AccountantDash extends React.Component {
                 </a>
               </li>
             </ul>
-            <button
-              type="button"
-              style={but}
-              class="btn btn-danger"
-              onClick={this.logout}
-            >
-              Logout
-            </button>
-          </nav>
-
+            <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/accountantDash">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+          </div>
+        </nav>      
           {/* *********SideBar */}
 
           <div>
@@ -335,7 +347,7 @@ class AccountantDash extends React.Component {
                   >
                     <thead>
                       <tr>
-                       
+                       <th>SNO</th>
                        <th>Employee Name</th>
                         <th>Employee Email</th>
                         <th>Status</th>
@@ -347,7 +359,7 @@ class AccountantDash extends React.Component {
                     {this.state.viewAttend.map((a) => (
                       <tbody>
                         <tr>
-                         
+                         <th>{i++}</th>
                           <td>{a.employeeName}</td>
                           <td>{a.email}</td>
                           <td>{a.status}</td>
