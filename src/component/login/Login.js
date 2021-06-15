@@ -5,7 +5,7 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
-import {  notification} from 'antd';
+import {notification} from 'antd';
 
 function Login() {
 
