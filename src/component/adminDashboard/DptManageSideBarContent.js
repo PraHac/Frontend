@@ -1,238 +1,188 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+
+import React, { Component } from 'react'
+import { MDBDataTable } from 'mdbreact';
+import axios from 'axios'
+import Moment from 'react-moment'
+import './DptManage.css'
+import { notification } from 'antd';
 import DptManageService from "../../services/DptManageService";
-import Table from 'react-bootstrap/Table'
-import M from 'materialize-css';
-import './admindashByAdy.css'
-import { Button,notification } from 'antd';
 
-   
+var i = 1;
+export default class DptManageSideBarContent extends Component {
+  constructor() {
 
-export default function DptManageSideBarContent() {
-    const [dptName, setDptName] = useState("");
-	const [departments, setDepartments] = useState([]);
-	const [updateDName, setUpdateDName] = useState("");
-	const [dptId, setDptId] = useState("");
-	const [dptIdToDlt, setDptIdToDlt] = useState("");
+    super();
+    this.myRef = React.createRef();
+    this.update = this.update.bind(this);
+    this.delete=this.delete.bind(this)
+    this.saveOrUpdate = this.saveOrUpdate.bind(this);
+    this.state = {
+      departmentId: null,
+      dptName: "",
+      update: [],
+      rows: [],
 
-	//**************************** */ Add department
-	const addDepartment = (e) => {
-		e.preventDefault();
-		const department = {
-			departmentName:dptName
-		}
-		DptManageService.addDepartment(department)
-			.then(res => {
-				console.log(res);
-				notification['success']({
-					message: 'Department Added',
-				})		  
-			})
-			.catch(err => {				
-				notification['error']({
-				message: 'Department Not Added',
-			})		  
-		})
-		console.log(dptName);
-	}
-//**************************** */ get all department
-	useEffect(() => {
-		DptManageService.getAllDepartment()
-			.then(res => {
-				console.log(res.data);
-				setDepartments(res.data);
-				
-		})
-			.catch(err => console.log(err))
-	}, []);
+      columns: [
 
-	const updateDepartment = (e) => {
-		e.preventDefault();
-		console.log(dptId);
-		console.log(updateDName);
-		const dept = {
-			departmentId: dptId,
-			departmentName: updateDName
-		}
-		setDptId("");
-		setDptName("");
-		DptManageService.updateDepartment(dept).then(res => {
-			console.log("success")
-			notification['success']({
-				message: 'Department Updated',
-			})		  
-		}
-		)
-			.catch(err => 	
-				notification['error']({
-				message: 'Department Not Updated',
-			}));
-	}
+        {
+          label: 'Department Name',
+          field: 'departmentName',
+          sort: 'asc',
+          width: 27
+        },
+        {
+          label: 'Created Date',
 
-//**************************** */ get all department
+          field: 'createdDate',
+          sort: 'asc',
+          width: 20
+        },
+        {
+          label: 'Update',
+          field: 'update',
+          width: 20
 
-	const deleteDepartment = (e) => {
-		e.preventDefault();
-		DptManageService.deleteDepartment(dptIdToDlt)
-		.then(res =>{ 
-			console.log("success")
-			notification['success']({
-				message: 'Department Deleted Successfully',
-			})		  
-		}).catch(err=>{console.log(err)
-		notification['error']({
-			message: 'Department Not Deleted Successfully',
-		})})
-	}
-	
+        },
+        {
+          label: 'Delete',
+          field: 'delete',
+          width: 20
+
+        },
+      ]
+    };
+  }
+  update(e) {
+    // console.log(e.currentTarget.value);
+
+    fetch('http://localhost:8081/r1/getById/' + e.currentTarget.value)
+      .then(response => response.json())
+      .then((data) => {
+
+        this.setState({
+          update: data
+        });
+        this.setState({ departmentId: data.departmentId })
+        console.log(this.state.departmentId);
+        console.log(data)
+
+
+      });
+  }
+
+  users() {
+
+    fetch('http://localhost:8081/r1/getAllDepart')
+      .then(response => response.json())
+      .then((data) => {
+        for (var i = 0; i < data.length; i++) {
+
+          data[i].createdDate = <Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].createdDate}</Moment>
+          data[i].delete = <button className="btn btn-danger" value={data[i].departmentId} onClick={this.delete} type="button">Delete</button>
+          data[i].update = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-primary" value={data[i].departmentId} onClick={this.update} type="button">Update</button>
+        }
+        this.setState({
+          rows: data
+        });
+        console.log(data)
+        console.log(this.state.rows.length)
+
+        console.log(this.state.rows);
+      });
+  }
+
+  componentDidMount() {
+    document.querySelector('#page-top > div > section > section > main > div > div > div:nth-child(1) > div:nth-child(1) > div > label').style.marginLeft = '82px';
+    document.querySelector('.custom-select').classList = '';
+    document.querySelector('.dataTables_info').style.marginLeft = '82px';
+    document.querySelector('.pagination').style.marginRight = '82px';
+    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px';
+
+    this.users();
+
+  }
+  delete(e) {
+  console.log(e);
+    axios.delete('http://localhost:8081/r1/deleteDepartment/' + e.currentTarget.value )
+      .then(response => {this.users()})
+      .then(data => { console.log(data) })
+
+  }
+  saveOrUpdate = () => {
+    if (this.state.departmentId === null) {
+      const department = {
+        departmentName: this.myRef.current.value
+      }
+      DptManageService.addDepartment(department)
+        .then(res => {
+          console.log(res);
+          notification['success']({
+            message: 'Department Added',
+
+          })
+          this.users();
+        })
+
+        .catch(err => {
+          notification['error']({
+            message: 'Department Not Added',
+          })
+        })
+
+    }
+
+    else {
+      console.log(this.myRef.current.value);
+      fetch('http://localhost:8081/r1/updateDepart/', {
+        method: 'PUT',
+        body: JSON.stringify({ "departmentId": this.state.update.departmentId, "departmentName": this.myRef.current.value }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then(response => {this.users()})
+        .then((data) => console.log(data))
+
+    }
+
+
+  }
+
+  render() {
+
     return (
-        <div style={{height:"60vh",marginTop:"15%",marginLeft:"15%"}}>
-              
-<Table striped bordered>
-  <tbody>
-    <tr>
-      <td>Enter New Department</td>
-      <td></td>
-      <td> <input
-			type="text"
-			name="dptname"
-			id="dptname"
-			placeholder="Enter Department Name"
-			className="form-control mb-3"
-			value={dptName}
-			onChange={(e) => setDptName(e.target.value)}
-			/></td>
-      <td>
-		<Button type="primary" style={{backgroundColor:"#22b1ed"}} id="addnew"name="adddptbtn" className="button"onClick={addDepartment}>   Add New Department</Button>
-	 </td>
-    </tr>
-    <tr>
-      <td>Edit Department</td>
-      <td> <select className="form-control mb-3" id="dptlist" onChange={(e) => setDptId(e.target.value)}>
-							  <option selected>Choose Id</option>
-							  {departments.map((d, id) => <option key={id} value={d.departmentId}>{d.departmentId}</option>)}
-                          </select></td>
-      <td> <input  type="text"
-					placeholder="Enter New Department Name"
-					className="form-control mb-3"
-					id="editdptname"
-					value={updateDName}
-					onChange={(e) => setUpdateDName(e.target.value)}
-					/></td>
-		<td><Button type="primary" style={{backgroundColor:"#22b1ed"}}  id="deletedptbtn" className="button"onClick={updateDepartment}>Edit Department</Button></td>
-    </tr>
-    <tr>
-      <td>Delete Department</td>
-      <td><select className="form-control mb-3" id="dptlist1" onChange={(e) => setDptIdToDlt(e.target.value)}>
-			<option selected>Choose Id</option>
-			{departments.map((d, id) => <option key={id} value={d.departmentId}>{d.departmentId}</option>)}
-			</select></td>
-	<td></td>
-      <td><Button type="primary" style={{backgroundColor:"#22b1ed"}}  id="deletedptbtn" className="button"onClick={deleteDepartment}>Delete Department</Button>
-			</td>
-    </tr>
-  </tbody>
-</Table>
+      <>
+        <div>   <div class="w-25 m-auto pb-4 p-5" style={{ boxShadow: "5px 5px 10px" }}>
+          <div className="mb-3">
+            <label>Department Name</label>
+            <input placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
+          </div>
+          <div >
+            <button type="button" class="btn btn-primary" onClick={this.saveOrUpdate} >Save </button>
 
-      {/* <script type="text/javascript">
-
-$(document).delegate('#addnew', 'click', function(event) {
-	event.preventDefault();
-
-	var dptname = $('#dptname').val();
-	
-	$.ajax({
-		type: "POST",
-		contentType: "application/json; charset=utf-8",
-		url: "http://localhost:8081/myapi/v1/saveDepartment",
-		data: JSON.stringify({'departmentName': dptname}),
-		cache: false,
-		success: function(result) {
-			$("#msg").html( "<span style='color: green'>Department added successfully</span>" );
-			window.setTimeout(function(){location.reload()},1000)
-		},
-		error: function(err) {
-			$("#msg").html( "<span style='color: red'>Department Not Added</span>" );
-		}
-	});
-});
-</script> */}
-
-{/* 
-<script type="text/javascript">
-$(document).ready(function() {
-	$.getJSON('http://localhost:8081/myapi/v1/allDepartment', function(json) {
-		json.forEach(element=>
-		$('#dptlist').append('<option>'+element.departmentId+'</option>'));
-	});
-		
-	});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$.getJSON('http://localhost:8081/myapi/v1/allDepartment', function(json) {
-		json.forEach(element=>
-		$('#dptlist1').append('<option>'+element.departmentId+'</option>'));
-	});
-		
-	});
-</script> */}
-
-
-{/* <script>
-$(document).delegate('#deletedptbtn', 'click', function() { 
-
-	var list= document.getElementById('dptlist');
-	var dptdeletevalue = list.options[list.selectedIndex].text;
-
-	
-		$.ajax({
-			type: "DELETE",
-			url: "http://localhost:8081/myapi/v1/deleteDepartment/"+dptdeletevalue,
-			cache: false,
-			success: function(result) {
-				$("#delmsg").html( "<span style='color: green'>Company added successfully</span>" );
-				window.setTimeout(function(){location.reload()},1000)
-			},
-			error: function(err) {
-				$("#delmsg").html( "<span style='color: red'>Name is required</span>" );
-			}
-		}); 
-	});
-
-</script> */}
-
-{/* <script>
-
-
-$(document).delegate('#editdptbtn', 'click', function() { 
-
-	var list= document.getElementById('dptlist');
-	var dptIdEdit = list.options[list.selectedIndex].text;
-	
-	var editdptname = document.getElementById("editdptname").value
-console.log(dptIdEdit);
-	console.log(editdptname);
-	
-		$.ajax({
-			type: "PUT",
-			contentType: "application/json; charset=utf-8",
-			url: "http://localhost:8081/myapi/v1/updateDepartment",
-			data: JSON.stringify({'departmentId':dptIdEdit,'departmentName':editdptname}),
-			cache: false,
-			success: function(result) {
-				$("#editmsg").html( "<span style='color: green'>Department Updated successfully</span>" );
-				window.setTimeout(function(){location.reload()},1000)
-			},
-			error: function(err) {
-				$("#editmsg").html( "<span style='color: red'>Department Not Updated</span>" );
-			}
-		}); 
-	});
-
-</script>		 */}
+          </div>
         </div>
+        </div>
+
+
+
+        <div style={{ width: '1000px', marginLeft: '6%', }}>
+
+          <MDBDataTable
+            striped
+            bordered
+            entriesOptions={[5, 10, 20, 50, 100]}
+            entries={5}
+            data={{ columns: this.state.columns, rows: this.state.rows }}
+            pagingTop
+            searchTop
+            searchBottom={false}
+          />
+
+        </div>
+      </>
     )
+  }
+
 }
 
