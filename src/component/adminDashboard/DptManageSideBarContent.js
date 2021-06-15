@@ -14,6 +14,7 @@ export default class DptManageSideBarContent extends Component {
     super();
     this.myRef = React.createRef();
     this.update = this.update.bind(this);
+    this.reset = this.reset.bind(this);
     this.delete=this.delete.bind(this)
     this.saveOrUpdate = this.saveOrUpdate.bind(this);
     this.state = {
@@ -117,8 +118,8 @@ export default class DptManageSideBarContent extends Component {
 
   }
   reset() {
-    document.getElementById('reset').value = ""
-    window.location.reload('/dptManage');
+    document.getElementById('reset').value = "";
+    this.setState({ departmentId: null })
   }
   saveOrUpdate = () => {
    
