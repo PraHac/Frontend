@@ -96,10 +96,18 @@ export default class DptManageSideBarContent extends Component {
     document.querySelector('.custom-select').classList = '';
     document.querySelector('.dataTables_info').style.marginLeft = '82px';
     document.querySelector('.pagination').style.marginRight = '82px';
-    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px';
-
+    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px'; 
+    document.getElementById('save').classList.add('disabled')   
     this.users();
 
+  }
+  activeinactive(){
+    if(document.getElementById('reset').value==null||document.getElementById('reset').value==''){
+    document.getElementById('save').classList.add('disabled')
+    }
+    else{
+      document.getElementById('save').classList.remove('disabled')
+    }
   }
   delete(e) {
   console.log(e);
@@ -108,8 +116,15 @@ export default class DptManageSideBarContent extends Component {
       .then(data => { console.log(data) })
 
   }
+  reset() {
+    document.getElementById('reset').value = ""
+    window.location.reload('/dptManage');
+  }
   saveOrUpdate = () => {
+   
+   if(this.myRef.current.value!=""){
     if (this.state.departmentId === null) {
+
       const department = {
         departmentName: this.myRef.current.value
       }
@@ -130,6 +145,7 @@ export default class DptManageSideBarContent extends Component {
         })
 
     }
+  
 
     else {
       console.log(this.myRef.current.value);
@@ -144,7 +160,12 @@ export default class DptManageSideBarContent extends Component {
         .then((data) => console.log(data))
 
     }
-
+  }
+  else{
+    notification['error']({
+      message:'please enter department'
+    })
+  }
 
   }
 
@@ -155,10 +176,12 @@ export default class DptManageSideBarContent extends Component {
         <div>   <div class="w-25 m-auto pb-4 p-5" style={{ boxShadow: "5px 5px 10px" }}>
           <div className="mb-3">
             <label>Department Name</label>
-            <input placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
+            <input onChange={this.activeinactive} id="reset" placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
           </div>
           <div >
-            <button type="button" class="btn btn-primary" onClick={this.saveOrUpdate} >Save </button>
+            <button id='save' type="button" class="btn btn-primary" onClick={this.saveOrUpdate} >Save </button>
+
+            <button type="button" className="btn btn-primary ml-3"  onClick={this.reset}>Reset</button>
 
           </div>
         </div>
