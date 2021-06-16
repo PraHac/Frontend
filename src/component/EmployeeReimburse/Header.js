@@ -4,16 +4,33 @@ import axios from "axios";
 import imageToBase64 from "image-to-base64/browser";
 import M from "materialize-css";
 import { Button, Dialog, DialogContent, DialogTitle } from "@material-ui/core";
-import Slide from "react-reveal/Slide";
-import Card from "react-bootstrap/Card";
 import "../TimeSheet.css";
 import TimeSheetService from "../../services/TimeSheetService";
 import Moment from "react-moment";
-import Table from "react-bootstrap/Table";
 import RubberBand from "react-reveal/RubberBand";
 import logo from '../logo1.png'
 import { Link } from "react-router-dom";
- 
+import { notification,Avatar } from "antd";
+import profile from '../undraw_profile.svg'
+
+const logout = (e) => {
+  e.preventDefault();
+  if (localStorage.getItem("location") == "office") {
+    axios
+    .put(
+      "http://localhost:8081/r1/LogoutEmployee/" +
+        "/" +
+        localStorage.getItem("employeeId")
+    )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err)); 
+  }
+  
+  localStorage.removeItem("employeeId");
+  window.location.replace("/");
+};
 
 export default class Header extends Component {
   constructor(props) {
@@ -65,24 +82,7 @@ export default class Header extends Component {
     }
   }
 
-  logout = (e) => {
-    e.preventDefault();
-    if (localStorage.getItem("location") == "office") {
-      axios
-      .put(
-        "http://localhost:8081/r1/LogoutEmployee/" +
-          "/" +
-          localStorage.getItem("employeeId")
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err)); 
-    }
-    
-    localStorage.removeItem("employeeId");
-    window.location.replace("/");
-  };
+  
 
   myChangeHandler = (event) => {
     let nam = event.target.name;
@@ -114,9 +114,21 @@ export default class Header extends Component {
                     otherBill: this.state.otherBill,
                   })
                   .then((res) => {
-                    console.log("Added");
+                    notification['success']({
+                      description:
+                        'Reimbursement Added',
+                        className:"mt-5"  
+              
+                    })
                   })
-                  .catch((err) => console.log(err));
+                  .catch((err) => {
+                    notification['error']({
+                      description:
+                        'Reimbursement Not added',
+                        className:"mt-5"  
+              
+                    })
+                  });
               });
           });
       });
@@ -399,14 +411,12 @@ export default class Header extends Component {
               </a>
             </li>
           </ul>
-          <button
-            type="button"
-            style={but}
-            class="btn btn-danger"
-            onClick={this.logout}
-          >
-            LogOut
-          </button>
+          <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+          </div>
         </nav>
 
         {/* *************************SideBar */}
@@ -585,7 +595,6 @@ export default class Header extends Component {
                         <tr>
                           <td>{t.accountantApproved}</td>
                           <td>{t.supervisorApproved}</td>
-                          
                           <td>{t.employeeName}</td>
                           <td>{t.timeSheetId}</td>
                           <td>
@@ -696,6 +705,7 @@ export default class Header extends Component {
               class="form-control"
               placeholder="Supervisor id"
               onChange={this.myChangeHandler}
+              required
             />
             <br />
 
@@ -784,8 +794,7 @@ export default class Header extends Component {
                 <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
                   <thead>
                       <tr>
-                        <th>Reimbursement ID</th>
-                        <th>Employee ID</th>
+                        <th>Employee Name</th>
                         <th>Supervisor Status</th>
                         <th>Action</th>
                       </tr>
@@ -795,8 +804,7 @@ export default class Header extends Component {
                       return (
                         <>
                         <tr>  
-                          <td>{r.reimburceId}</td>
-                          <td>{r.employeeId}</td>
+                          <td>{r.employeeName}</td>
                           <td>{r.supervisorStatus}</td>
                           <td>
                             <div
@@ -868,21 +876,21 @@ export default class Header extends Component {
                 >
                   <div>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Reimburse_Id{" "}
+                      Employee Email{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.reimburceId}</p>
+                    <p>{this.state.viewDetailReim.empEmail}</p>
                   </div>
                   <div>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Employee Id{" "}
+                      Supervisor Name{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.employeeId}</p>
+                    <p>{this.state.viewDetailReim.supName}</p>
                   </div>
                   <div>
                     <p style={{ fontWeight: "800" }} scope="col">
-                      Supervisor Id{" "}
+                      Supervisor Email{" "}
                     </p>
-                    <p>{this.state.viewDetailReim.supervisorId}</p>
+                    <p>{this.state.viewDetailReim.supEmail}</p>
                   </div>
                 </div>
                 <div
