@@ -146,7 +146,6 @@ export default class DptManageSideBar extends Component {
               </Dropdown>
               </Header>
             <Content>
-              <span className="Admin">Department</span>
               <DptManageSideBarContent/>
               <Footer style={{ textAlign: 'center',backgroundColor:"white"}}>© 2021 RealCoderZ - developed by <b><a href="#" style={{color:"black"}}>RealCoderZ</a></b></Footer>
             </Content>

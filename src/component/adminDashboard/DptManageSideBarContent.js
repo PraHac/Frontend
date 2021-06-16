@@ -10,7 +10,7 @@ import DptManageService from "../../services/DptManageService";
 var i = 1;
 export default class DptManageSideBarContent extends Component {
   constructor() {
-
+    
     super();
     this.myRef = React.createRef();
     this.update = this.update.bind(this);
@@ -24,6 +24,12 @@ export default class DptManageSideBarContent extends Component {
 
       columns: [
 
+        {
+          label: 'Sr. No',
+          field: 'sn',
+          sort: 'asc',
+          width: 27
+        },
         {
           label: 'Department Name',
           field: 'departmentName',
@@ -58,7 +64,6 @@ export default class DptManageSideBarContent extends Component {
     fetch('http://localhost:8081/r1/getById/' + e.currentTarget.value)
       .then(response => response.json())
       .then((data) => {
-
         this.setState({
           update: data
         });
@@ -76,7 +81,7 @@ export default class DptManageSideBarContent extends Component {
       .then(response => response.json())
       .then((data) => {
         for (var i = 0; i < data.length; i++) {
-
+          data[i].sn=i+1;
           data[i].createdDate = <Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].createdDate}</Moment>
           data[i].delete = <button className="btn btn-danger" value={data[i].departmentId} onClick={this.delete} type="button">Delete</button>
           data[i].update = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-primary" value={data[i].departmentId} onClick={this.update} type="button">Update</button>
@@ -97,9 +102,13 @@ export default class DptManageSideBarContent extends Component {
     document.querySelector('.dataTables_info').style.marginLeft = '82px';
     document.querySelector('.pagination').style.marginRight = '82px';
     document.querySelector('.mdb-datatable-filter').style.marginRight = '82px';
-
+    document.getElementById('save').classList.add('disabled')
     this.users();
 
+  }
+  reset() {
+    document.getElementById('reset').value = ""
+    window.location.reload('/dptManage')
   }
   delete(e) {
   console.log(e);
@@ -108,7 +117,17 @@ export default class DptManageSideBarContent extends Component {
       .then(data => { console.log(data) })
 
   }
+  activeinactive(){
+    if(document.getElementById('reset').value==null||document.getElementById('reset').value==''){
+    document.getElementById('save').classList.add('disabled')
+    }
+    else{
+      document.getElementById('save').classList.remove('disabled')
+    }
+  }
+  
   saveOrUpdate = () => {
+    if(this.myRef.current.value!=""){
     if (this.state.departmentId === null) {
       const department = {
         departmentName: this.myRef.current.value
@@ -118,7 +137,7 @@ export default class DptManageSideBarContent extends Component {
           console.log(res);
           notification['success']({
             message: 'Department Added',
-
+                                         
           })
           this.users();
         })
@@ -144,27 +163,39 @@ export default class DptManageSideBarContent extends Component {
         .then((data) => console.log(data))
 
     }
-
-
   }
+  else{
+    notification['error']({
+      message: 'Please Enter Department',
+    })
+  }
+}
 
   render() {
 
     return (
       <>
-        <div>   <div class="w-25 m-auto pb-4 p-5" style={{ boxShadow: "5px 5px 10px" }}>
-          <div className="mb-3">
-            <label>Department Name</label>
-            <input placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
+      <div className="card mx-auto" id="card1" style={{ width: "auto", height: "auto", maxWidth: "500px" ,'border-radius':'5px' ,marginBottom:"50px", marginTop:"50px"}}>
+                        <div className="header">
+                            <div className="card-header text-center"><h2 style={{color:"black"}}>Department Management</h2></div>
+                        </div>
+                        <div className="card-body dp">
+
+                                
+            <label style={{color:"#696969"}}>Department Name</label>
+        
+            <input onChange={this.activeinactive} id='reset' placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
           </div>
           <div >
-            <button type="button" class="btn btn-primary" onClick={this.saveOrUpdate} >Save </button>
-
-          </div>
-        </div>
-        </div>
-
-
+            <button type="button" class="btn btn-primary ml-3 mb-4" id="save" onClick={this.saveOrUpdate} >Save </button>
+            <button type="button" className="btn btn-primary ml-3 mb-4" onClick={this.reset}>Reset</button>
+                        </div>
+            
+                    </div>
+{/*         
+<br/>
+<br/>
+<br/> */}
 
         <div style={{ width: '1000px', marginLeft: '6%', }}>
 
