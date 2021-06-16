@@ -6,6 +6,8 @@ import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
 import {  notification} from 'antd';
+import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
+
 
 function Login() {
 
@@ -20,6 +22,7 @@ function Login() {
   const [role, setRole] = useState("v");
   const [location, setLocation] = useState("");
   const [detail, setDetail] = useState({});
+  const [attendenceOption, setAttendenceOption] = useState("");
 
   const data = () => {
     const d = {
@@ -41,22 +44,6 @@ function Login() {
     else {
       document.getElementById('email_err').innerHTML = 'Valid email format';
       document.getElementById('email_err').style.color = "#00AF33";
-    }
-  }
-  const email_validation1 = () => {
-    'use strict';
-    var mailformat = /^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$/;
-    var email_name = document.getElementById("email");
-    var email_value = document.getElementById("email").value;
-    var email_length = email_value.length;
-    if (!email_value.match(mailformat) || email_length === 0) {
-      document.getElementById('email_err1').innerHTML = 'This is not a valid email format.';
-      email_name.focus();
-      document.getElementById('email_err1').style.color = "grey";
-    }
-    else {
-      document.getElementById('email_err1').innerHTML = 'Valid email format';
-      document.getElementById('email_err1').style.color = "red";
     }
   }
   
@@ -96,7 +83,8 @@ function Login() {
     }
     LoginService.loginAdmin(admin)
       .then(res => {
-        // alert("Admin logedIn")
+        console.log(res.data.adminId)
+        console.log(res);
         localStorage.setItem("adminId", res.data.adminId);
         M.toast({ html: "admin logedIn" })
         history.push("/adminDashboard");
@@ -144,18 +132,18 @@ function Login() {
 
   const ab = (e) => {
     e.preventDefault();
-    var option = prompt("Do you want to mark you attendence? write yes or no");
-    option = option.toLowerCase();
-    console.log(option);
+
     const loginDetail1 = {
       email: employee1Email,
       password: employee1Password,
       location: location,
-      attendOption: option,
+      attendOption: attendenceOption,
     }    
+
     LoginService.loginEmployee(loginDetail1)
       .then(res => {
         localStorage.setItem("employeeId", res.data.employeeId);
+        localStorage.setItem("supervisorName", res.data.supervisorName);
         localStorage.setItem("supervisorId", res.data.supervisorId);
         localStorage.setItem("location", "office");
         localStorage.setItem("employeeName", res.data.name);
@@ -249,6 +237,11 @@ function Login() {
 							  <option selected>Choose Working Location :</option>
 							  <option value="office">office</option>
 							  <option value="home">home</option>
+               </select>
+               <select className="form-control mb-4 mt-2" onChange={(e) => setAttendenceOption(e.target.value)} required="true">
+							  <option selected>Do you want to mark you attendence?</option>
+							  <option value="yes">yes</option>
+							  <option value="no">no</option>
               </select>
             <div className="formcontrol">
               <input

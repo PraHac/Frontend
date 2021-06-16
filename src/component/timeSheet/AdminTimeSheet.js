@@ -334,17 +334,17 @@ export default class AccTimeSheet extends Component {
               <div id="noneempWeek" style={{ marginLeft:"12%", display:"none" }}>
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 5px 5px gray"}}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize week</h5>
-                 <input style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
+                 <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
+                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <button className="btn btn-info" onClick={this.seeByDate}>go</button>  
               </div>
               </div>  
               <div id="empWeek" style={{display:"none",marginLeft:"3%",marginRight:"15%"}}>
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
-                 <input style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
-                 <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
+                 <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
+                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
+                 <input type="date" style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
                  <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
               </div>
               </div>  

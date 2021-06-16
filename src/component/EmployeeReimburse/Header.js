@@ -13,9 +13,31 @@ import Table from "react-bootstrap/Table";
 import RubberBand from "react-reveal/RubberBand";
 import logo from '../logo1.png'
 import { Link } from "react-router-dom";
- 
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
+import getDay from 'react-datepicker';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { withStyles } from "@material-ui/core/styles";
+import moment from "moment";
+import {notification} from 'antd'
 
-export default class Header extends Component {
+
+const styles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,10 +63,9 @@ export default class Header extends Component {
       accountantApproved: "",
       day: "",
       date: "",
-      rowNo: ["Monday", "Tuesday", "Wednesday", "Thrusday", "Friday"],
+      rowNo: [0,1,2,3,4],
+      rowNoDays: ["Monday", "Tuesday", "Wednesday", "Thrusday", "Friday"],
       timesheetDetail: [],
-      testing: [{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" },{ logHours:0, task:"" }],
-      timesheetDetails: { logHours:0, task:"" },
       task: "",
       holiday:"no",
       projectName: "",
@@ -52,18 +73,29 @@ export default class Header extends Component {
       apprTimeSheet: [],
       disapprTimeSheet: [],
       week: [],
-      count: 0
+      weeks: [],
+      count: 0,
+      startDate:null
     };
     this.tsChange = this.tsChange.bind(this);
     this.savetimeSheet = this.savetimeSheet.bind(this);
     this.dateTaker = this.dateTaker.bind(this);
   }
 
+  dateTaker(date) {
+    this.setState({startDate: date})
+    
+  }
+
   componentDidMount() {
     if (localStorage.getItem("employeeId") == null) {
       window.location.replace("/");
     }
+   
   }
+  // componentDidUpdate() {
+    
+  // }
 
   logout = (e) => {
     e.preventDefault();
@@ -104,7 +136,7 @@ export default class Header extends Component {
                 axios
                   .post("http://localhost:8081/r1/requestReimburse", {
                     employeeId: localStorage.getItem("employeeId"),
-                    supervisorId: this.state.supervisorId,
+                    supervisorId: localStorage.getItem("supervisorId"),
                     foodExpense: this.state.foodexpense,
                     travelExpense: this.state.travelexpense,
                     otherExpenss: this.state.otherexpense,
@@ -252,25 +284,27 @@ export default class Header extends Component {
     let val = event.target.value;
     this.setState({ [nam]: val });
     // var format = /[0-9]{1}/;
-    var email_name = document.getElementById("logHours");
-    var logHour_value = document.getElementById("logHours").value;
+    // var email_name = document.getElementById("logHours");
+    // var logHour_value = document.getElementById("logHours").value;
     // var logHour_length = logHour_value.length;
-    if(this.state.logHours < 0 )
-    {
-    document.getElementById('err').innerHTML = 'Invalid format(digit between 0-9)';
-    email_name.focus();
-    document.getElementById('err').style.color = "red";
-    }
-    else
-    {
-    document.getElementById('err').innerHTML = 'Valid format';
-    document.getElementById('err').style.color = "#00AF33";
-    }
+    // if(this.state.logHours < 0 )
+    // {
+    // document.getElementById('err').innerHTML = 'Invalid format(digit between 0-9)';
+    // email_name.focus();
+    // document.getElementById('err').style.color = "red";
+    // }
+    // else
+    // {
+    // document.getElementById('err').innerHTML = 'Valid format';
+    // document.getElementById('err').style.color = "#00AF33";
+    // }
     
   };
 
   savetimeSheet(event) {
     event.preventDefault();
+    console.log(moment(this.state.startDate).format('YYYY-MM-DD'));
+
     var d;
     if (this.state.task != "") {
       if (this.state.holiday == "no") {
@@ -294,35 +328,25 @@ export default class Header extends Component {
           holiday: this.state.holiday
         }
       }
+    } else {
+      notification['error']({
+        description:
+          'Please Add Fields',
+        className:'mt-5'
+     })
     }
     this.state.timesheetDetail.push(d);
-  
+    console.log(this.state.timesheetDetail);
+
     TimeSheetService.saveTimeSheet(this.state.timesheetDetail).then((response) => {
       console.log(response);
       this.setState({ timeSheet: response.data });
-      M.toast({ html: "Added" });
+      notification['success']({
+        description:
+          'Timesheet Added',
+        className:'mt-5'
+     })
     }).catch((err) => console.log(err))
-  }
-
-  dateTaker() {
-    let curr = new Date();
-    for (let i = 1; i <= 5; i++){
-      let first = curr.getDate() - curr.getDay() + i;
-      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
-      this.state.week.push(day);
-    }
-    document.getElementById("dateTaker").innerHTML = this.state.week[0]
-    
-    // var t = 7;
-    // for (let i = 1; i <= 5; i++){
-    //   if (t == 7) {
-    //     let first = curr.getDate() - curr.getDay() + t;
-    //   }
-    //   let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
-    //   console.log(day);
-    //   t++;
-    // }
-    
   }
 
   tsChange(e, i) {
@@ -340,7 +364,7 @@ export default class Header extends Component {
           holiday: this.state.holiday
         }
       } else {
-         d = {
+        d = {
           employeeId: localStorage.getItem("employeeId"),
           logHours: 0,
           task: "Holiday",
@@ -350,11 +374,23 @@ export default class Header extends Component {
           holiday: this.state.holiday
         }
       }
-      this.setState({holiday: "no"})
+      this.setState({ holiday: "no" })
       console.log(d);
       this.state.timesheetDetail.push(d);
       this.setState({ count: this.state.count + 1 })
       
+    } else {
+      if (this.state.startDate != null) {
+        let curr = new Date(moment(this.state.startDate).format('YYYY-MM-DD'));
+        for (let i = 1; i <= 5; i++){
+          let first = curr.getDate() - curr.getDay() + i;
+          let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
+          this.state.week.push(day);
+        }
+        console.log(this.state.week); 
+      }
+      this.setState({ weeks: this.state.week });
+      console.log(this.state.weeks);
     }
   }
 
@@ -374,7 +410,10 @@ export default class Header extends Component {
     const logostyle = {
       height: "48px",
       marginLeft:"12px"
-      }
+    }
+    const {classes} = this.props;
+
+    
 
     return (
       <div id="home" style={{ width: "1349px" }}>
@@ -476,8 +515,10 @@ export default class Header extends Component {
 
         <div id="timesheet" style={{ display: "none", marginTop:"6%"}}>
             <RubberBand>
-            <div style={{display:"flex",justifyContent:"space-evenly", padding: "1%", marginLeft: "10%"  }} >
-              {/* <div>   */}
+            
+          <div style={{  marginLeft: "20%" }}>
+          <div style={{display:"flex",justifyContent:"space-evenly", padding: "1%" }} >
+            
               <input
                   style={{
                         border: "none",
@@ -489,7 +530,7 @@ export default class Header extends Component {
                       placeholder="Supervisor Id"
                       type="text"
                       name="supervisor_id"
-                      value={"Supervisor Id : " + localStorage.getItem("supervisorId")}
+                      value={"Supervisor Name : " + localStorage.getItem("supervisorName")}
                 required
               />
                <select className="form-control  w-25" onChange={(e) => this.setState({projectName: e.target.value})}>
@@ -498,28 +539,37 @@ export default class Header extends Component {
                       <option value="RC 360">RC 360</option>
                       <option value="Reimbursement">Reimbursement</option>
                       <option value="Video Conferencing">Video Conferencing</option>    
-               </select>
-              <button id="dateTaker" onClick={this.dateTaker} className="btn btn-dark">Date</button>
-                {/* </div>  */}
+              </select>
+              <div className='ui-datepicker'>
+                <DatePicker
+                  selected={this.state.startDate}
+                  onChange={date => this.dateTaker(date)                }
+                  filterDate={date => date.getDay() === 1}
+                  placeholderText="Select Date"
+                  className="form-control dateInput"
+                  dateFormat="yyyy-MM-dd"
+                />
+             </div>
+              {/* <button id="dateTaker" onClick={this.dateTaker} className="btn btn-dark">Date</button> */}
+               
               </div>
-              <div style={{  marginLeft: "20%" }}>
-           
            <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
                 <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
                 
-              {this.state.rowNo.map((i) => (
+              {
+              this.state.rowNo.map((i) => (
                 <>
                  <tr>
                   <td>
-                     <h6 className="mt-2">{i}</h6>
+                     <h6 className="mt-2">{this.state.rowNoDays[i]}</h6>
                   </td>
-                  <td >
-                    <input
-                      style={inputStyle}
-                      placeholder="Enter working Hours"
+                    <td >
+                    
+                    <TextField
+                      label="Enter working Hours"
                       type="text"
                       name="logHours"
                       id="logHours"
@@ -527,9 +577,15 @@ export default class Header extends Component {
                       onClick={(e, i) => this.tsChange(e, i)}
                       required  
                   /><br />
-                  <span id="err"></span>      
-                 </td>
-                 <td>
+                    <span id="err"></span>
+                  </td>
+                  {this.state.weeks.length>0? <td>
+                      <InputLabel id="demo-simple-select-label">Date</InputLabel>
+                      <input style={inputStyle} value={ this.state.weeks[i] } />
+                  </td>  : ""}
+                   
+                    <td>
+                    <InputLabel id="demo-simple-select-label">Task</InputLabel>
                     <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ task: e.target.value })}>
                       <option selected>Select Task</option>
                       <option value="Coding">Coding</option>
@@ -537,18 +593,18 @@ export default class Header extends Component {
                       <option value="R & D">R & D</option>
                     </select>
                   </td>
-                  <td>
+                    <td>
+                    <InputLabel id="demo-simple-select-label">Holiday</InputLabel>
                     <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ holiday: e.target.value })}>
-                      <option selected>Holiday</option>
-                      <option value="no">no</option>
+                      <option value="no" selected>no</option>
                       <option value="yes">yes</option>
-                    </select> 
+                      </select>
                   </td>
                 </tr>
                 </>
                ))} 
                 </table>
-                <input style={{margin:"auto"}} placeholder="Action" class="btn btn-sm btn-info" type="submit" value="Submit" onClick={this.savetimeSheet} />
+                <input style={{margin:"auto"}} placeholder="Action" className="btn btn-sm btn-info" type="submit" value="Submit" onClick={this.savetimeSheet} />
                 </div>
                 </div>
             </div>
@@ -688,16 +744,6 @@ export default class Header extends Component {
         >
           <form onSubmit={this.mySubmitHandler}>
             <h3 className="text-center">Add Reimbursement</h3>
-
-            <input
-              type="text"
-              name="supervisorId"
-              id="supervisorId"
-              class="form-control"
-              placeholder="Supervisor id"
-              onChange={this.myChangeHandler}
-            />
-            <br />
 
             <input
               type="text"
@@ -1047,3 +1093,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withStyles(styles, { withTheme: true })(Header);
