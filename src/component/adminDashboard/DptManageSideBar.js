@@ -15,13 +15,7 @@ import { Avatar } from 'antd';
 import { Dropdown } from 'antd';
 import profile from './undraw_profile.svg'
 import { DownOutlined } from '@ant-design/icons';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+
 import DptManageSideBarContent from './DptManageSideBarContent'
 
 const { Header, Sider, Content,Footer } = Layout;
@@ -138,10 +132,10 @@ export default class DptManageSideBar extends Component {
                 })} */}
               <i className="fa fa-bars"id="trigger" onClick={this.toggle}/>
               <Dropdown  className="avatar" overlay={menu} trigger={['click']}>
-                      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                      <a className="ant-dropdown-link" onClick={e => e.preventDefault()} style={{textDecoration:'none',color:'white'}}>
                           {/* <Avatar icon={<UserOutlined />}/> */}
-                          <Avatar className="img-profile rounded-circle" src={profile} style={{maxWidth:'60px'}}/> 
-                          <DownOutlined />
+                          <Avatar className="img-profile rounded-circle" src={profile} style={{maxWidth:'60px',right:'4px'}}/>
+                          {localStorage.getItem('adminId')}
                       </a>
               </Dropdown>
               </Header>

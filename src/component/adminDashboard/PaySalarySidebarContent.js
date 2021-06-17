@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import React from 'react'
 import Moment from 'react-moment'
-class PaySalarySidebarContent extends React.Component{
 
+class PaySalarySidebarContent extends React.Component{
   constructor(props){
       super(props)
       this.state={
@@ -36,7 +36,6 @@ class PaySalarySidebarContent extends React.Component{
         yearHandle:""
       }
     }
-    
     componentDidMount() {
       if (localStorage.getItem("adminId") == null) {
         window.location.replace("/")

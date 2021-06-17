@@ -18,6 +18,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
+import profile from '../undraw_profile.svg'
+import { Avatar } from "antd";
 
 
 export default class AccTimeSheet extends Component {
@@ -255,11 +257,17 @@ export default class AccTimeSheet extends Component {
                 <i className="fas fa-bars" style={{color:"white", fontSize:"20px"}} />
               </a>
             </li>
-
+            <div class="dropdown" style={{left:'85%',position:'fixed',color:'white'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                {localStorage.getItem("adminId")}
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/adminDashboard">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={this.logout}>Logout</a>
+                </div>
+          </div>
          
           </ul>
         </nav>
-
         {/* *************************SideBar */}
 
         <div>

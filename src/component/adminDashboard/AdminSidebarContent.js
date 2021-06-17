@@ -10,7 +10,6 @@ import Card from 'react-bootstrap/Card'
 
 
 export default class AdminSidebarContent extends Component {
-   
     render() {
         return (
         <div style={{ height: "100vh" }}>

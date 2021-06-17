@@ -21,6 +21,7 @@ import logo from '../logo1.png'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 
+
 const logout = (e) => {
   e.preventDefault();
   localStorage.removeItem("accountantId");
@@ -354,8 +355,9 @@ export default class AccTimeSheet extends Component {
                   Dashboard
                 </button>
               </Link> */}
-              <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed'}}>
+              <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed',color:'white'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                {localStorage.getItem("accountantName")}
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/accountantDash">Dashboard</Link></a>
                   <a class="dropdown-item" onClick={logout}>Logout</a>

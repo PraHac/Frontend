@@ -167,20 +167,7 @@ export default class AdminSidebar extends React.Component {
 
         </Sider>
         <Layout className="site-layout">
-          {/* <Header className="site-layout-background" style={{backgroundColor:'#22b1ed',padding: 0}}>
-
-            {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: this.toggle,
-              style:{color:'#fff'}
-            })} */}
              <Header className="site-layout-background" style={{padding: 0, background:"#22b1ed"}}>
-{/* 
-            {React.createElement(this.state.collapsed ? <i className="fa fa-bars"/> : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: this.toggle,
-              style:{color:'#fff'}
-            })} */}
            <i className="fa fa-bars"id="trigger" onClick={this.toggle}/>
           <Dropdown  className="avatar" overlay={menu} trigger={['click']}>
                   <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
