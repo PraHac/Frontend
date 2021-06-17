@@ -24,7 +24,12 @@ export default class DptManageSideBarContent extends Component {
       rows: [],
 
       columns: [
-
+        {
+          label: 'Sr. No',
+          field: 'sn',
+          sort: 'asc',
+          width: 27
+        },
         {
           label: 'Department Name',
           field: 'departmentName',
@@ -78,6 +83,7 @@ export default class DptManageSideBarContent extends Component {
       .then((data) => {
         for (var i = 0; i < data.length; i++) {
 
+          data[i].sn=i+1;
           data[i].createdDate = <Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].createdDate}</Moment>
           data[i].delete = <button className="btn btn-danger" value={data[i].departmentId} onClick={this.delete} type="button">Delete</button>
           data[i].update = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-primary" value={data[i].departmentId} onClick={this.update} type="button">Update</button>
@@ -100,6 +106,16 @@ export default class DptManageSideBarContent extends Component {
     document.querySelector('.mdb-datatable-filter').style.marginRight = '82px'; 
     document.getElementById('save').classList.add('disabled')   
     this.users();
+  }
+  reset() {
+    document.getElementById('reset').value = ""
+    window.location.reload('/dptManage')
+  }
+  delete(e) {
+  console.log(e);
+    axios.delete('http://localhost:8081/r1/deleteDepartment/' + e.currentTarget.value )
+      .then(response => {this.users()})
+      .then(data => { console.log(data) })
 
   }
   activeinactive(){
@@ -174,15 +190,22 @@ export default class DptManageSideBarContent extends Component {
 
     return (
       <>
-        <div>   <div class="w-25 m-auto pb-4 p-5" style={{ boxShadow: "5px 5px 10px" }}>
-          <div className="mb-3">
-            <label>Department Name</label>
-            <input onChange={this.activeinactive} id="reset" placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
+        <div>  
+        <div className="card mx-auto" id="card1" style={{ width: "auto", height: "auto", maxWidth: "500px" ,'border-radius':'5px' ,marginBottom:"50px", marginTop:"50px"}}>
+                        <div className="header">
+                            <div className="card-header text-center"><h2 style={{color:"black"}}>Department Management</h2></div>
+                        </div>
+                        <div className="card-body dp">
+
+                                
+            <label style={{color:"#696969"}}>Department Name</label>
+        
+            <input onChange={this.activeinactive} id='reset' placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
           </div>
           <div >
-            <button id='save' type="button" class="btn btn-primary" onClick={this.saveOrUpdate} >Save </button>
+          <button type="button" class="btn btn-primary ml-3 mb-4" id="save" onClick={this.saveOrUpdate} >Save </button>
 
-            <button type="button" className="btn btn-primary ml-3"  onClick={this.reset}>Reset</button>
+            <button type="button" className="btn btn-primary ml-3 mb-4"  onClick={this.reset}>Reset</button>
 
           </div>
         </div>
