@@ -13,12 +13,6 @@ import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 
 
-const logout = (e) => {
-  e.preventDefault();
-  localStorage.removeItem("supervisorId");
-  window.location.replace("/");
-}
-
 export default class SupervisorDashboard extends Component {
   constructor(props) {
     super(props);
@@ -51,11 +45,12 @@ export default class SupervisorDashboard extends Component {
     }
   }
 
-  // logout = (e) => {
-  //   e.preventDefault();
-  //   localStorage.removeItem("supervisorId");
-  //   window.location.replace("/");
-  // }
+  logout (e)  {
+    e.preventDefault();
+    localStorage.removeItem("supervisorId");
+    localStorage.removeItem("supervisorName");
+    window.location.replace("/");
+  }
 
   superApproved = (e) => {
     e.preventDefault();
@@ -205,11 +200,19 @@ disApprove = (e,r) =>{
                 </li>
               </ul>
               {/* <button type="button" style={but} class="btn btn-danger" onClick={this.logout}>Hello</button> */}
-              <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+              {/* <div class="dropdown" style={{left:'85%',position:'fixed'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/supervisorDash">Dashboard</Link></a>
                   <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+                </div> */}
+                <div class="dropdown" style={{left:'85%',position:'fixed',color:'white'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                {        localStorage.getItem("supervisorName")}
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/supervisorDash">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={this.logout}>Logout</a>
                 </div>
           </div>
           </nav>

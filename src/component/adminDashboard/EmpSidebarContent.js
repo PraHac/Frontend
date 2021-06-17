@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import "./userDisplay.css";
 import axios from "axios";
-import M from "materialize-css";
-import Card from "react-bootstrap/Card";
 import "./admindashByAdy.css";
 import { Button, notification } from "antd";
 export default function EmpSidebarContent() {
@@ -58,15 +55,18 @@ export default function EmpSidebarContent() {
         console.log(res);
         notification['success']({
           description: "supervisor Added ",
+          className:"mt-5"  
         });
       })
       .catch((err) => { notification['error']({
         description: "Supervisor Not Added ",
+        className:"mt-5"  
       })})
   };
 
   const createEmployee = (e) => {
     e.preventDefault();
+    if(employeeName!=""&&employeeEmail!=""&&employeePass!=""&&supervisorId!=0){
     axios
       .put("http://localhost:8081/r1/addEmployeesToSupervisor", {
         supervisorId: supervisorId,
@@ -82,16 +82,31 @@ export default function EmpSidebarContent() {
         ],
       })
       .then((res) => {
-       
-        console.log(res);
+        console.log(res)
+     })
+      .catch((err) =>  {
+        console.log(err) 
       })
-      .catch((err) =>  { console.log(err)}
-      )
+        notification['success']
+        ({
+          description: "Employee has added  ",
+          className:"mt-5"  
+        })
+      
+    }
+    else{
+      notification['error']
+      ({
+        description: "Please Add Fields ",
+        className:"mt-5"  
+      })
+    }
   };
 
   const createAccountant = (e) => {
     e.preventDefault();
-    axios
+    if(accountantName != "" && accountantEmail != "" && accountantPass != ""){
+      axios
       .post("http://localhost:8081/r1/addAccountant", {
         name: accountantName,
         email: accountantEmail,
@@ -99,15 +114,22 @@ export default function EmpSidebarContent() {
         mobile: accountantContact,
       })
       .then((res) => {
+        console.log(res)
         notification['success']({
           description: "Accountant Added ",
+          className:"mt-5"  
         });
-
-        console.log(res);
       })
-      .catch((err) =>{ notification['success']({
-        description: "Accountant Not Added ",
-      })});
+      .catch((err) =>{ 
+        console.log(err)
+    });
+    }else{
+      notification['error']
+      ({
+        description: "Please Add Fields ",
+        className:"mt-5"  
+      })
+    }
   };
 
   const addAccountant = (e) => {
@@ -145,8 +167,6 @@ export default function EmpSidebarContent() {
         }}
       >
         <div className="" style={{ marginTop: "50px" }}>
-          {/* <button class="btn btn-dark" type="button" id="displayall">Display All Supervisor</button><br /><br />
-				<button class="btn btn-dark" type="button" id="displayall">Display All Employee</button><br /><br /> */}
           <Button type="primary" className="button" onClick={addAccountant}>
             Add Accountant
           </Button>
@@ -215,11 +235,11 @@ export default function EmpSidebarContent() {
                   className="form-control"
                   placeholder="Password"
                   onChange={(e) => setSupervisorPass(e.target.value)}
+                  
                 />
                 <br />
               </div>
 
-              {/* <button class="btn btn-dark" type='submit'  style={{marginLeft:"170px"}}  onClick={createSupervisor}>Add</button> */}
               <Button
                 type="primary"
                 className="button"
@@ -245,6 +265,7 @@ export default function EmpSidebarContent() {
                   class="form-control"
                   placeholder="Employee Name"
                   onChange={(e) => setEmployeeName(e.target.value)}
+                  required="true"
                 />
                 <br />
                 <input
@@ -254,6 +275,7 @@ export default function EmpSidebarContent() {
                   class="form-control"
                   placeholder="Employee Salary"
                   onChange={(e) => setEmployeeSalary(e.target.value)}
+                  required="true"
                 />
                 <br />
               </div>
@@ -264,6 +286,7 @@ export default function EmpSidebarContent() {
                   className="form-control"
                   placeholder="Department Id"
                   onChange={(e) => setEmployeedepartmentId(e.target.value)}
+                  required="true"
                 />
                 <br />
                 <input
@@ -272,6 +295,7 @@ export default function EmpSidebarContent() {
                   className="form-control"
                   placeholder="Email"
                   onChange={(e) => setEmployeeEmail(e.target.value)}
+                  required="true"
                 />
                 <br />
               </div>
@@ -282,6 +306,7 @@ export default function EmpSidebarContent() {
                   className="form-control"
                   placeholder="Password"
                   onChange={(e) => setEmployeePass(e.target.value)}
+                  required="true"
                 />
                 <br />
                 <input
@@ -290,6 +315,7 @@ export default function EmpSidebarContent() {
                   className="form-control"
                   placeholder="contact"
                   onChange={(e) => setEmployeeContact(e.target.value)}
+                  required="true"
                 />
                 <br />
               </div>
@@ -299,9 +325,9 @@ export default function EmpSidebarContent() {
                 className="form-control"
                 placeholder="Supervisor ID"
                 onChange={(e) => setSupervisorId(e.target.value)}
+                required="true"
               />
               <br />
-              {/* <button class="btn btn-dark" style={{marginLeft:"170px"}} type='submit' onClick={createEmployee}>Add</button> */}
               <Button
                 type="primary"
                 className="button"
@@ -324,6 +350,7 @@ export default function EmpSidebarContent() {
                   name="accountantName"
                   class="form-control"
                   placeholder="Accountant Name"
+                  required="true"
                   onChange={(e) => setAccountantName(e.target.value)}
                 />
                 <br />
@@ -332,6 +359,7 @@ export default function EmpSidebarContent() {
                   name="accountantEmail"
                   className="form-control"
                   placeholder="Accountant Email"
+                  required="true"
                   onChange={(e) => setAccountantEmail(e.target.value)}
                 />
                 <br />
@@ -342,6 +370,7 @@ export default function EmpSidebarContent() {
                   name="accountantPass"
                   className="form-control"
                   placeholder="Accountant Password"
+                  required="true"
                   onChange={(e) => setAccountantPass(e.target.value)}
                 />
                 <br />
@@ -350,12 +379,11 @@ export default function EmpSidebarContent() {
                   name="accountantContact"
                   className="form-control"
                   placeholder="Accountant contact"
+                  required="true"
                   onChange={(e) => setAccountantContact(e.target.value)}
                 />
                 <br />
               </div>
-
-              {/* <button class="btn btn-dark mt-3" style={{marginLeft:"170px"}} type='submit'onClick={createAccountant} >Add</button> */}
               <Button
                 type="primary"
                 className="button"

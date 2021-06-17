@@ -1,28 +1,22 @@
 import axios from 'axios';
 import React from 'react';
 import Reimservice from '../../services/AccountantReim';
-import { Layout } from 'antd';
 import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import { Link } from 'react-router-dom'
 import logo from '../logo1.png'
 import Moment from 'react-moment'
-import { Dropdown } from 'antd';
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
-import { DownOutlined } from '@ant-design/icons';
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import { Menu } from 'antd';
 
-const { SubMenu } = Menu;
+
 
 const logout = (e) => {
   e.preventDefault();
   localStorage.removeItem("accountantId");
+  localStorage.removeItem("accountantName")
   window.location.replace("/");
 };
-
-
 
 var i=1;
 class AccountantDash extends React.Component {
@@ -216,8 +210,9 @@ class AccountantDash extends React.Component {
                 </a>
               </li>
             </ul>
-            <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+            <div class="dropdown" style={{left:'85%',position:'fixed',color:'white'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                {localStorage.getItem("accountantName")}
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/accountantDash">Dashboard</Link></a>
                   <a class="dropdown-item" onClick={logout}>Logout</a>

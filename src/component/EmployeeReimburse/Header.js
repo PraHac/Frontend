@@ -34,6 +34,7 @@ const logout = (e) => {
       "http://localhost:8081/r1/LogoutEmployee/" +
         "/" +
         localStorage.getItem("employeeId")
+        
     )
     .then((res) => {
       console.log(res);
@@ -42,6 +43,7 @@ const logout = (e) => {
   }
   
   localStorage.removeItem("employeeId");
+  localStorage.removeItem("employeeName");
   window.location.replace("/");
 };
 
@@ -541,8 +543,9 @@ class Header extends Component {
               </a>
             </li>
           </ul>
-          <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+          <div class="dropdown" style={{left:'85%',position:'fixed',color:'white'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                {localStorage.getItem("employeeName")}
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" onClick={logout}>Logout</a>
                 </div>
@@ -878,6 +881,7 @@ class Header extends Component {
               className="form-control"
               placeholder="Food Expense"
               onChange={this.myChangeHandler}
+              required
             />
             <br />
 
@@ -887,6 +891,7 @@ class Header extends Component {
               className="form-control"
               placeholder="Travel Expense"
               onChange={this.myChangeHandler}
+              required
             />
             <br />
 
@@ -896,6 +901,7 @@ class Header extends Component {
               className="form-control"
               placeholder="Other Expense"
               onChange={this.myChangeHandler}
+              required
             />
             <br />
 
@@ -906,6 +912,7 @@ class Header extends Component {
                 name="foodBill"
                 className="form-control"
                 onChange={this.onInputFileChange}
+                required
               />
             </div>
             <div className="form-group">
@@ -915,6 +922,7 @@ class Header extends Component {
                 name="travelBill"
                 className="form-control"
                 onChange={this.onInputFileChange}
+                required
               />
             </div>
             <div className="form-group">
@@ -924,6 +932,7 @@ class Header extends Component {
                 name="otherBill"
                 className="form-control"
                 onChange={this.onInputFileChange}
+                required
               />
             </div>
 
@@ -937,6 +946,7 @@ class Header extends Component {
                 name="dateOfReimburse"
                 className="form-control"
                 onChange={this.myChangeHandler}
+                required
               />
             </div>
 

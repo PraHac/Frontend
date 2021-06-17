@@ -6,10 +6,11 @@ import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery'
 import Moment from 'react-moment'
-
+import { Layout } from 'antd';
 export default function AttendanceSidebarContent() {
    
-	
+const { Header, Sider, Content,Footer } = Layout;
+
 	useEffect(() => {
         if (localStorage.getItem("adminId") == null) {
             window.location.replace("/") 
@@ -64,7 +65,7 @@ export default function AttendanceSidebarContent() {
 	
 
     return (
-		<div  style={{ height: "100vh"}}>
+		<div  style={{ height: "90%"}}>
 		{/* <Table className="attendancetable" striped size="sm" style={{fontFamily: 'Nunito',fontSize:'15px',textAlign:'center'}}>
 				<thead style={{backgroundColor:"#e6e6ff"}}>
 					<tr>
@@ -93,7 +94,11 @@ export default function AttendanceSidebarContent() {
 							}
 				
 				</Table> */}
-<div class="col-lg-12" style={{marginTop:'5%'}}>
+{/* <div class="col-lg-12" id="tablecontent"style={{marginTop:'5%', width:'80%', marginLeft:'20%'}}>
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+<table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}> */}
+<div class="col-lg-12" id="tablecontent" style={{marginTop:'5%'}}>
               <div class="card mb-4">
                 <div class="table-responsive p-3">
 <table id="example" class="table table-striped table-bordered" style={{width:'100%',marginLeft:'10%'}}>
@@ -127,7 +132,9 @@ export default function AttendanceSidebarContent() {
 
 		</div>
 	</div>
+
 </div>
-          </div>
+	<Footer style={{ textAlign: 'center',backgroundColor:"white"}}>© 2021 RealCoderZ - developed by <b><a href="#" style={{color:"black"}}>RealCoderZ</a></b></Footer>
+ </div>
 		  )
 }
