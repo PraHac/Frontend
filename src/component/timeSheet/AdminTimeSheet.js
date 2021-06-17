@@ -73,8 +73,14 @@ export default class AccTimeSheet extends Component {
     this.updateSupervisorStatus = this.updateSupervisorStatus.bind(this);
     this.updateAccountantStatus = this.updateAccountantStatus.bind(this);
     this.updateTimeSheetPage = this.updateTimeSheetPage.bind(this);
+    this.logout=this.logout.bind(this)
   }
-
+   logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("adminId");
+    window.location.replace("/");
+  };
+  
   myChangeHandler = (event) => {
     let nam = event.target.name;
     let val = event.target.value;

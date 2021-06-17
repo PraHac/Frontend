@@ -863,15 +863,6 @@ class Header extends Component {
           <form onSubmit={this.mySubmitHandler}>
             <h3 className="text-center">Add Reimbursement</h3>
 
-            <input
-              type="text"
-              name="supervisorId"
-              id="supervisorId"
-              class="form-control"
-              placeholder="Supervisor id"
-              onChange={this.myChangeHandler}
-              required
-            />
             <br />
 
             <input
