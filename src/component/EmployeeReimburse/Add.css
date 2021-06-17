@@ -46,3 +46,6 @@ a:hover{
     flex-shrink: 19;
     user-select: none;
 }
+tbody + thead {
+    display: none;
+}

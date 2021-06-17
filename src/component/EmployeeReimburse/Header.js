@@ -10,7 +10,6 @@ import Moment from "react-moment";
 import RubberBand from "react-reveal/RubberBand";
 import logo from '../logo1.png'
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import getDay from 'react-datepicker';
@@ -22,10 +21,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import {notification} from 'antd'
-=======
 import { notification,Avatar } from "antd";
 import profile from '../undraw_profile.svg'
+// import { notification } from 'antd'
+import { MDBDataTable } from 'mdbreact'
 
 const logout = (e) => {
   e.preventDefault();
@@ -45,8 +44,6 @@ const logout = (e) => {
   localStorage.removeItem("employeeId");
   window.location.replace("/");
 };
->>>>>>> edcf7c47a86b3674bd4455db3cc8e00185d79b63
-
 
 const styles = makeStyles((theme) => ({
   formControl: {
@@ -66,6 +63,7 @@ class Header extends Component {
       supervisorId: 0,
       foodexpense: 0,
       travelexpense: 0,
+      update: [],
       otherexpense: 0,
       foodBill: "",
       travelBill: "",
@@ -88,7 +86,7 @@ class Header extends Component {
       rowNoDays: ["Monday", "Tuesday", "Wednesday", "Thrusday", "Friday"],
       timesheetDetail: [],
       task: "",
-      holiday:"no",
+      holiday:"casualWork",
       projectName: "",
       logHours: 0,
       apprTimeSheet: [],
@@ -96,27 +94,113 @@ class Header extends Component {
       week: [],
       weeks: [],
       count: 0,
-      startDate:null
+      startDate: null,
+      rows: [],
+      update: [],
+      columns: [
+
+        {
+          label: 'Project Name',
+          field: 'projectName',
+          sort: 'asc',
+          width: 27
+        },
+        {
+          label: 'Date',
+          field: 'date',
+          sort: 'asc',
+          width: 20
+        },
+        {
+          label: 'Supervisor Id',
+          field: 'supervisor_id',
+          sort: 'asc',
+          width: 20
+        },
+        {
+          label: 'Supervisor Status',
+          field: 'supervisorApproved',
+          sort: 'asc',
+          width: 20
+        },
+        {
+          label: 'Accountant Status',
+          field: 'accountantApproved',
+          sort: 'asc',
+          width: 20
+        },
+        {
+          label: 'Update',
+          field: 'update',
+          width: 20
+
+        },
+      ]
     };
     this.tsChange = this.tsChange.bind(this);
     this.savetimeSheet = this.savetimeSheet.bind(this);
     this.dateTaker = this.dateTaker.bind(this);
   }
 
+//*************************/ update timesheet
+
+  update(e) {
+    alert("testing");
+    fetch('http://localhost:8081/r1/TimeSheetbyTId/' + e.currentTarget.value)
+      .then(response => response.json())
+      .then((data) => {
+
+        // this.setState({
+        //   update: data
+        // });
+        // this.setState({ departmentId: data.departmentId })
+        // console.log(this.state.departmentId);
+        console.log(data)
+      });
+  }
+
+//*************************/ get all timesheet
+  
+  users() {
+    fetch('http://localhost:8081/r1//TimeSheetbyEId'+"/"+localStorage.getItem("employeeId"))
+      .then(response => response.json())
+      .then((data) => {
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+
+          data[i].projectName = <p>{data[i].projectName}</p>
+          data[i].date = <Moment format="YYYY-MMM-DD">{data[i].date}</Moment>
+          data[i].supervisor_id = <p>{data[i].supervisor_id}</p>
+          data[i].supervisorApproved = <p>{data[i].supervisorApproved}</p>
+          data[i].supervisorApproved = <p>{data[i].accountantApproved}</p>
+          data[i].update = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-primary" value={data[i].timeSheetId} onClick={this.update} type="button">Update</button>
+        }
+        this.setState({
+          rows: data
+        });
+        console.log(data)
+        console.log(this.state.rows.length)
+
+        console.log(this.state.rows);
+      });
+  }
+
   dateTaker(date) {
     this.setState({startDate: date})
-    
   }
 
   componentDidMount() {
     if (localStorage.getItem("employeeId") == null) {
       window.location.replace("/");
     }
-   
+    document.querySelector('#timesheet > div:nth-child(2) > div > div:nth-child(1) > div:nth-child(1) > div > label').style.marginLeft = '82px';
+    document.querySelector('.custom-select').classList = '';
+    document.querySelector('.dataTables_info').style.marginLeft = '82px';
+    document.querySelector('.pagination').style.marginRight = '82px';
+    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px'; 
+    // document.getElementById('save').classList.add('disabled')   
+    this.users();
   }
-  // componentDidUpdate() {
-    
-  // }
 
   
 
@@ -216,6 +300,7 @@ class Header extends Component {
       })
       .catch((err) => console.log(err));
   };
+
   timesheet = (event) => {
     event.preventDefault();
     document.getElementById("add").style.display = "none";
@@ -317,30 +402,28 @@ class Header extends Component {
     
   };
 
+  //********************** */ save timesheet
+
   savetimeSheet(event) {
     event.preventDefault();
     console.log(moment(this.state.startDate).format('YYYY-MM-DD'));
 
     var d;
     if (this.state.task != "") {
-      if (this.state.holiday == "no") {
+      if (this.state.holiday == "casualWork") {
         d = {
-          employeeId: localStorage.getItem("employeeId"),
           logHours: this.state.logHours,
           task: this.state.task,
-          supervisor_id: localStorage.getItem("supervisorId"),
           projectName: this.state.projectName,
-          date: this.state.week[this.state.count],
+          dateOfTimeSheet: this.state.week[this.state.count],
           holiday: this.state.holiday
         }
-      } else {
+      } else if(this.state.holiday == "leave" || this.state.holiday == "holiday"){
         d = {
-          employeeId: localStorage.getItem("employeeId"),
           logHours: 0,
-          task: "Holiday",
-          supervisor_id: localStorage.getItem("supervisorId"),
+          task: "No Work",
           projectName: "Holiday",
-          date: this.state.week[this.state.count],
+          dateOfTimeSheet: this.state.week[this.state.count],
           holiday: this.state.holiday
         }
       }
@@ -354,7 +437,15 @@ class Header extends Component {
     this.state.timesheetDetail.push(d);
     console.log(this.state.timesheetDetail);
 
-    TimeSheetService.saveTimeSheet(this.state.timesheetDetail).then((response) => {
+    var timesheetParameter = {
+      employeeId: localStorage.getItem("employeeId"),
+      supervisorId: localStorage.getItem("supervisorId"),
+      timesheetDetail: this.state.timesheetDetail
+    }
+
+    console.log(timesheetParameter);
+
+    TimeSheetService.saveTimeSheet(timesheetParameter).then((response) => {
       console.log(response);
       this.setState({ timeSheet: response.data });
       notification['success']({
@@ -369,28 +460,24 @@ class Header extends Component {
     e.preventDefault();
     if (this.state.task != "") {
       var d;
-      if (this.state.holiday == "no") {
+      if (this.state.holiday == "casualWork") {
         d = {
-          employeeId: localStorage.getItem("employeeId"),
           logHours: this.state.logHours,
           task: this.state.task,
-          supervisor_id: localStorage.getItem("supervisorId"),
           projectName: this.state.projectName,
-          date: this.state.week[this.state.count],
+          dateOfTimeSheet: this.state.week[this.state.count],
           holiday: this.state.holiday
         }
-      } else {
+      } else if(this.state.holiday == "holiday" || this.state.holiday == "leave"){
         d = {
-          employeeId: localStorage.getItem("employeeId"),
           logHours: 0,
           task: "Holiday",
-          supervisor_id: localStorage.getItem("supervisorId"),
           projectName: "Holiday",
-          date: this.state.week[this.state.count],
+          dateOfTimeSheet: this.state.week[this.state.count],
           holiday: this.state.holiday
         }
       }
-      this.setState({ holiday: "no" })
+      this.setState({ holiday: "casualWork" })
       console.log(d);
       this.state.timesheetDetail.push(d);
       this.setState({ count: this.state.count + 1 })
@@ -610,8 +697,10 @@ class Header extends Component {
                     <td>
                     <InputLabel id="demo-simple-select-label">Holiday</InputLabel>
                     <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ holiday: e.target.value })}>
-                      <option value="no" selected>no</option>
-                      <option value="yes">yes</option>
+                      <option value="casualWork" selected>Casual Work</option>
+                        <option value="holiday">Holiday</option>
+                      <option value="leave">Leave</option>
+                        
                       </select>
                   </td>
                 </tr>
@@ -625,6 +714,20 @@ class Header extends Component {
           </div>
           </div>  
           </RubberBand>
+
+         <div style={{ width: '1000px', marginLeft: '20%',marginTop:40 }}>
+          <MDBDataTable
+            striped
+            bordered
+            entriesOptions={[5, 10, 20, 50, 100]}
+            entries={5}
+            data={{ columns: this.state.columns, rows: this.state.rows }}
+            pagingTop
+            searchTop
+            searchBottom={false}
+          />
+         </div>
+    
         </div>
         
           {/* *************************approved timesheet */}

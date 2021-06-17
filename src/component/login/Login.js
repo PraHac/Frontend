@@ -5,13 +5,7 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
-<<<<<<< HEAD
 import {  notification} from 'antd';
-import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
-
-=======
-import {notification} from 'antd';
->>>>>>> edcf7c47a86b3674bd4455db3cc8e00185d79b63
 
 function Login() {
 
