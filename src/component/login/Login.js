@@ -5,9 +5,13 @@ import LoginService from "../../services/LoginService";
 import {useHistory} from 'react-router-dom'
 import '../adminDashboard/style.css'
 import M from 'materialize-css'
+<<<<<<< HEAD
 import {  notification} from 'antd';
 import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
 
+=======
+import {notification} from 'antd';
+>>>>>>> edcf7c47a86b3674bd4455db3cc8e00185d79b63
 
 function Login() {
 
@@ -90,13 +94,17 @@ function Login() {
         history.push("/adminDashboard");
         notification['success']({
           description:
-            'Admin LogedIn'
+            'Admin LogedIn',
+            className:"mt-5"  
+  
         })
       })
       .catch(err =>{
         notification['error']({
           description:
-            'Enter Correct Input'
+            'Enter Correct Input',
+            className:"mt-5"  
+  
         })
       });
   }
@@ -112,20 +120,42 @@ function Login() {
       LoginService.loginAccountant(loginDetail)
       .then(res => {
         localStorage.setItem("accountantId", res.data.accountantId);
-        M.toast({ html: "accountant logedIn"})
+         notification['success']({
+          description:
+            'Accountant LogedIn',
+            className:"mt-5"  
+  
+        })
         history.push("/accountantDash");
       })
-      .catch(err => alert(err));
+      .catch(err => {
+        notification['error']({
+          description:
+            'Enter Correct Input',
+            className:"mt-5"  
+  
+        })
+      });
 
     } else if (role == "supervisor") {
 
       LoginService.loginSupervisor(loginDetail)
       .then(res => {
         localStorage.setItem("supervisorId", res.data.supervisorId);
-        M.toast({ html: "supervisor logedIn"})
         history.push("/supervisorDash");
+        notification['success']({
+          description:
+            'Supervisor LogedIn',
+          className:"mt-5"  
+        })
       })
-      .catch(err => alert(err));
+      .catch(err => {
+        notification['error']({
+          description:
+            'Enter Correct Input',
+          className:"mt-5"  
+        })
+      });
 
     }
   }
@@ -147,13 +177,25 @@ function Login() {
         localStorage.setItem("supervisorId", res.data.supervisorId);
         localStorage.setItem("location", "office");
         localStorage.setItem("employeeName", res.data.name);
-        M.toast({ html: "Employee logedIn" })
+        // M.toast({ html: "Employee logedIn" })
         console.log("Employee logedIn", res);
         setDetail(res);
         console.log(detail);
         history.push("/employeeReimburse");
+        notification['success']({
+          description:
+            'Employee LogedIn',
+          className:"mt-5"  
+        })
       })
-      .catch(err => alert("Enter Correct Input"));
+      .catch(err => {
+        notification['error']({
+          description:
+            'Enter Correct Input',
+          className:"mt-5"  
+        })
+
+      });
   }
 
   return (

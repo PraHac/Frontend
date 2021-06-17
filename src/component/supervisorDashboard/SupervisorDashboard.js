@@ -9,6 +9,15 @@ import { Button, Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/c
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import logo from '../logo1.png'
 import Moment from 'react-moment'
+import { Avatar } from 'antd';
+import profile from '../undraw_profile.svg'
+
+
+const logout = (e) => {
+  e.preventDefault();
+  localStorage.removeItem("supervisorId");
+  window.location.replace("/");
+}
 
 export default class SupervisorDashboard extends Component {
   constructor(props) {
@@ -42,11 +51,11 @@ export default class SupervisorDashboard extends Component {
     }
   }
 
-  logout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("supervisorId");
-    window.location.replace("/");
-  }
+  // logout = (e) => {
+  //   e.preventDefault();
+  //   localStorage.removeItem("supervisorId");
+  //   window.location.replace("/");
+  // }
 
   superApproved = (e) => {
     e.preventDefault();
@@ -195,7 +204,14 @@ disApprove = (e,r) =>{
                   <a className="nav-link text-dark" data-widget="pushmenu" href="#"><i className="fas fa-bars" style={{color:"white", fontSize:"20px"}} /></a>
                 </li>
               </ul>
-              <button type="button" style={but} class="btn btn-danger" onClick={this.logout}>LogOut</button>
+              {/* <button type="button" style={but} class="btn btn-danger" onClick={this.logout}>Hello</button> */}
+              <div class="dropdown" style={{left:'85%',position:'fixed'}}>
+                <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/supervisorDash">Dashboard</Link></a>
+                  <a class="dropdown-item" onClick={logout}>Logout</a>
+                </div>
+          </div>
           </nav>
 {/* *************************SideBar */}
            
