@@ -15,13 +15,7 @@ import { Avatar } from 'antd';
 import { Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import profile from './undraw_profile.svg'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+
 import AttendanceSidebarContent from './AttendanceSidebarContent';
 import { Height } from '@material-ui/icons';
 

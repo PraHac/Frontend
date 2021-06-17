@@ -21,6 +21,7 @@ import logo from '../logo1.png'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 
+
 const logout = (e) => {
   e.preventDefault();
   localStorage.removeItem("accountantId");

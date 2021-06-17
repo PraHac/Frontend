@@ -4,7 +4,6 @@ import Table from 'react-bootstrap/Table'
 import './admindashByAdy.css'
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery'
 import Moment from 'react-moment'
 import { Layout } from 'antd';
 export default function AttendanceSidebarContent() {

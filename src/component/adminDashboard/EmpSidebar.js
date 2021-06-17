@@ -19,7 +19,6 @@ import EmpSidebarContent from './EmpSidebarContent';
 import './admindashByAdy.css'
 
 const { Header, Sider, Content,Footer } = Layout;
-
 const logout = (e) => {
   e.preventDefault();
   localStorage.removeItem("adminId");

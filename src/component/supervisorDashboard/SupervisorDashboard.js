@@ -12,7 +12,6 @@ import Moment from 'react-moment'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 
-
 export default class SupervisorDashboard extends Component {
   constructor(props) {
     super(props);

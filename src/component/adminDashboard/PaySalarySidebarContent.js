@@ -7,7 +7,6 @@ import React from 'react'
 import Moment from 'react-moment'
 
 class PaySalarySidebarContent extends React.Component{
-
   constructor(props){
       super(props)
       this.state={

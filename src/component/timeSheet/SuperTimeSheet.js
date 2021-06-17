@@ -21,7 +21,6 @@ import logo from '../logo1.png'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 
-
 export default class SuperTimeSheet extends Component {
   constructor(props) {
     super(props);

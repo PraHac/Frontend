@@ -15,13 +15,7 @@ import { Avatar } from 'antd';
 import { Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import profile from './undraw_profile.svg'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  TeamOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+
 import PaySalarySidebarContent from './PaySalarySidebarContent';
 import axios from 'axios';
 const { Header, Sider, Content ,Footer} = Layout;

@@ -553,7 +553,6 @@ class Header extends Component {
         </nav>
 
         {/* *************************SideBar */}
-
         <div>
           <aside className="main-sidebar sidebar-dark-primary elevation-4" style={{backgroundColor:"black"}}>
               <a className="brand-link">

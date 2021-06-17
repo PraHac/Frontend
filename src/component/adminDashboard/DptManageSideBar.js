@@ -15,13 +15,7 @@ import { Avatar } from 'antd';
 import { Dropdown } from 'antd';
 import profile from './undraw_profile.svg'
 import { DownOutlined } from '@ant-design/icons';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+
 import DptManageSideBarContent from './DptManageSideBarContent'
 
 const { Header, Sider, Content,Footer } = Layout;
