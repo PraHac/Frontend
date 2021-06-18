@@ -187,7 +187,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("ts").style.display = "block";
     document.getElementById("ets").style.display = "none";  
-    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.endD)
+    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD)
     .then((response) => {
       console.log(response);
       this.setState({ timeSheet: response.data });
@@ -198,7 +198,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "block";
-    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.endD+"/"+"/"+this.state.employeeId)
+    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.employeeId)
     .then((response) => {
       console.log(response);
       this.setState({ emptimeSheet: response.data });
@@ -209,22 +209,15 @@ export default class AccTimeSheet extends Component {
 
   supervisorStatusForTS1(e) {
     e.preventDefault();
-    const detail = [];
     var val = document.getElementById("approved").value
-    this.state.emptimeSheet.map(item => {
-      this.state.tsList.push(item.timeSheetId);
-    })
-    for (var i = 0; i < this.state.tsList.length; i++){
-      if (this.state.tsList[i] != 0) {
-        const d = {
-          accountantApproved: val,
-          timeSheetId: this.state.tsList[i]
-        }
-        detail.push(d);
-      }
+    var tId=0;
+    for (var i = 0; i < this.state.emptimeSheet.length; i++) {
+      tId = this.state.emptimeSheet[i];
     }
-    console.log(detail);
-  
+        const detail = {
+          accountantApproved: val,
+          timeSheetId: tId.timeSheetId
+        }
     axios.put("http://localhost:8081/r1/updateMultipleAccountantStaus", detail).then((res) => {
     console.log(res)
     M.toast({ html: "Approved" });  
@@ -234,22 +227,16 @@ export default class AccTimeSheet extends Component {
 
   //*********** */ Disapproved supervisor status to employee TS
   supervisorStatusForTS2(e) {
-    const detail = [];
     e.preventDefault();
     var val = document.getElementById("disapproved").value
-    this.state.emptimeSheet.map(item => {
-      this.state.tsList.push(item.timeSheetId);
-    })
-    for (var i = 0; i < this.state.tsList.length; i++){
-      if (this.state.tsList[i] != 0) {
-        const d = {
-          accountantApproved: val,
-          timeSheetId: this.state.tsList[i]
-        }
-        detail.push(d);
-      }
+    var tId=0;
+    for (var i = 0; i < this.state.emptimeSheet.length; i++) {
+      tId = this.state.emptimeSheet[i];
     }
-    console.log(detail);
+        const detail = {
+          accountantApproved: val,
+          timeSheetId: tId.timeSheetId
+        }
     axios.put("http://localhost:8081/r1/updateMultipleAccountantStaus", detail).then((res) => {
       console.log(res)
       M.toast({ html: "Disapproved" });  
@@ -438,7 +425,7 @@ export default class AccTimeSheet extends Component {
           
         {/* ****option to choose timesheet**   */}
           <div id="opt"> 
-            <FormControl style={formControl}>
+          <FormControl style={formControl}>
               <InputLabel id="demo-simple-select-label">Customize timesheet</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -457,7 +444,6 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 5px 5px gray"}}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize week</h5>
                  <input style={inputStyle} type="date" name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} type="date" name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <button className="btn btn-info" onClick={this.seeByDate}>go</button>  
               </div>
               </div>  
@@ -465,7 +451,6 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
                  <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
               </div>
@@ -490,20 +475,16 @@ export default class AccTimeSheet extends Component {
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
-                <div class="table-responsive p-3">
+                    <div class="table-responsive p-3">
+                    {this.state.timeSheet.length>0?(
                 <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                         <th>Accountant Status</th>
                         <th>Supervisor Status</th>
-                        
                         <th>Employee Name</th>
-                        
                         <th>Date</th>
-                        <th>Day</th>
-                        <th>Task</th>
                         <th>Project Name</th>
-                        <th>Log Hours</th>
                         <th>Action</th>
                       </tr>
                   </thead>
@@ -517,12 +498,12 @@ export default class AccTimeSheet extends Component {
                         <td>{t.employeeName}</td>
                         
                         <td style={{width:"15%"}}>
-                          <Moment format="YYYY-MMM-DD">{t.date}</Moment>
+                          <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                         </td>
-                        <td>{t.day}</td>
-                        <td>{t.task}</td>
+                        
+                        
                         <td>{t.projectName}</td>
-                        <td>{t.logHours}</td>
+                        
                         <td>
                           <button
                             className="btn btn-warning"
@@ -535,7 +516,9 @@ export default class AccTimeSheet extends Component {
                   </>  
                 ))}
               </tbody>
-              </table>
+                      </table>
+                ) : "No Timesheet Available"}      
+                      
                 </div>
               </div>
             </div>
@@ -549,63 +532,49 @@ export default class AccTimeSheet extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
-                  <thead>
-                      <tr>
-                      <th>Accountant Status</th>
-                      <th>Supervisor Status</th>
-                      
-                      <th>Employee Name</th>
-                      
-                      <th>Date</th>
-                      <th>Day</th>
-                      <th>Task</th>
-                      <th>Project Name</th>
-                      <th>Log Hours</th>
-                      <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                {this.state.emptimeSheet?.map((t) => (
-                  <>
-                    {
-                        (t.employeeId != 0 ? (
-                          <tr>
-                      <td>{t.accountantApproved}</td>
-                      <td>{t.supervisorApproved}</td>
-                     
-                      <td>{t.employeeName}</td>
-                      
-                      <td style={{width:"15%"}}>
-                        <Moment format="YYYY-MMM-DD">{t.date}</Moment>
-                      </td>
-                      <td>{t.day}</td>
-                      <td>{t.task}</td>
-                      <td>{t.projectName}</td>
-                      <td>{t.logHours}</td>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => this.deleteTimeSheet(t.timeSheetId)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                      ) : (""))
-                    }
-                  </>  
-                ))}
-              </tbody>
-              </table>
-                </div>
+                      {this.state.emptimeSheet.length > 0 ? (
+                        <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
+                          <thead>
+                            <tr>
+                              <th>Accountant Status</th>
+                              <th>Supervisor Status</th>
+                              <th>Employee Name</th>
+                              <th>Date</th>
+                              <th>Project Name</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.emptimeSheet?.map((t) => (
+                              <>
+                                {
+                                  (t.employeeId != 0 ? (
+                                    <tr>
+                                      <td>{t.accountantApproved}</td>
+                                      <td>{t.supervisorApproved}</td>
+                                      <td>{t.employeeName}</td>
+                                      <td style={{ width: "15%" }}>
+                                        <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
+                                      </td>
+                                      <td>{t.projectName}</td>
+                                      <td>
+                                        <button id="approved" value="Approved" className="btn btn-info" onClick={this.supervisorStatusForTS1} >Approve</button>
+                                        <button id="disapproved" value="DisApproved" className="btn btn-info ml-3" onClick={this.supervisorStatusForTS2} >DisApprove</button>
+                                      </td>
+                                    </tr>
+                                  ) : (""))
+                                }
+                              </>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : "No Timesheet Available"}
+              </div>
               </div>
             </div>
           </div>
           {/* /employee weeekly timesheet******* */}
-                <button id="approved" value="Approved" className="btn btn-info" onClick={this.supervisorStatusForTS1} >Approve</button>
-                <button id="disapproved" value="DisApproved" className="btn btn-info ml-3" onClick={this.supervisorStatusForTS2} >DisApprove</button>
-            </div>  
+          </div>  
           </RubberBand>
 
       <RubberBand>
@@ -616,19 +585,15 @@ export default class AccTimeSheet extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
+                {this.state.apprTimeSheet.length>0?(
                 <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      
                       <th>Employee Name</th>
-                      
                       <th>Date</th>
-                      <th>Day</th>
-                      <th>Task</th>
                       <th>Project Name</th>
-                      <th>Log Hours</th>
                       <th>Action</th>
                       </tr>
                   </thead>
@@ -637,16 +602,11 @@ export default class AccTimeSheet extends Component {
                         <tr>
                           <td>{t.accountantApproved}</td>
                           <td>{t.supervisorApproved}</td>
-                         
                           <td>{t.employeeName}</td>
-                          
                           <td style={{width:"15%"}}>
-                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
-                          </td>
-                          <td>{t.day}</td>
-                          <td>{t.task}</td>
-                          <td>{t.projectName}</td>
-                          <td>{t.logHours}</td>
+                            <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
+                        </td>
+                        <td>{t.projectName}</td>
                           <td>
                         <button
                           className="btn btn-warning"
@@ -659,6 +619,7 @@ export default class AccTimeSheet extends Component {
                     ))}
                   </tbody>
                 </table>
+                ) : "No Timesheet Available"}      
                 </div>
               </div>
             </div>
@@ -672,22 +633,17 @@ export default class AccTimeSheet extends Component {
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
-                <div class="table-responsive p-3">
+              <div class="table-responsive p-3">
+              {this.state.disapprTimeSheet.length>0?(        
                 <table id="example" class="table table-striped table-bordered w-100" style={{ width: "100%" }}>
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      
                       <th>Employee Name</th>
-                      
                       <th>Date</th>
-                      <th>Day</th>
-                      <th>Task</th>
                       <th>Project Name</th>
-                      <th>Log Hours</th> 
                       <th>Action</th>
-
                       </tr>
                   </thead>
                   <tbody>
@@ -699,12 +655,10 @@ export default class AccTimeSheet extends Component {
                           <td>{t.employeeName}</td>
                           
                           <td style={{width:"15%"}}>
-                            <Moment format="YYYY-MMM-DD">{t.date}</Moment>
-                          </td>
-                          <td>{t.day}</td>
-                          <td>{t.task}</td>
-                          <td>{t.projectName}</td>
-                          <td>{t.logHours}</td>
+                            <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
+                        </td>
+                        <td>{t.projectName}</td>
+                        
                           <td>
                         <button
                           className="btn btn-warning"
@@ -717,6 +671,7 @@ export default class AccTimeSheet extends Component {
                     ))}
                   </tbody>
                 </table>
+                ) : "No Timesheet Available"}             
                 </div>
               </div>
             </div>
