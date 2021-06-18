@@ -148,7 +148,8 @@ function Login() {
     } else if (role == "supervisor") {
 
       LoginService.loginSupervisor(loginDetail)
-      .then(res => {
+        .then(res => {
+        console.log(res);
         localStorage.setItem("supervisorId", res.data.supervisorId);
         localStorage.setItem("supervisorName", res.data.supervisorName);
         history.push("/supervisorDash");
