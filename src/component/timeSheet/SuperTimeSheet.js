@@ -20,6 +20,8 @@ import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import { Icon } from "@material-ui/core";
 
 export default class SuperTimeSheet extends Component {
   constructor(props) {
@@ -43,7 +45,9 @@ export default class SuperTimeSheet extends Component {
       tsList: [],
       age: "",
       apprTimeSheet: [],
-      disapprTimeSheet: []
+      disapprTimeSheet: [],
+      getAppTimesheetDetails: [],
+      pName: ""
     };
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
@@ -76,6 +80,22 @@ export default class SuperTimeSheet extends Component {
     this.updateSupervisorStatus = this.updateSupervisorStatus.bind(this);
     this.updateAccountantStatus = this.updateAccountantStatus.bind(this);
     this.updateTimeSheetPage = this.updateTimeSheetPage.bind(this);
+  }
+
+  viewAppTimeSheet = (id) => {
+    document.getElementById("viewtimesheetDet").style.display = "block"
+    axios.get('http://localhost:8081/r1//getTimeSheet' + '/' + id)
+      .then(res => {
+        console.log(res);
+        this.setState({ getAppTimesheetDetails: res.data.detailTimeSheet })
+        this.setState({ pName: res.data.projectName });
+
+      })
+    .catch(err => console.log(err))
+  }
+
+  removeDetails = () => {
+    document.getElementById("viewtimesheetDet").style.display = "none"
   }
 
   myChangeHandler = (event) => {
@@ -138,6 +158,7 @@ export default class SuperTimeSheet extends Component {
   displayAllTimeSheet() {
     document.getElementById("ts").style.display = "block";
     document.getElementById("apprts").style.display = "none";
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("disapprts").style.display = "none";
     document.getElementById("opt").style.display = "block";
     // document.getElementById("noneempWeek").style.display = "none"
@@ -262,6 +283,7 @@ export default class SuperTimeSheet extends Component {
   seeApproved(e) {
     e.preventDefault();
     document.getElementById("apprts").style.display = "block";
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("empWeek").style.display = "none"
     document.getElementById("noneempWeek").style.display = "none"
     document.getElementById("ts").style.display = "none";
@@ -277,6 +299,7 @@ export default class SuperTimeSheet extends Component {
   seeDisapproved(e) {
     e.preventDefault();
     document.getElementById("empWeek").style.display = "none"
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("noneempWeek").style.display = "none"
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "none";
@@ -470,18 +493,15 @@ export default class SuperTimeSheet extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                {this.state.timeSheet.length>0?(
+                <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                         <th>Accountant Status</th>
                         <th>Supervisor Status</th>
-                        
                         <th>Employee Name</th>
-                       
                         <th width="150">Date</th>
-                       
                         <th>Project Name</th>
-                        
                         <th>Action</th>
                       </tr>
                   </thead>
@@ -491,22 +511,23 @@ export default class SuperTimeSheet extends Component {
                     <tr>
                         <td>{t.accountantApproved}</td>
                         <td>{t.supervisorApproved}</td>
-                        
                         <td>{t.employeeName}</td>
-                       
                         <td>
                           <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                         </td>
-                        
-                       
                         <td>{t.projectName}</td>
-                        
-                        <td>
+                        <td style={{display:"flex", justifyContent:"space-between"}}>
                           <button
-                            className="btn btn-warning"
+                            className="btn btn-danger"
                             onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                           >
                             Delete
+                        </button>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => this.viewAppTimeSheet(t.timeSheetId)}
+                          >
+                            view
                           </button>
                         </td>
                       </tr>  
@@ -514,7 +535,8 @@ export default class SuperTimeSheet extends Component {
                 ))}
               </tbody>
               </table>
-                </div>
+              ):"No Timesheet Available"}
+              </div>
               </div>
             </div>
           </div>
@@ -528,18 +550,14 @@ export default class SuperTimeSheet extends Component {
               <div class="card mb-4">
                 <div class="table-responsive p-3">
                 {this.state.emptimeSheet.length>0?(
-                  <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                  <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
                       <th>Supervisor Status</th>
-                      
                       <th>Employee Name</th>
-                     
                       <th>Date</th>
-                    
                       <th>Project Name</th>
-                      
                       <th>Action</th>
                       </tr>
                   </thead>
@@ -561,9 +579,15 @@ export default class SuperTimeSheet extends Component {
                      
                                       <td>{t.projectName}</td>
                       
-                                      <td className="d-flex">
+                                      <td style={{display:"flex", justifyContent:"space-between"}}>
                                         <button id="approved" value="Approved" className="btn btn-info" onClick={this.supervisorStatusForTS1} >Approve</button>
                                         <button id="disapproved" value="DisApproved" className="btn btn-info ml-3" onClick={this.supervisorStatusForTS2} >DisApprove</button>
+                                        <button
+                                          className="btn btn-secondary"
+                                          onClick={() => this.viewAppTimeSheet(t.timeSheetId)}
+                                        >
+                                          view
+                                        </button>
                                       </td>
                                     </tr>
                                   ) : (""))
@@ -591,7 +615,7 @@ export default class SuperTimeSheet extends Component {
               <div class="card mb-4">
                 <div class="table-responsive p-3">
                       {this.state.apprTimeSheet.length > 0?(
-                        <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                        <table id="example" class="table table-striped table-bordered w-100">
                           <thead>
                             <tr>
                               <th>Accountant Status</th>
@@ -616,12 +640,18 @@ export default class SuperTimeSheet extends Component {
                                   <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                                 </td>
                                 <td>{t.projectName}</td>
-                                <td>
+                                <td style={{display:"flex", justifyContent:"space-between"}}>
                                   <button
-                                    className="btn btn-warning"
+                                    className="btn btn-danger"
                                     onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                                   >
                                     Delete
+                                  </button>
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={() => this.viewAppTimeSheet(t.timeSheetId)}
+                                  >
+                                    View
                                   </button>
                                 </td>
                               </tr>
@@ -643,7 +673,8 @@ export default class SuperTimeSheet extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                {this.state.disapprTimeSheet.length > 0?(      
+                <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                       <th>Accountant Status</th>
@@ -674,28 +705,91 @@ export default class SuperTimeSheet extends Component {
                          
                           <td>{t.projectName}</td>
                           
-                          <td>
+                          <td style={{display:"flex", justifyContent:"space-between"}}>
                         <button
                           className="btn btn-warning"
                           onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                         >
                           Delete
-                        </button>
+                          </button>
+                          <button
+                                    className="btn btn-warning"
+                                    onClick={() => this.viewAppTimeSheet(t.timeSheetId)}
+                                  >
+                                    View
+                                  </button>
                       </td>
                         </tr>
                     ))}
                   </tbody>
                 </table>
-                </div>
+                      ):"No Timesheet Found"}
+                      </div>
               </div>
             </div>
           </div>
           {/* /disapproved timesheet******************* */}
-            </div>  
+        </div>  
       </RubberBand>
     </div>
-     
-      </div>
+    <div id="viewtimesheetDet">
+        {this.state.getAppTimesheetDetails.length>0?( 
+        <div style={{ marginLeft: "20%", marginTop: "2%", boxShadow: "2px 2px 10px", padding: "10px" }}>
+          <div class="row" >
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                    <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <p style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                      backgroundColor: "rgb(253, 227, 227)"
+                      }}>Project Name : {this.state.pName}
+                      </p>
+                      <Icon><HighlightOffIcon onClick={this.removeDetails} style={{ fontSize: "50px", cursor: "pointer" }} /></Icon>
+                    </div>       
+                <div class="table-responsive p-3">     
+                <table id="example" class="table table-striped table-bordered w-100" >
+                      <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
+                        <td>Days</td>
+                        <td>Working Hour</td>
+                        <td>Date</td>
+                        <td>Task</td>
+                        <td>Leave</td>
+                      </thead>
+                      {
+                      this.state.getAppTimesheetDetails.map((i) => (
+                        <>
+                        <tr >
+                          <td style={{textAlign:"center"}}>
+                          <input style={inputStyle} value={i.day} />
+                          </td>
+                            <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.logHours} /><br />
+                            {/* <span id="err"></span> */}
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <Moment style={inputStyle} format="YYYY-MMM-DD">{i.dateOfTimesheet}</Moment>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.task} />
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.holiday} />
+                          </td>
+                        </tr>
+                        </>
+                      ))} 
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        ):""}  
+        </div>   
+  </div>
     );
   }
 }

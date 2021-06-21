@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import "./Add.css";
 import axios from "axios";
 import imageToBase64 from "image-to-base64/browser";
-import M from "materialize-css";
-import { Button, Dialog, DialogContent, DialogTitle } from "@material-ui/core";
+import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
 import "../TimeSheet.css";
 import TimeSheetService from "../../services/TimeSheetService";
 import Moment from "react-moment";
@@ -12,19 +11,14 @@ import logo from '../logo1.png'
 import { Link } from "react-router-dom";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import getDay from 'react-datepicker';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { notification,Avatar } from "antd";
 import profile from '../undraw_profile.svg'
-// import { notification } from 'antd'
 import { MDBDataTable } from 'mdbreact'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 const logout = (e) => {
   e.preventDefault();
@@ -99,6 +93,10 @@ class Header extends Component {
       startDate: null,
       rows: [],
       update: [],
+      pName: "",
+      getTimesheetDetails: [],
+      getAppTimesheetDetails: [],
+      openTimesheetDetails: false,
       columns: [
 
         {
@@ -153,24 +151,50 @@ class Header extends Component {
 //*************************/ update timesheet
 
   update = (e) => {
-    alert("testing");
-    fetch('http://localhost:8081/r1/TimeSheetbyTId/' + e.currentTarget.value)
-      .then(response => response.json())
-      .then((data) => {
+    // alert("testing");
+    axios.get('http://localhost:8081/r1/TimeSheetbyTId/' + e.currentTarget.value)
+      .then(res => {
 
         // this.setState({
         //   update: data
         // });
         // this.setState({ departmentId: data.departmentId })
         // console.log(this.state.departmentId);
-        console.log(data)
+        this.setState({ getTimesheetDetails: res.data.detailTimeSheet })
+        console.log(res.data.detailTimeSheet)
       });
   }
 
-//*************************/ get timesheets
+//*************************/ get timesheet details
   view = (e) => {
-    alert("test", e.currentTarget.value)    
+    document.getElementById("timesheetDet").style.display = "block"
+    axios.get('http://localhost:8081/r1//getTimeSheet' + '/' + e.currentTarget.value)
+      .then(res => {
+        this.setState({ getTimesheetDetails: res.data.detailTimeSheet })
+        this.setState({ pName: res.data.projectName });
+
+      })
+    .catch(err => console.log(err))
   }
+
+  //*************************/ get approved timesheet details
+  viewAppTimeSheet = (id) => {
+    document.getElementById("viewtimesheetDet").style.display = "block"
+    axios.get('http://localhost:8081/r1//getTimeSheet' + '/' + id)
+      .then(res => {
+        console.log(res);
+        this.setState({ getAppTimesheetDetails: res.data.detailTimeSheet })
+        this.setState({ pName: res.data.projectName });
+
+      })
+    .catch(err => console.log(err))
+  }
+
+  removeDetails = () => {
+    document.getElementById("timesheetDet").style.display = "none"
+    document.getElementById("viewtimesheetDet").style.display = "none"
+  }
+
 //*************************/ get timesheets
   
   users = () => {
@@ -181,10 +205,10 @@ class Header extends Component {
         for (var i = 0; i < data.length; i++) {
 
           data[i].projectName = <p>{data[i].projectName}</p>
-          data[i].date = <Moment format="YYYY-MMM-DD">{data[i].date}</Moment>
+          data[i].date = <Moment format="YYYY-MMM-DD">{data[i].dateOfTimeSheet}</Moment>
           data[i].superVisorName = <p>{data[i].superVisorName}</p>
           data[i].supervisorApproved = <p>{data[i].supervisorApproved}</p>
-          data[i].supervisorApproved = <p>{data[i].accountantApproved}</p>
+          data[i].accountantApproved = <p>{data[i].accountantApproved}</p>
           data[i].update = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-primary" value={data[i].timeSheetId} onClick={this.update} type="button">Update</button>
           data[i].view = <button data-toggle="modal" data-target="#exampleModal" className="btn btn-secondary" value={data[i].timeSheetId} onClick={this.view} type="button">view</button> 
         }
@@ -288,7 +312,6 @@ class Header extends Component {
     document.getElementById("attend").style.display = "none";
     document.getElementById("timesheet").style.display = "none";
     document.getElementById("timesheet1").style.display = "none";
-    document.getElementById("timesheet2").style.display = "none";
   };
 
   viewReimburs = (event) => {
@@ -298,7 +321,6 @@ class Header extends Component {
     document.getElementById("view").style.display = "block";
     document.getElementById("timesheet").style.display = "none";
     document.getElementById("timesheet1").style.display = "none";
-    document.getElementById("timesheet2").style.display = "none";
 
     axios
       .get(
@@ -321,7 +343,7 @@ class Header extends Component {
     document.getElementById("view").style.display = "none";
     document.getElementById("timesheet").style.display = "block";
     document.getElementById("timesheet1").style.display = "none";
-    document.getElementById("timesheet2").style.display = "none";
+    document.getElementById("viewtimesheetDet").style.display = "none";
   };
   timesheet1 = (event) => {
     event.preventDefault();
@@ -330,23 +352,9 @@ class Header extends Component {
     document.getElementById("view").style.display = "none";
     document.getElementById("timesheet").style.display = "none";
     document.getElementById("timesheet1").style.display = "block";
-    document.getElementById("timesheet2").style.display = "none";
     axios.get("http://localhost:8081/r1/allaccountantapproved").then((res) => {
       console.log(res)
       this.setState({apprTimeSheet: res.data})
-    })
-  };
-  timesheet2 = (event) => {
-    event.preventDefault();
-    document.getElementById("add").style.display = "none";
-    document.getElementById("attend").style.display = "none";
-    document.getElementById("view").style.display = "none";
-    document.getElementById("timesheet").style.display = "none";
-    document.getElementById("timesheet1").style.display = "none";
-    document.getElementById("timesheet2").style.display = "block";
-    axios.get("http://localhost:8081/r1/allaccountantDisapproved").then((res) => {
-      console.log(res)
-      this.setState({disapprTimeSheet: res.data})
     })
   };
 
@@ -523,6 +531,7 @@ class Header extends Component {
         border: "none",
         boxShadow: "3px 1px 3px lightgrey",
         fontSize: "13px",
+        fontWeight: 600
     }
     const logostyle = {
       height: "48px",
@@ -602,19 +611,13 @@ class Header extends Component {
                         <li className="nav-item">
                           <a className="nav-link">
                             <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
-                            <p onClick={this.timesheet}>Add TimeSheet</p>
+                            <p onClick={this.timesheet}> TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link">
                             <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
                             <p onClick={this.timesheet1}>Approved TimeSheet</p>
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a className="nav-link">
-                            <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
-                            <p onClick={this.timesheet2}>Disapproved TimeSheet</p>
                           </a>
                         </li>
                       </ul>
@@ -651,14 +654,14 @@ class Header extends Component {
                       value={"Supervisor Name : " + localStorage.getItem("supervisorName")}
                 required
               />
-               <select className="form-control  w-25" onChange={(e) => this.setState({projectName: e.target.value})}>
+               <select id="project" className="form-control  w-25" onChange={(e) => this.setState({projectName: e.target.value})}>
                       <option selected>Select Project</option>
                       <option value="RC Builder">RC Builder</option>
                       <option value="RC 360">RC 360</option>
                       <option value="Reimbursement">Reimbursement</option>
                       <option value="Video Conferencing">Video Conferencing</option>    
               </select>
-              <div className='ui-datepicker'>
+              <div id="d" className='ui-datepicker'>
                 <DatePicker
                   selected={this.state.startDate}
                   onChange={date => this.dateTaker(date)                }
@@ -673,7 +676,7 @@ class Header extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100">
                 
                       <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
                         <td>Days</td>
@@ -684,6 +687,7 @@ class Header extends Component {
                       </thead>
                       {
                       this.state.rowNo.map((i) => (
+                        
                         <>
                         <tr>
                           <td>
@@ -696,6 +700,8 @@ class Header extends Component {
                               type="text"
                               name="logHours"
                               id="logHours"
+                              // value={ }
+                              // defaultValue={this.state.update.departmentName}
                               onChange={this.timesheetHandeler}
                               onClick={(e, i) => this.tsChange(e, i)}
                               required  
@@ -703,12 +709,11 @@ class Header extends Component {
                             <span id="err"></span>
                           </td>
                           {this.state.weeks.length>0? <td>
-                              <InputLabel id="demo-simple-select-label">Date</InputLabel>
                               <input style={inputStyle} value={ this.state.weeks[i] } />
                           </td>  : ""}
                           
                             <td>
-                            <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ task: e.target.value })}>
+                            <select id="task" className="form-control mb-4 mt-2" onChange={(e) => this.setState({ task: e.target.value })}>
                               <option selected>Select Task</option>
                               <option value="Coding">Coding</option>
                               <option value="Requirment gathering">Requirment gathering</option>
@@ -716,12 +721,11 @@ class Header extends Component {
                             </select>
                           </td>
                             <td>
-                            <select className="form-control mb-4 mt-2" onChange={(e) => this.setState({ holiday: e.target.value })}>
+                            <select id="holiday" className="form-control mb-4 mt-2" onChange={(e) => this.setState({ holiday: e.target.value })}>
                               <option value="casualWork" selected>Casual Work</option>
                                 <option value="holiday">Holiday</option>
                               <option value="leave">Leave</option>
-                                
-                              </select>
+                            </select>
                           </td>
                         </tr>
                         </>
@@ -735,7 +739,12 @@ class Header extends Component {
           </div>  
           </RubberBand>
 
-         <div style={{ width: '1000px', marginLeft: '20%',marginTop:40 }}>
+        <div style={{ width: '1000px', marginLeft: '22%', marginTop: 40, boxShadow: "2px 2px 10px", padding: "10px" }}>
+        <p style={{fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                        backgroundColor: "rgb(253, 227, 227)", marginBottom:"38px"}}>DisApproved Timesheets</p>    
           <MDBDataTable
             striped
             bordered
@@ -746,9 +755,66 @@ class Header extends Component {
             searchTop
             searchBottom={false}
           />
-         </div>
-    
         </div>
+{/* *************************view timesheet details**************************************** */}
+      <div id="timesheetDet">    
+      {this.state.getTimesheetDetails.length>0?( 
+      <div style={{marginLeft:"20%",marginTop:"2%", boxShadow:"2px 2px 10px", padding:"10px" }}>
+          <div class="row" >
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                    <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <p style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                      backgroundColor: "rgb(253, 227, 227)"
+                      }}>Project Name : {this.state.pName}
+                      </p>
+                      <Icon><HighlightOffIcon onClick={this.removeDetails} style={{ fontSize: "50px", cursor: "pointer" }} /></Icon>
+                    </div>       
+                <div class="table-responsive p-3">     
+                <table id="example" class="table table-striped table-bordered w-100" >
+                      <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
+                        <td>Days</td>
+                        <td>Working Hour</td>
+                        <td>Date</td>
+                        <td>Task</td>
+                        <td>Leave</td>
+                      </thead>
+                      {
+                      this.state.getTimesheetDetails.map((i) => (
+                        <>
+                        <tr >
+                          <td style={{textAlign:"center"}}>
+                          <input style={inputStyle} value={i.day} />
+                          </td>
+                            <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.logHours} /><br />
+                            {/* <span id="err"></span> */}
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <Moment style={inputStyle} format="YYYY-MMM-DD">{i.dateOfTimesheet}</Moment>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.task} />
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.holiday} />
+                          </td>
+                        </tr>
+                        </>
+                      ))} 
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>    
+        ) : ""}
+        </div>
+      </div>
         
           {/* *************************approved timesheet */}
 
@@ -759,17 +825,14 @@ class Header extends Component {
               <div class="card mb-4">
                 <div class="table-responsive p-3">
                   {this.state.apprTimeSheet.length > 0 ? (
-                    <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                    <table id="example" class="table table-striped table-bordered w-100">
                       <thead>
                         <tr>
                           <th>Accountant Status</th>
                           <th>Supervisor Status</th>
                           <th>Supervisor Name</th>
                           <th>Date</th>
-                          <th>Day</th>
-                          <th>Task</th>
                           <th>Project Name</th>
-                          <th>Log Hours</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -780,18 +843,21 @@ class Header extends Component {
                             <td>{t.supervisorApproved}</td>
                             <td>{t.supervisorName}</td>
                             <td>
-                              <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                              <Moment format="YYYY-MM-DD">{t.date}</Moment>
                             </td>
-                            <td>{t.day}</td>
-                            <td>{t.task}</td>
                             <td>{t.projectName}</td>
-                            <td>{t.logHours}</td>
-                            <td>
+                            <td style={{display:"flex", justifyContent:"space-between"}}>
                               <button
                                 className="btn btn-warning"
                                 onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                               >
                                 Delete
+                              </button>
+                              <button
+                                className="btn btn-secondary"
+                                onClick={() => this.viewAppTimeSheet(t.timeSheetId)}
+                              >
+                                view
                               </button>
                             </td>
                           </tr>
@@ -803,65 +869,65 @@ class Header extends Component {
               </div>
             </div>
           </div>
-         </div>
-
-        {/* *************************disapproved timesheet */}
-
-        <div id="timesheet2" style={{ display: "none", marginLeft: "22%"}}>
-        <h5 style={{ color:"grey", padding: "5px", marginLeft:"2%" }} >DISAPPROVED TIME-SHEET</h5>
-        <div class="row">
+        </div>
+        
+        <div id="viewtimesheetDet">
+        {this.state.getAppTimesheetDetails.length>0?( 
+        <div style={{ marginLeft: "20%", marginTop: "2%", boxShadow: "2px 2px 10px", padding: "10px" }}>
+          <div class="row" >
             <div class="col-lg-12">
               <div class="card mb-4">
-              <div class="table-responsive p-3">
-              {this.state.disapprTimeSheet.length>0?(
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
-                  <thead>
-                      <tr>
-                        <th>Accountant Status</th>
-                        <th>Supervisor Status</th>
-                        <th>Supervisor Name</th>
-                        <th>Date</th>
-                        <th>Day</th>
-                        <th>Task</th>
-                        <th>Project Name</th>
-                        <th>Log Hours</th> 
-                        <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.disapprTimeSheet?.map((t) => (
-                        <tr>
-                          <td>{t.accountantApproved}</td>
-                          <td>{t.supervisorApproved}</td>
-                          
-                          <td>{t.superVisorName}</td>
-                       
-                          <td>
-                            <Moment format="YYYY/MM/DD">{t.date}</Moment>
+                    <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <p style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                      backgroundColor: "rgb(253, 227, 227)"
+                      }}>Project Name : {this.state.pName}
+                      </p>
+                      <Icon><HighlightOffIcon onClick={this.removeDetails} style={{ fontSize: "50px", cursor: "pointer" }} /></Icon>
+                    </div>       
+                <div class="table-responsive p-3">     
+                <table id="example" class="table table-striped table-bordered w-100" >
+                      <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
+                        <td>Days</td>
+                        <td>Working Hour</td>
+                        <td>Date</td>
+                        <td>Task</td>
+                        <td>Leave</td>
+                      </thead>
+                      {
+                      this.state.getAppTimesheetDetails.map((i) => (
+                        <>
+                        <tr >
+                          <td style={{textAlign:"center"}}>
+                          <input style={inputStyle} value={i.day} />
                           </td>
-                          <td>{t.day}</td>
-                          <td>{t.task}</td>
-                          <td>{t.projectName}</td>
-                          <td>{t.logHours}</td>
-                          <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => this.deleteTimeSheet(t.timeSheetId)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+                            <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.logHours} /><br />
+                            {/* <span id="err"></span> */}
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <Moment style={inputStyle} format="YYYY-MMM-DD">{i.dateOfTimesheet}</Moment>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.task} />
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.holiday} />
+                          </td>
                         </tr>
-                    ))}
-                  </tbody>
-                </table>
-                ) : "No DisApproved Timesheet"}  
+                        </>
+                      ))} 
+                  </table>
                 </div>
               </div>
             </div>
+            </div>
           </div>
+        ):""}  
         </div>
-        
         {/* *************************Add Reimbursement */}
 
         <div
@@ -971,7 +1037,7 @@ class Header extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                         <th>Employee Name</th>
@@ -1203,7 +1269,7 @@ class Header extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                       <th scope="col">Attendence Id</th>
@@ -1229,8 +1295,24 @@ class Header extends Component {
               </div>
             </div>
           </div>
-          
         </div>
+
+          {/* <Dialog
+                open={this.state.supervisor2}
+                onClose={() => this.setState({supervisor2: !this.state.supervisor2})}
+                className="dialog"
+              >
+                <DialogTitle>
+                  <div className="">
+                    <h3>Update Timesheet</h3><hr />
+                  </div>
+                </DialogTitle>
+                <DialogContent>
+                    <div>
+                     
+                    </div>
+                </DialogContent>
+            </Dialog>   */}
       </div>
     );
   }
