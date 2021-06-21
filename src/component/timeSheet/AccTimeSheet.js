@@ -20,7 +20,8 @@ import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import { Icon } from "@material-ui/core";
 
 const logout = (e) => {
   e.preventDefault();
@@ -50,7 +51,9 @@ export default class AccTimeSheet extends Component {
       tsList: [],
       age: "",
       apprTimeSheet: [],
-      disapprTimeSheet: []
+      disapprTimeSheet: [],
+      viewTimesheetDetails: [],
+      pName:""
     };
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
@@ -83,6 +86,22 @@ export default class AccTimeSheet extends Component {
     this.updateSupervisorStatus = this.updateSupervisorStatus.bind(this);
     this.updateAccountantStatus = this.updateAccountantStatus.bind(this);
     this.updateTimeSheetPage = this.updateTimeSheetPage.bind(this);
+  }
+
+  viewTimeSheetD = (id) => {
+    document.getElementById("viewtimesheetDet").style.display = "block"
+    axios.get('http://localhost:8081/r1//getTimeSheet' + '/' + id)
+      .then(res => {
+        console.log(res);
+        this.setState({ viewTimesheetDetails: res.data.detailTimeSheet })
+        this.setState({ pName: res.data.projectName });
+
+      })
+    .catch(err => console.log(err))
+  }
+
+  removeDetails = () => {
+    document.getElementById("viewtimesheetDet").style.display = "none"
   }
 
   myChangeHandler = (event) => {
@@ -148,6 +167,7 @@ export default class AccTimeSheet extends Component {
     document.getElementById("apprts").style.display = "none";
     document.getElementById("disapprts").style.display = "none";
     document.getElementById("opt").style.display = "block";
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("noneempWeek").style.display = "none"
     document.getElementById("empWeek").style.display = "none" 
     TimeSheetService.getAllAccT()
@@ -264,6 +284,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("apprts").style.display = "block";
     document.getElementById("empWeek").style.display = "none"
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("noneempWeek").style.display = "none"
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "none";
@@ -280,6 +301,7 @@ export default class AccTimeSheet extends Component {
     document.getElementById("empWeek").style.display = "none"
     document.getElementById("noneempWeek").style.display = "none"
     document.getElementById("ts").style.display = "none";
+    document.getElementById("viewtimesheetDet").style.display = "none"
     document.getElementById("ets").style.display = "none";
     document.getElementById("disapprts").style.display = "block";
     document.getElementById("apprts").style.display = "none";
@@ -342,9 +364,8 @@ export default class AccTimeSheet extends Component {
                   Dashboard
                 </button>
               </Link> */}
-              <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed',color:'white'}}>
+              <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
-                {localStorage.getItem("accountantName")}
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item"><Link style={{textDecoration:'none',color:'black'}} to="/accountantDash">Dashboard</Link></a>
                   <a class="dropdown-item" onClick={logout}>Logout</a>
@@ -506,11 +527,17 @@ export default class AccTimeSheet extends Component {
                         
                         <td>
                           <button
-                            className="btn btn-warning"
+                            className="btn btn-danger"
                             onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                           >
                             Delete
-                          </button>
+                        </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                          >
+                         view
+                        </button> 
                         </td>
                       </tr>  
                   </>  
@@ -557,9 +584,15 @@ export default class AccTimeSheet extends Component {
                                         <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                                       </td>
                                       <td>{t.projectName}</td>
-                                      <td>
+                                      <td style={{display:"flex", justifyContent:"space-between"}}>
                                         <button id="approved" value="Approved" className="btn btn-info" onClick={this.supervisorStatusForTS1} >Approve</button>
                                         <button id="disapproved" value="DisApproved" className="btn btn-info ml-3" onClick={this.supervisorStatusForTS2} >DisApprove</button>
+                                        <button
+                                          className="btn btn-secondary"
+                                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                                        >
+                                          view
+                                        </button>  
                                       </td>
                                     </tr>
                                   ) : (""))
@@ -607,13 +640,19 @@ export default class AccTimeSheet extends Component {
                             <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                         </td>
                         <td>{t.projectName}</td>
-                          <td>
+                        <td style={{display:"flex", justifyContent:"space-between"}}>
                         <button
-                          className="btn btn-warning"
+                          className="btn btn-danger"
                           onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                         >
                           Delete
                         </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                        >
+                          view
+                        </button>   
                       </td>
                         </tr>
                     ))}
@@ -659,13 +698,19 @@ export default class AccTimeSheet extends Component {
                         </td>
                         <td>{t.projectName}</td>
                         
-                          <td>
+                        <td style={{display:"flex", justifyContent:"space-between"}}>
                         <button
-                          className="btn btn-warning"
+                          className="btn btn-danger"
                           onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                         >
                           Delete
                         </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                        >
+                          view
+                        </button>  
                       </td>
                         </tr>
                     ))}
@@ -677,11 +722,67 @@ export default class AccTimeSheet extends Component {
             </div>
           </div>
           {/* /disapproved timesheet******* */}
-            </div>  
+        </div>  
       </RubberBand>
     </div>
-     
-      </div>
+    <div id="viewtimesheetDet">
+        {this.state.viewTimesheetDetails.length>0?( 
+        <div style={{ marginLeft: "20%", marginTop: "2%", boxShadow: "2px 2px 10px", padding: "10px" }}>
+          <div class="row" >
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                    <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <p style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                      backgroundColor: "rgb(253, 227, 227)"
+                      }}>Project Name : {this.state.pName}
+                      </p>
+                      <Icon><HighlightOffIcon onClick={this.removeDetails} style={{ fontSize: "50px", cursor: "pointer" }} /></Icon>
+                    </div>       
+                <div class="table-responsive p-3">     
+                <table id="example" class="table table-striped table-bordered w-100" >
+                      <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
+                        <td>Days</td>
+                        <td>Working Hour</td>
+                        <td>Date</td>
+                        <td>Task</td>
+                        <td>Leave</td>
+                      </thead>
+                      {
+                      this.state.viewTimesheetDetails.map((i) => (
+                        <>
+                        <tr >
+                          <td style={{textAlign:"center"}}>
+                          <input style={inputStyle} value={i.day} />
+                          </td>
+                            <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.logHours} /><br />
+                            {/* <span id="err"></span> */}
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <Moment style={inputStyle} format="YYYY-MMM-DD">{i.dateOfTimesheet}</Moment>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.task} />
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.holiday} />
+                          </td>
+                        </tr>
+                        </>
+                      ))} 
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        ):""}  
+        </div>    
+    </div>
     );
   }
 }

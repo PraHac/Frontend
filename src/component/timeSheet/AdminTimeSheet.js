@@ -20,6 +20,8 @@ import Select from '@material-ui/core/Select';
 import logo from '../logo1.png'
 import profile from '../undraw_profile.svg'
 import { Avatar } from "antd";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import { Icon } from "@material-ui/core";
 
 
 export default class AccTimeSheet extends Component {
@@ -44,7 +46,9 @@ export default class AccTimeSheet extends Component {
       tsList: [],
       age: "",
       apprTimeSheet: [],
-      disapprTimeSheet: []
+      disapprTimeSheet: [],
+      viewTimesheetDetails: [],
+      pName: ""
     };
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
@@ -80,6 +84,22 @@ export default class AccTimeSheet extends Component {
     localStorage.removeItem("adminId");
     window.location.replace("/");
   };
+
+  viewTimeSheetD = (id) => {
+    document.getElementById("viewtimesheetDet").style.display = "block"
+    axios.get('http://localhost:8081/r1//getTimeSheet' + '/' + id)
+      .then(res => {
+        console.log(res);
+        this.setState({ viewTimesheetDetails: res.data.detailTimeSheet })
+        this.setState({ pName: res.data.projectName });
+
+      })
+    .catch(err => console.log(err))
+  }
+
+  removeDetails = () => {
+    document.getElementById("viewtimesheetDet").style.display = "none"
+  }
   
   myChangeHandler = (event) => {
     let nam = event.target.name;
@@ -184,7 +204,7 @@ export default class AccTimeSheet extends Component {
 
     // document.getElementById("empWeek").style.display = "block";
     // document.getElementById("noneempWeek").style.display = "none";
-    axios.get("http://localhost:8081/r1/adminWeeklyTimesheet"+"/"+this.state.startD+"/"+this.state.endD)
+    axios.get("http://localhost:8081/r1/adminWeeklyTimesheet"+"/"+this.state.startD)
     .then((response) => {
       console.log(response);
       this.setState({ timeSheet: response.data });
@@ -195,7 +215,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "block";
-    axios.get("http://localhost:8081/r1/adminWeeklyTimesheetEmployee"+"/"+this.state.startD+"/"+this.state.endD+"/"+"/"+this.state.employeeId)
+    axios.get("http://localhost:8081/r1/adminWeeklyTimesheetEmployee"+"/"+this.state.startD+"/"+this.state.employeeId)
     .then((response) => {
       console.log(response);
       this.setState({ emptimeSheet: response.data });
@@ -349,7 +369,6 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 5px 5px gray"}}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize week</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
                  <button className="btn btn-info" onClick={this.seeByDate}>go</button>  
               </div>
               </div>  
@@ -357,8 +376,7 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input type="date" style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" />
-                 <input type="date" style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
+                 <input type="text" style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
                  <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
               </div>
               </div>  
@@ -377,13 +395,15 @@ export default class AccTimeSheet extends Component {
           }}
         >
           <RubberBand>
-            <div id="ts">
       {/* weeekly timesheet*************************** */}
+          
+          <div id="ts">
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
+                {this.state.timeSheet.length > 0 ? (
+                <table id="example" class="table table-striped table-bordered w-100">
                   <thead>
                       <tr>
                         <th>Accountant Status</th>
@@ -392,10 +412,8 @@ export default class AccTimeSheet extends Component {
                         <th>Employee Name</th>
                         
                         <th>Date</th>
-                        <th>Day</th>
-                        <th>Task</th>
+                       
                         <th>Project Name</th>
-                        <th>Log Hours</th>
                         <th>Action</th>
                       </tr>
                   </thead>
@@ -409,25 +427,30 @@ export default class AccTimeSheet extends Component {
                         <td>{t.employeeName}</td>
                         
                         <td>
-                          <Moment format="YYYY-MMM-DD">{t.date}</Moment>
+                          <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
                         </td>
-                        <td>{t.day}</td>
-                        <td>{t.task}</td>
+                      
                         <td>{t.projectName}</td>
-                        <td>{t.logHours}</td>
-                        <td>
+                        <td style={{display:"flex", justifyContent:"space-between"}}>
                           <button
-                            className="btn btn-warning"
+                            className="btn btn-danger"
                             onClick={() => this.deleteTimeSheet(t.timeSheetId)}
                           >
                             Delete
-                          </button>
+                        </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                        >
+                          view
+                        </button> 
                         </td>
                       </tr>  
                   </>  
                 ))}
               </tbody>
               </table>
+              ) : "No timesheet available"}
                 </div>
               </div>
             </div>
@@ -441,62 +464,125 @@ export default class AccTimeSheet extends Component {
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                <table id="example" class="table table-striped table-bordered" style={{ width: "100%" }}>
-                  <thead>
-                      <tr>
-                      <th>Accountant Status</th>
-                      <th>Supervisor Status</th>
-                      <th>Employee Id</th>
-                      <th>Employee Name</th>
+                      {this.state.emptimeSheet.length > 0 ? (
+                        <table id="example" class="table table-striped table-bordered w-100">
+                          <thead>
+                            <tr>
+                              <th>Accountant Status</th>
+                              <th>Supervisor Status</th>
+                              <th>Employee Id</th>
+                              <th>Employee Name</th>
                       
-                      <th>Date</th>
-                      <th>Day</th>
-                      <th>Task</th>
-                      <th>Project Name</th>
-                      <th>Log Hours</th>
-                      <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                {this.state.emptimeSheet?.map((t) => (
-                  <>
-                    {
-                        (t.employeeId != 0 ? (
-                          <tr>
-                      <td>{t.accountantApproved}</td>
-                      <td>{t.supervisorApproved}</td>
-                      <td>{t.employeeId}</td>
-                      <td>{t.employeeName}</td>
+                              <th>Date</th>
+                         
+                              <th>Project Name</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.emptimeSheet?.map((t) => (
+                              <>
+                                {
+                                  (t.employeeId != 0 ? (
+                                    <tr>
+                                      <td>{t.accountantApproved}</td>
+                                      <td>{t.supervisorApproved}</td>
+                                      <td>{t.employeeId}</td>
+                                      <td>{t.employeeName}</td>
                       
-                      <td>
-                        <Moment format="YYYY/MMM/DD">{t.date}</Moment>
-                      </td>
-                      <td>{t.day}</td>
-                      <td>{t.task}</td>
-                      <td>{t.projectName}</td>
-                      <td>{t.logHours}</td>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => this.deleteTimeSheet(t.timeSheetId)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                      ) : (""))
-                    }
-                  </>  
-                ))}
-              </tbody>
-              </table>
+                                      <td>
+                                        <Moment format="YYYY-MMM-DD">{t.dateOfTimeSheet}</Moment>
+                                      </td>
+                                    
+                                      <td>{t.projectName}</td>
+                                      <td style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <button
+                                          className="btn btn-danger"
+                                          onClick={() => this.deleteTimeSheet(t.timeSheetId)}
+                                        >
+                                          Delete
+                                        </button>
+                                        <button
+                                          className="btn btn-secondary"
+                                          onClick={() => this.viewTimeSheetD(t.timeSheetId)}
+                                        >
+                                          view
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ) : (""))
+                                }
+                              </>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : "No timesheet available"}
                 </div>
               </div>
             </div>
+            </div>
           </div>
-          {/* /employee weeekly timesheet******************* */}
-            </div>  
-          </RubberBand>
+      </RubberBand>
+            
+    {/* timesheet details******************* */}
+
+    <div id="viewtimesheetDet">
+        {this.state.viewTimesheetDetails.length>0?( 
+        <div style={{ marginTop: "2%", boxShadow: "2px 2px 10px", padding: "10px" }}>
+          <div class="row" >
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                    <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <p style={{
+                        fontSize: "22px",
+                        fontWeight: "800",
+                        fontFamily: "cursive",
+                        width:"40%",
+                      backgroundColor: "rgb(253, 227, 227)"
+                      }}>Project Name : {this.state.pName}
+                      </p>
+                      <Icon><HighlightOffIcon onClick={this.removeDetails} style={{ fontSize: "50px", cursor: "pointer" }} /></Icon>
+                    </div>       
+                <div class="table-responsive p-3">     
+                <table id="example" class="table table-striped table-bordered w-100" >
+                      <thead style={{textAlign:"center", fontWeight:"800", fontFamily:"cursive"}}>
+                        <td>Days</td>
+                        <td>Working Hour</td>
+                        <td>Date</td>
+                        <td>Task</td>
+                        <td>Leave</td>
+                      </thead>
+                      {
+                      this.state.viewTimesheetDetails.map((i) => (
+                        <>
+                        <tr >
+                          <td style={{textAlign:"center"}}>
+                          <input style={inputStyle} value={i.day} />
+                          </td>
+                            <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.logHours} /><br />
+                            {/* <span id="err"></span> */}
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <Moment style={inputStyle} format="YYYY-MMM-DD">{i.dateOfTimesheet}</Moment>
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.task} />
+                          </td>
+                          <td style={{textAlign:"center"}}>
+                            <input style={inputStyle} value={i.holiday} />
+                          </td>
+                        </tr>
+                        </>
+                      ))} 
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        ):""}  
+        </div>  
     </div>
      
       </div>
