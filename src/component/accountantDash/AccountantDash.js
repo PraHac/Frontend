@@ -8,7 +8,9 @@ import logo from '../logo1.png'
 import Moment from 'react-moment'
 import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
+import { MDBDataTable } from 'mdbreact';
 
+var i = 1;
 const logout = (e) => {
   e.preventDefault();
   localStorage.removeItem("accountantId");
@@ -20,6 +22,8 @@ var i=1;
 class AccountantDash extends React.Component {
  
   constructor(props) {
+  
+
     super(props);
     this.state = {
       accountReimburse: [],
@@ -33,7 +37,49 @@ class AccountantDash extends React.Component {
       accountant1: false,
       accountant2: false,
       actionOpen: false,
+      columns: [
+        {
+          label: 'Sr. No',
+          field: 'sn',
+          sort: 'asc',
+          width: 27
+        },
+        {
+          label: 'Employee Name',
+          field: 'employeeName',
+          sort: 'asc',
+          width: 27
+        },
+		{
+			label: 'Employee Email',
+			field: 'email',
+			width: 27
+		 },
+        {
+          label: 'Status',
+          field: 'status',
+          width: 20
+        },
+        {
+          label: 'Log Hours',
+          field: 'logHours',
+          width: 20
+
+        },
+        {
+          label: 'Login Time',
+          field: 'loginTime',
+          width: 20
+
+        },
+		{
+			label: 'Logout Time',
+			field: 'logoutTime',
+			width: 20
+		},
+      ]
     };
+    this.users=this.users.bind(this)
   }
 
   componentDidMount() {
@@ -50,6 +96,7 @@ class AccountantDash extends React.Component {
       this.setState({ accountReimburse: response.data });
       console.log(this.state.accountReimburse);
     });
+    this.users()
   }
   viewReim = (e) => {
     e.preventDefault();
@@ -167,6 +214,30 @@ class AccountantDash extends React.Component {
       })
       .catch((err) => console.log(err));
   };
+  users(){
+    document.getElementById("attend").style.display = "none";
+    document.getElementById("reim").style.display = "block";
+    document.getElementById("action").style.display = "none";
+    document.getElementById("View").style.display = "none";
+    document.getElementById("disview").style.display = "none";
+    fetch('http://localhost:8081/r1/get')
+      .then(response => response.json())
+      .then((data) => {
+        for (var i = 0; i < data.length; i++) {
+
+          data[i].sn=i+1;
+          data[i].status = <p>{data[i].status}</p>
+          data[i].logHours = <p>{data[i].logHours}</p>
+          data[i].loginTime = <p>{data[i].loginTime}</p>
+          data[i].logoutTime = <p>{data[i].logoutTime}</p>
+		}
+        this.setState({
+          rows: data
+        });
+        console.log(data)
+
+      });
+  }
   render() {
     const but = {
       position: "relative",
@@ -333,8 +404,8 @@ class AccountantDash extends React.Component {
           <div class="row">
             <div class="col-lg-12">
               <div class="card mb-4">
-                <div class="table-responsive p-3">
-                  <table
+                <div class="table-responsive p-3" id="attend">
+                  {/* <table
                     id="example"
                     class="table table-striped table-bordered w-100"
                   >
@@ -362,7 +433,17 @@ class AccountantDash extends React.Component {
                         </tr>
                       </tbody>
                     ))}
-                  </table>
+                  </table> */}
+          <MDBDataTable
+            striped
+            bordered
+            entriesOptions={[5, 10, 20, 50, 100]}
+            entries={5}
+            data={{ columns: this.state.columns, rows: this.state.rows }}
+            pagingTop
+            searchTop
+            searchBottom={false}
+          />
                 </div>
               </div>
             </div>
