@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { MDBDataTable } from 'mdbreact';
 import './DptManage.css'
 import { Layout } from 'antd';
+import Moment from 'react-moment'
 const {Footer } = Layout;
 var i = 1;
 export default class AttendanceSidebarContent extends Component {	
@@ -47,14 +48,19 @@ export default class AttendanceSidebarContent extends Component {
         {
           label: 'Login Time',
           field: 'loginTime',
-          width: 20
-
+          width: 30
         },
 		{
 			label: 'Logout Time',
 			field: 'logoutTime',
+			width: 30
+		},
+    {
+			label: 'Location',
+			field: 'location',
 			width: 20
 		},
+    
       ]
     };
     fetch('http://localhost:8081/r1/get')
@@ -65,8 +71,9 @@ export default class AttendanceSidebarContent extends Component {
         data[i].sn=i+1;
         data[i].status = <p>{data[i].status}</p>
         data[i].logHours = <p>{data[i].logHours}</p>
-        data[i].loginTime = <p>{data[i].loginTime}</p>
-        data[i].logoutTime = <p>{data[i].logoutTime}</p>
+        data[i].loginTime = <p><Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].loginTime}</Moment></p>
+        data[i].logoutTime = <p><Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].logoutTime}</Moment></p>
+        data[i].location=<p>{data[i].location}</p>
   }
       this.setState({
         rows: data

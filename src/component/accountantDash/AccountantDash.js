@@ -77,6 +77,11 @@ class AccountantDash extends React.Component {
 			field: 'logoutTime',
 			width: 20
 		},
+    {
+			label: 'Location',
+			field: 'location',
+			width: 20
+		}
       ]
     };
     this.users=this.users.bind(this)
@@ -228,8 +233,8 @@ class AccountantDash extends React.Component {
           data[i].sn=i+1;
           data[i].status = <p>{data[i].status}</p>
           data[i].logHours = <p>{data[i].logHours}</p>
-          data[i].loginTime = <p>{data[i].loginTime}</p>
-          data[i].logoutTime = <p>{data[i].logoutTime}</p>
+          data[i].loginTime = <p><Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].loginTime}</Moment></p>
+          data[i].logoutTime = <p><Moment format="YYYY-MMM-DD HH:mm:ss">{data[i].logoutTime}</Moment></p>
 		}
         this.setState({
           rows: data
