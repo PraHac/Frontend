@@ -22,12 +22,14 @@ import profile from '../undraw_profile.svg'
 import { Avatar } from "antd";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import { Icon } from "@material-ui/core";
+import Task from './Task'
 
 
 export default class AccTimeSheet extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      view:0,
       timeSheetId: 0,
       employeeId: 0,
       supervisor_id: 0,
@@ -167,11 +169,14 @@ export default class AccTimeSheet extends Component {
   }
 
   displayAllTimeSheet() {
+    this.setState({view:0})
     document.getElementById("ts").style.display = "block";
     document.getElementById("ets").style.display = "none";
     document.getElementById("opt").style.display = "block";
     document.getElementById("noneempWeek").style.display = "none"
-    document.getElementById("empWeek").style.display = "none" 
+   // document.getElementById("task").style.display = "none" 
+    // document.getElementById("taskTable").style.display = "none" 
+    
     TimeSheetService.getAllAdminT()
       .then((response) => {
         console.log(response);
@@ -250,7 +255,22 @@ export default class AccTimeSheet extends Component {
           this.setState({employeeList: res.data})
       })
     }
- 
+    setView=(v)=>{
+      this.setState({view:v})
+      
+      document.getElementById("empWeek").style.display = "none"
+      document.getElementById("noneempWeek").style.display = "none"
+      
+    document.getElementById("ts").style.display = "none";
+    document.getElementById("ets").style.display = "none";
+    // document.getElementById("seeBtn").style.display = "none";
+    // document.getElementById("id").style.display = "none";
+    document.getElementById("opt").style.display = "none";
+    
+
+
+
+    }  
   render() {
     const but = {
       position: "relative",
@@ -337,6 +357,17 @@ export default class AccTimeSheet extends Component {
                             <a className="nav-link">
                             <i className="far fa-eye" style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}}/>
                                 <p>View TimeSheet</p>
+                            </a>
+                          </li>
+                         
+                      </ul>
+                      <ul className="nav nav-treeview">
+                            <li className="nav-item"
+                            //onClick={this.displayAllTimeSheet}
+                          >
+                            <a className="nav-link">
+                            <i className="far fa-eye" style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}}/>
+                                <p onClick={()=>this.setView(1)}>Add Task</p>
                             </a>
                           </li>
                          
@@ -603,6 +634,7 @@ export default class AccTimeSheet extends Component {
         ):""}  
         </div>  
     </div>
+    {this.state.view===1 && <Task />}
      
       </div>
     );
