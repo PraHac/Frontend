@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { setState } from 'react';
 import TimeSheetService from "../../services/TimeSheetService";
 import Moment from 'react-moment';
 import { Navbar, Nav } from "react-bootstrap";
@@ -22,11 +23,13 @@ import { Avatar } from 'antd';
 import profile from '../undraw_profile.svg'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import { Icon } from "@material-ui/core";
+import Project from './Project'
 
 export default class SuperTimeSheet extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      view:0,
       timeSheetId: 0,
       employeeId: 0,
       supervisor_id: 0,
@@ -80,6 +83,7 @@ export default class SuperTimeSheet extends Component {
     this.updateSupervisorStatus = this.updateSupervisorStatus.bind(this);
     this.updateAccountantStatus = this.updateAccountantStatus.bind(this);
     this.updateTimeSheetPage = this.updateTimeSheetPage.bind(this);
+
   }
 
   viewAppTimeSheet = (id) => {
@@ -311,6 +315,16 @@ export default class SuperTimeSheet extends Component {
       this.setState({disapprTimeSheet: res.data})
     })
   }
+  setView=(v)=>{
+    this.setState({view:v})
+    document.getElementById("empWeek").style.display = "none"
+      document.getElementById("noneempWeek").style.display = "none"
+      document.getElementById("ts").style.display = "none";
+      document.getElementById("ets").style.display = "none";
+      document.getElementById("disapprts").style.display = "none";
+      document.getElementById("apprts").style.display = "none";
+      document.getElementById("opt").style.display = "none";
+  }
 
   render() {
     const but = {
@@ -417,6 +431,15 @@ export default class SuperTimeSheet extends Component {
                               <p>DisApproved TimeSheet</p>
                           </a>
                         </li>
+                        <li className="nav-item"
+                        // onClick={this.manageProject}
+                      >
+                        <a className="nav-link">
+                          <i className="fa fa-circle" style={{ color: "#ffa426", marginLeft: "8px", marginRight: "5px" }} />
+                          <p id="project1" onClick={()=>this.setView(1)}>Add Project</p>
+   
+                        </a>
+                      </li>
                       </ul>
                     </li>   
                     </ul>
@@ -786,10 +809,17 @@ export default class SuperTimeSheet extends Component {
               </div>
             </div>
             </div>
+            
           </div>
+          
+          
         ):""}  
+        
         </div>   
+        {this.state.view===1 && <Project />}
   </div>
+  
     );
+    
   }
 }
