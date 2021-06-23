@@ -36,6 +36,7 @@ export default class AccTimeSheet extends Component {
       timeSheetId: 0,
       employeeId: 0,
       supervisor_id: 0,
+      empId:0,
       supervisorApproved: "",
       accountantApproved: "",
       date: "",
@@ -53,7 +54,8 @@ export default class AccTimeSheet extends Component {
       apprTimeSheet: [],
       disapprTimeSheet: [],
       viewTimesheetDetails: [],
-      pName:""
+      pName: "",
+      employeeList: []
     };
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
@@ -62,6 +64,7 @@ export default class AccTimeSheet extends Component {
     this.supervisorStatusForTS2 = this.supervisorStatusForTS2.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.CW = this.CW.bind(this);
+    this.empDropdown = this.empDropdown.bind(this);
     this.CWE = this.CWE.bind(this);
     this.seeApproved = this.seeApproved.bind(this);
     this.seeDisapproved = this.seeDisapproved.bind(this);
@@ -102,6 +105,11 @@ export default class AccTimeSheet extends Component {
 
   removeDetails = () => {
     document.getElementById("viewtimesheetDet").style.display = "none"
+  }
+  
+  empDropdown(e) {
+    e.preventDefault();
+    this.setState({ empId: e.target.value });
   }
 
   myChangeHandler = (event) => {
@@ -218,7 +226,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "block";
-    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.employeeId)
+    axios.get("http://localhost:8081/r1/accWeeklyAndEmployee"+"/"+this.state.startD+"/"+this.state.empId)
     .then((response) => {
       console.log(response);
       this.setState({ emptimeSheet: response.data });
@@ -277,6 +285,11 @@ export default class AccTimeSheet extends Component {
       e.preventDefault();
       document.getElementById("empWeek").style.display = "block"
       document.getElementById("noneempWeek").style.display = "none"
+      axios.get("http://localhost:8081/r1/getAllEmployee")
+        .then(res => {
+          console.log(res.data);
+          this.setState({employeeList: res.data})
+      })
     }
   
   seeApproved(e) {
@@ -359,11 +372,6 @@ export default class AccTimeSheet extends Component {
               </a>
             </li>
             <li>
-              {/* <Link to="/accountantDash">
-                <button type="button" style={but} class="btn btn-danger">
-                  Dashboard
-                </button>
-              </Link> */}
               <div class="dropdown" style={{left:'85%',top:'21px',position:'fixed'}}>
                 <Avatar className="img-profile rounded-circle"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src={profile} style={{maxWidth:'60px'}}/> 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -472,8 +480,16 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
-                 <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
+                 {/* <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" /> */}
+                 
+                <select style={inputStyle} className="form-control mb-4 mt-2 w-50" value={this.state.empId} onChange={this.empDropdown} required="true">
+                  <option value="0" selected>Employee Name</option>
+                  {this.state.employeeList.map(i => (
+                    <option value={i.employeeId}>{i.name}</option>
+                  ))}
+                </select> 
+                
+                <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>
               </div>
               </div>  
           </div>

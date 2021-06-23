@@ -293,7 +293,7 @@ function Login() {
 							  <option selected>Do you want to mark you attendence?</option>
 							  <option value="yes">yes</option>
 							  <option value="no">no</option>
-              </select>
+            </select>
             <div className="formcontrol">
               <input
                 type="email"
