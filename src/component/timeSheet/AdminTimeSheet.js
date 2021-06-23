@@ -48,8 +48,11 @@ export default class AccTimeSheet extends Component {
       apprTimeSheet: [],
       disapprTimeSheet: [],
       viewTimesheetDetails: [],
-      pName: ""
+      pName: "",
+      employeeList: [],
+      empId:0,
     };
+    this.empDropdown = this.empDropdown.bind(this);
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
     this.seeEmpByDate = this.seeEmpByDate.bind(this);
@@ -99,6 +102,11 @@ export default class AccTimeSheet extends Component {
 
   removeDetails = () => {
     document.getElementById("viewtimesheetDet").style.display = "none"
+  }
+  
+  empDropdown(e) {
+    e.preventDefault();
+    this.setState({ empId: e.target.value });
   }
   
   myChangeHandler = (event) => {
@@ -201,7 +209,7 @@ export default class AccTimeSheet extends Component {
   seeByDate(e) {
     e.preventDefault();
     document.getElementById("ts").style.display = "block";
-
+    document.getElementById("ets").style.display = "none";
     // document.getElementById("empWeek").style.display = "block";
     // document.getElementById("noneempWeek").style.display = "none";
     axios.get("http://localhost:8081/r1/adminWeeklyTimesheet"+"/"+this.state.startD)
@@ -215,7 +223,7 @@ export default class AccTimeSheet extends Component {
     e.preventDefault();
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "block";
-    axios.get("http://localhost:8081/r1/adminWeeklyTimesheetEmployee"+"/"+this.state.startD+"/"+this.state.employeeId)
+    axios.get("http://localhost:8081/r1/adminWeeklyTimesheetEmployee"+"/"+this.state.startD+"/"+this.state.empId)
     .then((response) => {
       console.log(response);
       this.setState({ emptimeSheet: response.data });
@@ -236,6 +244,11 @@ export default class AccTimeSheet extends Component {
       e.preventDefault();
       document.getElementById("empWeek").style.display = "block"
       document.getElementById("noneempWeek").style.display = "none"
+      axios.get("http://localhost:8081/r1/getAllEmployee")
+        .then(res => {
+          console.log(res.data);
+          this.setState({employeeList: res.data})
+      })
     }
  
   render() {
@@ -376,8 +389,14 @@ export default class AccTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 <input type="text" style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
-                 <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
+                 {/* <input type="text" style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" /> */}
+                 <select style={inputStyle} className="form-control mb-4 mt-2 w-50" value={this.state.empId} onChange={this.empDropdown} required="true">
+                  <option value="0" selected>Employee Name</option>
+                  {this.state.employeeList.map(i => (
+                    <option value={i.employeeId}>{i.name}</option>
+                  ))}
+                </select>  
+                <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>
               </div>
               </div>  
           </div>

@@ -50,7 +50,9 @@ export default class SuperTimeSheet extends Component {
       apprTimeSheet: [],
       disapprTimeSheet: [],
       getAppTimesheetDetails: [],
-      pName: ""
+      pName: "",
+      employeeList: [],
+      empId:""
     };
     this.displayAllTimeSheet = this.displayAllTimeSheet.bind(this);
     this.seeByDate = this.seeByDate.bind(this);
@@ -60,6 +62,7 @@ export default class SuperTimeSheet extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.CW = this.CW.bind(this);
     this.CWE = this.CWE.bind(this);
+    this.empDropdown = this.empDropdown.bind(this);
     this.seeApproved = this.seeApproved.bind(this);
     this.seeDisapproved = this.seeDisapproved.bind(this);
     this.displayParticularTimeSheet = this.displayParticularTimeSheet.bind(
@@ -206,6 +209,11 @@ export default class SuperTimeSheet extends Component {
     let val = event.target.value;
     this.setState({ [nam]: val });
   };
+  
+  empDropdown(e){
+    e.preventDefault();
+    this.setState({ empId: e.target.value });
+  }
 
   seeByDate(e) {
     e.preventDefault();
@@ -218,11 +226,12 @@ export default class SuperTimeSheet extends Component {
     });
   }
  
-  seeEmpByDate(e) {
+  seeEmpByDate = (e) => {
+    console.log(this.state.empId);
     e.preventDefault();
     document.getElementById("ts").style.display = "none";
     document.getElementById("ets").style.display = "block";
-    axios.get("http://localhost:8081/r1/superWeeklyAndEmployee"+"/"+this.state.startD+"/"+localStorage.getItem("supervisorId")+"/"+this.state.employeeId)
+    axios.get("http://localhost:8081/r1/superWeeklyAndEmployee"+"/"+this.state.startD+"/"+localStorage.getItem("supervisorId")+"/"+this.state.empId)
     .then((response) => {
       console.log(response);
       this.setState({ emptimeSheet: response.data });
@@ -282,6 +291,11 @@ export default class SuperTimeSheet extends Component {
       e.preventDefault();
       document.getElementById("empWeek").style.display = "block"
       document.getElementById("noneempWeek").style.display = "none"
+      axios.get("http://localhost:8081/r1/getsupervisorById" + "/" + localStorage.getItem("supervisorId"))
+        .then(res => {
+          console.log(res.data.employees);
+          this.setState({employeeList: res.data.employees})
+      })
     }
   
   seeApproved(e) {
@@ -490,9 +504,16 @@ export default class SuperTimeSheet extends Component {
               <div className=" justify-content-center align-items-center p-1" style={{ boxShadow: "3px 4px 8px 9px gray" }}>
                  <h5 style={{color:"grey",fontWeight:"600"}}>Customize weekly report of employee</h5>
                  <input type="date" style={inputStyle} name="startD" value={this.state.startD} onChange={this.dateHandeler} placeholder="start date" />
-                 {/* <input style={inputStyle} name="endD" value={this.state.endD} onChange={this.dateHandeler} placeholder="End date" /> */}
-                 <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" />
-                 <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>  
+                 {/* <input style={inputStyle} name="employeeId" value={this.state.employeeId} onChange={this.dateHandeler} placeholder="Employee Id" /> */}
+                
+                <select style={inputStyle} className="form-control mb-4 mt-2 w-50" value={this.state.empId} onChange={this.empDropdown} required="true">
+                  <option value="0" selected>Employee Name</option>
+                  {this.state.employeeList.map(i => (
+                    <option value={i.employeeId}>{i.name}</option>
+                  ))}
+                </select>
+                
+                <button className="btn btn-info" onClick={this.seeEmpByDate}>go</button>
               </div>
               </div>  
           </div>

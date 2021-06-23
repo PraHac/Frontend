@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogTitle, Icon } from "@material-ui/core";
 import "../TimeSheet.css";
 import TimeSheetService from "../../services/TimeSheetService";
 import Moment from "react-moment";
-import RubberBand from "react-reveal/RubberBand";
 import logo from '../logo1.png'
 import { Link } from "react-router-dom";
 import DatePicker from 'react-datepicker'
@@ -344,6 +343,8 @@ class Header extends Component {
     document.getElementById("timesheet").style.display = "block";
     document.getElementById("timesheet1").style.display = "none";
     document.getElementById("viewtimesheetDet").style.display = "none";
+    // document.getElementById("time").style.marginLeft = "5%";
+    // document.getElementById("viewT").style.textAlign = "5%";
   };
   timesheet1 = (event) => {
     event.preventDefault();
@@ -611,7 +612,7 @@ class Header extends Component {
                         <li className="nav-item">
                           <a className="nav-link">
                             <i className="fas fa-clock nav-icon"  style={{color:"#ffa426",marginLeft:"8px",marginRight:"5px"}} />
-                            <p onClick={this.timesheet}> TimeSheet</p>
+                            <p onClick={this.timesheet} > TimeSheet</p>
                           </a>
                         </li>
                         <li className="nav-item">
@@ -632,8 +633,8 @@ class Header extends Component {
         {/* *************************Add timesheet */}
 
         <div id="timesheet" style={{ display: "none", marginTop:"6%"}}>
-          <RubberBand>
-          <div style={{  marginLeft: "20%" }}>
+          
+          <div id="time" style={{  marginLeft: "20%" }}>
           <div style={{display:"flex",justifyContent:"space-evenly", padding: "1%" }} >
             
               <input
@@ -737,9 +738,8 @@ class Header extends Component {
             </div>
           </div>
           </div>  
-          </RubberBand>
 
-        <div style={{ width: '1000px', marginLeft: '22%', marginTop: 40, boxShadow: "2px 2px 10px", padding: "10px" }}>
+        <div id="viewT" style={{ width: '1000px', marginLeft: '22%', marginTop: 40, boxShadow: "2px 2px 10px", padding: "10px" }}>
         <p style={{fontSize: "22px",
                         fontWeight: "800",
                         fontFamily: "cursive",
@@ -1031,7 +1031,6 @@ class Header extends Component {
 
         <div id="view" style={{ display: "none" }}>
           <div style={{ marginLeft: "25%", marginTop: "5%" }}>
-            <RubberBand>
          
           <div class="row">
             <div class="col-lg-12">
@@ -1080,8 +1079,6 @@ class Header extends Component {
               </div>
             </div>
           </div>
-         
-            </RubberBand>
           </div>
         </div>
 
