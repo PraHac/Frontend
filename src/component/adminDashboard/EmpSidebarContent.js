@@ -42,6 +42,8 @@ export default function EmpSidebarContent() {
       supervisorPass,
       supervisorContact
     );
+    if(supervisorName!="" && supervisorSalary!==""&&(departmentId!=""&&departmentId!=0)&&supervisorEmail!=""&&supervisorPass!=""&&supervisorContact!="")
+    {
     axios
       .post("http://localhost:8081/r1/addSupervisor", {
         supervisorName: supervisorName,
@@ -57,11 +59,25 @@ export default function EmpSidebarContent() {
           description: "supervisor Added ",
           className:"mt-5"  
         });
+        document.getElementById('sname').value=""
+        document.getElementById('ssalary').value=""
+        document.getElementById('scontact').value=""
+        document.getElementById('dId').value=""
+        document.getElementById('semail').value=""
+        document.getElementById('spass').value=""
       })
-      .catch((err) => { notification['error']({
-        description: "Supervisor Not Added ",
-        className:"mt-5"  
-      })})
+    }
+    else
+    {
+      // .catch((err) => { notification['error']({
+      //   description: "Supervisor Not Added ",
+      //   className:"mt-5"  
+      notification['error']({
+        message:"Please fill all Fields",
+        className:"mt-5"
+      })
+    }
+  
   };
 
   const createEmployee = (e) => {
@@ -92,20 +108,28 @@ export default function EmpSidebarContent() {
           description: "Employee has added  ",
           className:"mt-5"  
         })
-      
+        document.getElementById('employeeName').value=""
+        document.getElementById('employeeSalary').value=""
+        document.getElementById('edId').value=""
+        document.getElementById('eEmail').value=""
+        document.getElementById('esId').value=""
+        document.getElementById('epass').value=""
+        document.getElementById('econtact').value=""
+        
     }
     else{
       notification['error']
       ({
-        description: "Please Add Fields ",
-        className:"mt-5"  
+        description: "Please fill all Fields  ",
+        className:"mt-5,"
+          
       })
     }
   };
 
   const createAccountant = (e) => {
     e.preventDefault();
-    if(accountantName != "" && accountantEmail != "" && accountantPass != ""){
+    if(accountantName != "" && accountantEmail != "" && accountantPass != "" &&accountantContact!="" ){
       axios
       .post("http://localhost:8081/r1/addAccountant", {
         name: accountantName,
@@ -119,6 +143,14 @@ export default function EmpSidebarContent() {
           description: "Accountant Added ",
           className:"mt-5"  
         });
+        document.getElementById('aname').value=""
+        document.getElementById('aemail').value=""
+        document.getElementById('apass').value=""
+        document.getElementById('acontact').value=""
+        
+        
+        
+        
       })
       .catch((err) =>{ 
         console.log(err)
@@ -126,7 +158,7 @@ export default function EmpSidebarContent() {
     }else{
       notification['error']
       ({
-        description: "Please Add Fields ",
+        description: "Please fill all Fields ",
         className:"mt-5"  
       })
     }
@@ -186,14 +218,16 @@ export default function EmpSidebarContent() {
               <h3 className="text-center">Add Supervisor</h3>
               <div className="d-flex">
                 <input
+                  id="sname"
                   type="text"
                   name="supervisorName"
                   class="form-control"
-                  placeholder="Supervisor Name"
+                  placeholder="Supervisor Name *"
                   onChange={(e) => setSupervisorName(e.target.value)}
                 />
                 <br />
                 <input
+                id="ssalary"
                   type="text"
                   name="supervisorSalary"
                   class="form-control"
@@ -204,6 +238,7 @@ export default function EmpSidebarContent() {
               </div>
               <div className="d-flex">
                 <input
+                id="scontact"
                   type="text"
                   name="supervisorContact"
                   className="form-control"
@@ -212,6 +247,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="dId"
                   type="text"
                   name="departmentId"
                   className="form-control"
@@ -222,6 +258,7 @@ export default function EmpSidebarContent() {
               </div>
               <div className="d-flex">
                 <input
+                id="semail"
                   type="text"
                   name="supervisorEmail"
                   className="form-control"
@@ -230,6 +267,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="spass"
                   type="text"
                   name="supervisorPass"
                   className="form-control"
@@ -281,6 +319,7 @@ export default function EmpSidebarContent() {
               </div>
               <div className="d-flex">
                 <input
+                id="edId"
                   type="text"
                   name="departmentId"
                   className="form-control"
@@ -290,6 +329,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="eEmail"
                   type="text"
                   name="employeeEmail"
                   className="form-control"
@@ -301,6 +341,7 @@ export default function EmpSidebarContent() {
               </div>
               <div className="d-flex">
                 <input
+                id="epass"
                   type="text"
                   name="employeePass"
                   className="form-control"
@@ -310,6 +351,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="econtact"
                   type="text"
                   name="employeeContact"
                   className="form-control"
@@ -320,6 +362,7 @@ export default function EmpSidebarContent() {
                 <br />
               </div>
               <input
+              id="esId"
                 type="text"
                 name="supervisorId"
                 className="form-control"
@@ -346,6 +389,7 @@ export default function EmpSidebarContent() {
               <h3 className="text-center">Add Accountant</h3>
               <div className="d-flex">
                 <input
+                id="aname"
                   type="text"
                   name="accountantName"
                   class="form-control"
@@ -355,6 +399,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="aemail"
                   type="text"
                   name="accountantEmail"
                   className="form-control"
@@ -366,6 +411,7 @@ export default function EmpSidebarContent() {
               </div>
               <div className="d-flex">
                 <input
+                id="apass"
                   type="text"
                   name="accountantPass"
                   className="form-control"
@@ -375,6 +421,7 @@ export default function EmpSidebarContent() {
                 />
                 <br />
                 <input
+                id="acontact"
                   type="text"
                   name="accountantContact"
                   className="form-control"

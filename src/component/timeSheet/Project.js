@@ -120,10 +120,10 @@ export default class SuperTimeSheet extends Component {
     console.log(this.state.pdescription);
     //document.querySelector('#page-top > div > section > section > main > div > div > div:nth-child(1) > div:nth-child(1) > div > label').style.marginLeft = '82px';
     document.querySelector('.custom-select').classList = '';
-    document.querySelector('.dataTables_info').style.marginRight = '82px';
-     document.querySelector('.pagination').style.marginLeft = '160px';
+    document.querySelector('.dataTables_info').style.marginLeft = '82px';
+     document.querySelector('.pagination').style.marginLeft = '212px';
     // document.querySelector('.mdb-datatable-filter').style.marginRight = '82px';
-    document.querySelector('#table > div > div:nth-child(1) > div:nth-child(2) > div > input').style.marginRight = '165px'
+    document.querySelector('#table > div > div:nth-child(1) > div:nth-child(2) > div > input').style.marginRight = '82px'
     document.querySelector('#table > div > div:nth-child(1) > div:nth-child(2) > div > input').style.width = '150px'
     console.log(this.state.projectId)
     this.users();
@@ -264,7 +264,7 @@ export default class SuperTimeSheet extends Component {
           <div className="card-body dp">
 
 
-            <label style={{ color: "#696969" }}>Project Name</label>
+            <label style={{ color: "#696969" }}>Project Name <span style={{color:"red"}}>*</span></label>
 
             <input id='prName' onChange={(e) => this.setState({ pName: e.target.value })} defaultValue={this.state.update.projectName} ref={this.myRef} placeholder="Project name" className="form-control" type="text" />
 
@@ -272,7 +272,7 @@ export default class SuperTimeSheet extends Component {
           <div className="card-body dp">
 
 
-            <label style={{ color: "#696969" }}>Project Description</label>
+            <label style={{ color: "#696969" }}>Project Description <span style={{color:"red"}}>*</span></label>
 
             <input id='prDescription' onChange={(e) => this.setState({ pdescription: e.target.value })} defaultValue={this.state.update.projectDescrption} ref={this.myRef1} placeholder="Project description" className="form-control" type="text" />
 

@@ -285,6 +285,14 @@ class Header extends Component {
               
                     })
                   });
+                  document.getElementById('fe').value=""
+                  document.getElementById('te').value=""
+                  document.getElementById('oe').value=""
+                  document.getElementById('date').value=""
+                  document.getElementById('fb').value=""
+                  document.getElementById('tb').value=""
+                  document.getElementById('ob').value=""
+            
               });
           });
       });
@@ -949,6 +957,7 @@ class Header extends Component {
             <br />
 
             <input
+             id="fe"
               type="text"
               name="foodexpense"
               className="form-control"
@@ -959,6 +968,7 @@ class Header extends Component {
             <br />
 
             <input
+            id="te"
               type="text"
               name="travelexpense"
               className="form-control"
@@ -969,6 +979,7 @@ class Header extends Component {
             <br />
 
             <input
+            id="oe"
               type="text"
               name="otherexpense"
               className="form-control"
@@ -979,8 +990,9 @@ class Header extends Component {
             <br />
 
             <div className="form-group">
-              <label for="id">Enter Food bill image:</label>
+              <label for="id">Enter Food bill image:<span style={{color:"red"}}>*</span></label>
               <input
+                id="fb"
                 type="file"
                 name="foodBill"
                 className="form-control"
@@ -989,8 +1001,9 @@ class Header extends Component {
               />
             </div>
             <div className="form-group">
-              <label for="id">Enter Travel bill image:</label>
+              <label for="id">Enter Travel bill image:<span style={{color:"red"}}>*</span></label>
               <input
+              id="tb"
                 type="file"
                 name="travelBill"
                 className="form-control"
@@ -999,8 +1012,9 @@ class Header extends Component {
               />
             </div>
             <div className="form-group">
-              <label for="id">Enter Other bill image:</label>
+              <label for="id">Enter Other bill image:<span style={{color:"red"}}>*</span></label>
               <input
+              id="ob"
                 type="file"
                 name="otherBill"
                 className="form-control"
@@ -1011,9 +1025,10 @@ class Header extends Component {
 
             <div className="form-group">
               <label for="id">
-                Enter Date Of Reimbursement:
+                Enter Date Of Reimbursement:<span style={{color:"red"}}>*</span>
               </label>
               <input
+              id="date"
                 placeholder="Date of Reimbursement"
                 type="date"
                 name="dateOfReimburse"

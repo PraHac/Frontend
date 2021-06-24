@@ -207,7 +207,7 @@ export default class DptManageSideBarContent extends Component {
                         <div className="card-body dp">
 
                                 
-            <label style={{color:"#696969"}}>Department Name</label>
+            <label style={{color:"#696969"}}>Department Name <span style={{color:"red"}}>*</span></label>
         
             <input onChange={this.activeinactive} id='reset' placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
           </div>

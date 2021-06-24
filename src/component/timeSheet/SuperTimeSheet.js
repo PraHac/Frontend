@@ -163,6 +163,7 @@ export default class SuperTimeSheet extends Component {
   }
 
   displayAllTimeSheet() {
+    this.setState({view:0})
     document.getElementById("ts").style.display = "block";
     document.getElementById("apprts").style.display = "none";
     document.getElementById("viewtimesheetDet").style.display = "none"
