@@ -131,6 +131,9 @@ export default class DptManageSideBarContent extends Component {
     axios.delete('http://localhost:8081/r1/deleteDepartment/' + e.currentTarget.value )
       .then(response => {this.users()})
       .then(data => { console.log(data) })
+      notification['success']({
+        message:"Department Deleted Successfully"
+      })
 
   }
   reset() {
@@ -153,6 +156,7 @@ export default class DptManageSideBarContent extends Component {
 
           })
           this.users();
+          document.getElementById('reset').value=""
         })
 
         .catch(err => {
@@ -172,15 +176,20 @@ export default class DptManageSideBarContent extends Component {
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
+        
       })
         .then(response => {this.users()})
         .then((data) => console.log(data))
+        notification['success']({
+          message:"Department Updation Done"
+        })
+        document.getElementById('reset').value=""
 
     }
   }
   else{
     notification['error']({
-      message:'please enter department'
+      message:'Please Enter Department'
     })
   }
 
