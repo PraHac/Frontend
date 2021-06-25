@@ -71,6 +71,8 @@ export default class DptManageSideBarContent extends Component {
         this.setState({ departmentId: data.departmentId })
         console.log(this.state.departmentId);
         console.log(data)
+        document.getElementById("reset").value = data.departmentName
+
 
 
       });
@@ -103,8 +105,7 @@ export default class DptManageSideBarContent extends Component {
     document.querySelector('.custom-select').classList = '';
     document.querySelector('.dataTables_info').style.marginLeft = '82px';
     document.querySelector('.pagination').style.marginRight = '82px';
-    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px'; 
-    document.getElementById('save').classList.add('disabled')   
+    document.querySelector('.mdb-datatable-filter').style.marginRight = '82px';   
     this.users();
   }
   reset() {
@@ -118,14 +119,7 @@ export default class DptManageSideBarContent extends Component {
       .then(data => { console.log(data) })
 
   }
-  activeinactive(){
-    if(document.getElementById('reset').value==null||document.getElementById('reset').value==''){
-    document.getElementById('save').classList.add('disabled')
-    }
-    else{
-      document.getElementById('save').classList.remove('disabled')
-    }
-  }
+ 
   delete(e) {
   console.log(e);
     axios.delete('http://localhost:8081/r1/deleteDepartment/' + e.currentTarget.value )
@@ -209,7 +203,7 @@ export default class DptManageSideBarContent extends Component {
                                 
             <label style={{color:"#696969"}}>Department Name</label>
         
-            <input onChange={this.activeinactive} id='reset' placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
+            <input  id='reset' placeholder="Department Name" defaultValue={this.state.update.departmentName} ref={this.myRef} className="form-control" type="text" />
           </div>
           <div >
           <button type="button" class="btn btn-primary ml-3 mb-4" id="save" onClick={this.saveOrUpdate} >Save </button>
